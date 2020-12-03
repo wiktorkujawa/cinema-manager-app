@@ -1,6 +1,9 @@
 const path = require('path');
 require('dotenv').config();
 
+const movies = require('./routes/api/movies');
+const halls = require('./routes/api/halls');
+
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -19,6 +22,10 @@ mongoose
     useFindAndModify: false }) // Adding new mongo url parser 
   .then(() => console.log('MongoDB Connected...')) 
   .catch(err => console.log(err)); 
+
+
+app.use('/api/halls', halls);
+app.use('/api/movies', movies);
 
 
 app.use(express.static(path.join(__dirname, 'dist')));
