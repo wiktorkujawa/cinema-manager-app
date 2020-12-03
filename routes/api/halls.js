@@ -140,7 +140,6 @@ router.put('/takens_sessions/:id', async (req, res) => {
 
 router.put('/:showing_id/from/:id_from/to/:id_to', async (req, res) => {
   const { showing_id, id_from, id_to } = req.params;
-  console.log(id_from);
 
   const transferred_object = await Hall.aggregate([{
     "$match": {

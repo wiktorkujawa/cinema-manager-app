@@ -29,7 +29,6 @@ router.post('/', (req, res) => {
 // Delete movie from Cinema list
 
 router.delete('/:id', (req, res) => {
-  console.log(req.params.id);
   Movie.findOneAndDelete({_id: req.params.id})
   .then(() => res.json({ msg: `Movie removed from Cinema list` }))
   .catch(err => res.status(404).json({ error: err }));
