@@ -1,0 +1,17 @@
+<mat-sidenav-container>
+  <mat-sidenav [(opened)]="opened">Sidenav</mat-sidenav>
+  <mat-sidenav-content>
+
+    <mat-toolbar class="navbar" color="primary">
+  
+      <mat-button-toggle *ngIf='mobile' (click)="opened=!opened"><mat-icon>menu</mat-icon></mat-button-toggle>
+      
+      <a routerLink="/" >Logo</a>
+      <div *ngIf='!mobile'>
+        <span><a routerLink="/">Home</a></span>
+        <span><a routerLink="/about">About</a></span>
+      </div>  
+    </mat-toolbar>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
