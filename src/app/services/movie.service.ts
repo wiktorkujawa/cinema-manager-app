@@ -12,8 +12,8 @@ export class MovieService {
     return this.webService.get(this.movieUrl, '');
   }
 
-  addMovie(){
-    return this.webService.post(this.movieUrl,'');
+  addMovie( object: Object){
+    return this.webService.post(this.movieUrl, object);
   }
 
   updateMovie(id: any, object: Object){
