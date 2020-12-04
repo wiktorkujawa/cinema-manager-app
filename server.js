@@ -3,17 +3,21 @@ require('dotenv').config();
 
 const movies = require('./routes/api/movies');
 const halls = require('./routes/api/halls');
+const auth = require('./routes/auth');
 
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const session = require('express-session');
 const express = require('express');
 const app = express();
+require('./modules/auth')(passport);
 
 app.use(express.json());
 
 app.use(cors());
 
+// Connect to mongo database
 mongoose 
   .connect(process.env.mongoURI, { 
     useNewUrlParser: true,
@@ -23,10 +27,23 @@ mongoose
   .then(() => console.log('MongoDB Connected...')) 
   .catch(err => console.log(err)); 
 
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/api/halls', halls);
 app.use('/api/movies', movies);
-
+app.use('/auth', auth);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
