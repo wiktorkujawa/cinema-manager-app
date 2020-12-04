@@ -28,25 +28,12 @@ router.post('/register', (req, res) => {
   }
 
   if (errors.length > 0) {
-    // res.render('register', {
-    //   errors,
-    //   name,
-    //   email,
-    //   password,
-    //   password2
-    // });
     res.status(400).json(errors);
   } else {
     User.findOne({ email: email }).then(user => {
       if (user) {
         errors.push({ msg: 'Email already exists' });
-        // res.render('register', {
-        //   errors,
-        //   name,
-        //   email,
-        //   password,
-        //   password2
-        // });
+
         res.status(409).json(errors);
       } else {
         const newUser = new User({
