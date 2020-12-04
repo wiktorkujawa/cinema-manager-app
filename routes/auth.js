@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
+const User = require('../models/user');
+require('../modules/auth');
 
-// User data(testing)
+
 router.get('/user', (req,res)=>{ 
   res.send(req.user)
 });
@@ -21,29 +23,31 @@ router.post('/register', (req, res) => {
     errors.push({ msg: 'Passwords do not match' });
   }
 
-  if (password.length < 8) {
+  if (undefined !== password && password.length < 8) {
     errors.push({ msg: 'Password must be at least 8 characters' });
   }
 
   if (errors.length > 0) {
-    res.render('register', {
-      errors,
-      name,
-      email,
-      password,
-      password2
-    });
+    // res.render('register', {
+    //   errors,
+    //   name,
+    //   email,
+    //   password,
+    //   password2
+    // });
+    res.status(400).json(errors);
   } else {
     User.findOne({ email: email }).then(user => {
       if (user) {
         errors.push({ msg: 'Email already exists' });
-        res.render('register', {
-          errors,
-          name,
-          email,
-          password,
-          password2
-        });
+        // res.render('register', {
+        //   errors,
+        //   name,
+        //   email,
+        //   password,
+        //   password2
+        // });
+        res.status(409).json(errors);
       } else {
         const newUser = new User({
           name,
@@ -87,3 +91,5 @@ router.get('/logout', (req, res) => {
   req.flash('success_msg', 'You are logged out');
   res.redirect('/auth/login');
 });
+
+module.exports = router;
