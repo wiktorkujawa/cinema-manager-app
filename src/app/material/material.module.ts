@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 const MaterialComponents = [ 
@@ -13,7 +14,8 @@ const MaterialComponents = [
   MatSidenavModule,
   MatIconModule,
   MatButtonModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatFormFieldModule
  ]
 
 @NgModule({

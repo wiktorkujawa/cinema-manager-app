@@ -10,8 +10,12 @@
       <div *ngIf='!mobile'>
         <span><a routerLink="/">Home</a></span>
         <span><a routerLink="/about">About</a></span>
+        <span><a routerLink="/login">Login</a></span>
       </div>  
     </mat-toolbar>
+    
+    <router-outlet (activate)="onOutletLoaded($event)"></router-outlet>
 
   </mat-sidenav-content>
+  
 </mat-sidenav-container>

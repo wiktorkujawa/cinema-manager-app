@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-public-layout',
@@ -15,7 +16,7 @@ export class PublicLayoutComponent implements OnInit {
   // environment: string = environment.apiUrl;
  
 
-  constructor(
+  constructor( private authService: AuthService,
     private breakpointObserver: BreakpointObserver) {
       this.breakpointObserver.observe([
         Breakpoints.XSmall,
@@ -35,5 +36,13 @@ export class PublicLayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onOutletLoaded(component: any) {
+    this.authService.getUser().subscribe( user => {
+      this.user = user;
+      component.user = this.user;
+    })
+    console.log(component);
+  } 
 
 }

@@ -14,6 +14,7 @@ router.get('/user', (req,res)=>{
 router.post('/register', (req, res) => {
   const { name, email, password, password2 } = req.body;
   let errors = [];
+  console.log(req.body);
 
   if (!name || !email || !password || !password2) {
     errors.push({ msg: 'Please enter all fields' });
@@ -53,7 +54,7 @@ router.post('/register', (req, res) => {
                   'success_msg',
                   'You are now registered and can log in'
                 );
-                res.redirect('/auth/login');
+                res.redirect('/login');
               })
               .catch(err => console.log(err));
           });
@@ -67,7 +68,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/auth/login',
+    failureRedirect: '/login',
     failureFlash: true
   })(req, res, next);
 });

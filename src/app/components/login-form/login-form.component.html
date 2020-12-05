@@ -1,0 +1,5 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+  <button mat-raised-button type="submit" color="primary">Submit </button>
+  <a routerLink="/register">Not registered?</a>
+</form>

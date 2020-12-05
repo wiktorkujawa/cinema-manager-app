@@ -13,13 +13,24 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
-app.use(express.json());
+require('./modules/auth')(passport);
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+    credentials: true
+  })
+);
 
 // Connect to mongo database
 mongoose 
@@ -44,7 +55,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./modules/auth')(passport);
+
 
 // Connect flash
 app.use(flash());
