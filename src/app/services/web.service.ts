@@ -21,8 +21,7 @@ export class WebService {
     return this.http.get(`${environment.apiUrl}/${uri}/${id}`, httpOptions)
   }
 
-  post(uri:string, object: Object){
-    console.log(object);
+  post(uri:string, object: any){
     return this.http.post(`${environment.apiUrl}/${uri}`, object);
   }
 
@@ -30,7 +29,7 @@ export class WebService {
     return this.http.delete(`${environment.apiUrl}/${uri}/${id}`)
   }
 
-  put(uri:string, id:any,object:Object){
+  put(uri:string, id:any,object:object){
     return this.http.put(`${environment.apiUrl}/${uri}/${id}`, object)
   }
 }
