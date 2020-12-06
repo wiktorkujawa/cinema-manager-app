@@ -15,6 +15,7 @@ import { AboutComponent } from './components/about/about.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { HomeComponent } from './components/home/home.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { HomeComponent } from './components/home/home.component';
     FormlyModule.forRoot({ extras: { lazyRender: true } }),
     FormlyMaterialModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

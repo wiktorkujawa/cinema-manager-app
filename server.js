@@ -7,23 +7,14 @@ const auth = require('./routes/auth');
 
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('./modules/auth');
 const passport = require('passport');
 
 const session = require('express-session');
 const flash = require('connect-flash');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
-
-require('./modules/auth')(passport);
-
-// app.use(express.urlencoded({ extended: true }));
-
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   cors({
@@ -32,15 +23,12 @@ app.use(
   })
 );
 
-// Connect to mongo database
-mongoose 
-  .connect(process.env.mongoURI, { 
-    useNewUrlParser: true,
-    useCreateIndex: true, 
-    useUnifiedTopology: true, 
-    useFindAndModify: false }) // Adding new mongo url parser 
-  .then(() => console.log('MongoDB Connected...')) 
-  .catch(err => console.log(err)); 
+require('./modules/auth');
+
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 // Express session
 app.use(
@@ -54,6 +42,16 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Connect to mongo database
+mongoose 
+  .connect(process.env.mongoURI, { 
+    useNewUrlParser: true,
+    useCreateIndex: true, 
+    useUnifiedTopology: true, 
+    useFindAndModify: false }) // Adding new mongo url parser 
+  .then(() => console.log('MongoDB Connected...')) 
+  .catch(err => console.log(err)); 
 
 
 
@@ -72,6 +70,22 @@ app.use(function(req, res, next) {
 app.use('/api/halls', halls);
 app.use('/api/movies', movies);
 app.use('/auth', auth);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
 

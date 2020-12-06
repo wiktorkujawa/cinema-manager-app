@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-public-layout',
@@ -10,13 +11,15 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PublicLayoutComponent implements OnInit {
 
+
   opened: boolean=false;
-  user: any;
+  username: any;
   mobile : boolean=true;
-  // environment: string = environment.apiUrl;
+  msg: any;
  
 
   constructor( private authService: AuthService,
+    private _router:Router,
     private breakpointObserver: BreakpointObserver) {
       this.breakpointObserver.observe([
         Breakpoints.XSmall,
@@ -32,17 +35,42 @@ export class PublicLayoutComponent implements OnInit {
           
         }
       });
+
+    this.authService.user()
+    .subscribe(
+      data => this.addName(data),
+      error => this._router.navigate(['/login'])
+    )
+    }
+
+    addName(data:any){
+      this.username = data.username;
     }
 
   ngOnInit(): void {
   }
 
-  onOutletLoaded(component: any) {
-    this.authService.getUser().subscribe( user => {
-      this.user = user;
-      component.user = this.user;
-    })
-    console.log(component);
-  } 
+
+  onActivate(component: any) {
+    this.msg = null;
+    this.authService.user()
+    .subscribe(
+      data => {
+        this.addName(data);
+      });
+    }
+
+
+  
+  Logout(){
+    this.authService.logout()
+    .subscribe(
+      data=>{
+        this.msg = data;
+        this.username='';
+      },
+      error=>console.error(error)
+    )
+  }
 
 }
