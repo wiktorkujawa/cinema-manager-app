@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -11,8 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginFormComponent implements OnInit {
 
   form = new FormGroup({});
-  model = { };
-  user: any = {};
+  userData = { };
+  msg: String = '';
   fields: FormlyFieldConfig[] = [
     {
       key: 'email',
@@ -37,14 +38,19 @@ export class LoginFormComponent implements OnInit {
     }
   ];
   
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private _router:Router) { }
 
-  onSubmit() {
-    console.log(this.model);
-    this.authService.login(this.model).subscribe( user =>
-
-      console.log(user)
-    ); 
+  onSubmit(){
+  
+    this.authService.login(JSON.stringify(this.userData))
+    .subscribe(
+      data => {
+        this._router.navigate(['/about']);
+      } ,
+      error => this.msg = error.error.message
+    )
+    
   }
 
   ngOnInit(): void {}

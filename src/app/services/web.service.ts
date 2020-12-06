@@ -6,7 +6,7 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   }),
-  withCredentials: true 
+  withCredentials: true
 }
 
 
@@ -22,7 +22,7 @@ export class WebService {
   }
 
   post(uri:string, object: any){
-    return this.http.post(`${environment.apiUrl}/${uri}`, object);
+    return this.http.post(`${environment.apiUrl}/${uri}`, object, httpOptions);
   }
 
   delete(uri:string, id:any){
