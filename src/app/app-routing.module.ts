@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutComponent } from './components/about/about.component';
+import { HallsComponent } from './components/Hall/halls/halls.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { PublicLayoutComponent } from './components/public-layout/public-layout.component';
@@ -14,7 +15,9 @@ const routes: Routes = [
       {path: '', component: HomeComponent},
       {path: 'about', component: AboutComponent},
       {path: 'login', component: LoginFormComponent},
-      {path: 'register', component: RegisterFormComponent}
+      {path: 'register', component: RegisterFormComponent},
+      {path: 'halls', component: HallsComponent}
+
     ]
   }
 ];

@@ -1,0 +1,7 @@
+<mat-grid-tile-header style="display: flex; justify-content: space-between" >
+  <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(hall._id)" class="del">X</button>
+</mat-grid-tile-header>
+<div class="block-with-text">{{hall.name}}</div>
+<mat-grid-tile-footer>
+<button *ngIf="username" mat-raised-button (click)="onUpdate(hall._id)" class="mod">Modify</button>
+</mat-grid-tile-footer>

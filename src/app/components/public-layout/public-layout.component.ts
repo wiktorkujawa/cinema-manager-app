@@ -52,11 +52,15 @@ export class PublicLayoutComponent implements OnInit {
 
 
   onActivate(component: any) {
+    console.log(component);
     this.msg = null;
     this.authService.user()
     .subscribe(
-      data => {
+      (data:any) => {
+
         this.addName(data);
+        this.username = data.username;
+        component.username = this.username;
       });
     }
 
