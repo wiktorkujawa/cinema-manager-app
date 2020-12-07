@@ -2,7 +2,19 @@
 
 MEAN stack App to manage Cinema schedules.
 
-## Usage
-To run the app create mongoDB database and mongoURI variable with connection link to your database in .env file which should be created in root folder.
+## Description
+App written with MEANStack(MongoDB, Express, Angular, Node.js) contains passport session authentication, API REST. Frontend created with REACT have to be based on angular-calendar component, but have to be finished.
+### Usage
+To run create .env file with 'mongoUri' varible to connect to mongodb database.
+```bash
+# Run the client & server with concurrently
+yarn dev
 
-### T.b.c
+# Run the Express server only
+yarn server
+
+# Run the React client only
+ng serve --open
+
+# Server runs on http://localhost:5000 and client on http://localhost:3000
+```
