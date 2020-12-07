@@ -27,6 +27,10 @@ import { HallsComponent } from './components/Hall/halls/halls.component';
 import { HallItemComponent } from './components/Hall/hall-item/hall-item.component';
 import { AddHallComponent } from './components/Hall/add-hall/add-hall.component';
 import { UpdateHallComponent } from './components/Hall/update-hall/update-hall.component';
+import { MoviesComponent } from './components/Movie/movies/movies.component';
+import { MovieItemComponent } from './components/Movie/movie-item/movie-item.component';
+import { UpdateMovieComponent } from './components/Movie/update-movie/update-movie.component';
+import { AddMovieComponent } from './components/Movie/add-movie/add-movie.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,11 @@ import { UpdateHallComponent } from './components/Hall/update-hall/update-hall.c
     HallsComponent,
     HallItemComponent,
     AddHallComponent,
-    UpdateHallComponent
+    UpdateHallComponent,
+    MoviesComponent,
+    MovieItemComponent,
+    UpdateMovieComponent,
+    AddMovieComponent
   ],
   entryComponents: [AddHallComponent],
   imports: [

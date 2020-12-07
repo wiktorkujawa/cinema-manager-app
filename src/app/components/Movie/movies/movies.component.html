@@ -1,0 +1,12 @@
+<button class="add-button" mat-raised-button color="primary" *ngIf='username'(click)="openDialog()">Add movie</button> 
+<mat-grid-list [cols]="cols" [gutterSize]="gutter" [ngStyle]="{'margin': margin}" rowHeight="1:1">
+  <mat-grid-tile *ngFor="let movie of movies">
+    <app-movie-item
+      [username]="username" 
+      [movie]="movie"
+      (deleteMovie)="deleteMovie(movie._id)"
+      (openUpdateDialog)="openUpdateDialog(movie._id)"
+      >
+    </app-movie-item>
+  </mat-grid-tile>
+</mat-grid-list>

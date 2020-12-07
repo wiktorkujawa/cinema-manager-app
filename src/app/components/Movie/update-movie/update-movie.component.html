@@ -1,0 +1,12 @@
+<button class="close" mat-button (click)="onNoClick()">X</button>
+<h2 mat-dialog-title>Update message</h2>
+<mat-dialog-content>
+<form (ngSubmit)="onSubmit()" class="form">
+  <mat-form-field appearance="outline">
+    <input matInput [(ngModel)]="name" name="name">
+  </mat-form-field>
+  <div>
+  <button mat-raised-button type="submit" color="primary">Submit </button>
+</div>
+</form>
+</mat-dialog-content>
