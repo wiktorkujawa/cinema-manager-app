@@ -7,6 +7,9 @@ const movieSchema = new Schema({
     type: String,
     unique: true
   },
+  description: {
+    type: String,
+    },
   duration: {
     type: Number,
     required: true
