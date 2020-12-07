@@ -1,5 +1,16 @@
 <mat-sidenav-container>
-  <mat-sidenav [(opened)]="opened">Sidenav</mat-sidenav>
+  <mat-sidenav [(opened)]="opened">
+    <!-- Sidenav -->
+    <ul style="list-style-type:none; margin-top: 2rem;">
+    <li><a routerLink="/">Home</a></li>
+   <li> <a routerLink="/about">About</a></li>
+   <li> <span *ngIf='!username'><a routerLink="/login">Login</a></span></li>
+   <li> <span *ngIf='!username'><a routerLink="/register">Register</a></span></li>
+   <li><span *ngIf='username'><a (click)="Logout()">Logout</a></span></li>
+  </ul>
+  
+  
+  </mat-sidenav>
   <mat-sidenav-content>
 
     <mat-toolbar class="navbar" color="primary">
@@ -11,6 +22,7 @@
         <span><a routerLink="/">Home</a></span>
         <span><a routerLink="/about">About</a></span>
         <span *ngIf='!username'><a routerLink="/login">Login</a></span>
+        <span *ngIf='!username'><a routerLink="/register">Register</a></span>
         <span *ngIf='username'><a (click)="Logout()">Logout</a></span>
 
       </div>  
