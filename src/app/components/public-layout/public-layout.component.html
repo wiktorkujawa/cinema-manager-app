@@ -4,6 +4,7 @@
     <ul style="list-style-type:none; margin-top: 2rem;">
     <li><a routerLink="/">Home</a></li>
     <li> <a routerLink="/halls">Halls</a></li>
+    <li> <a routerLink="/movies">Halls</a></li>
    <li> <a routerLink="/about">About</a></li>
    <li> <span *ngIf='!username'><a routerLink="/login">Login</a></span></li>
    <li> <span *ngIf='!username'><a routerLink="/register">Register</a></span></li>
@@ -22,6 +23,7 @@
       <div *ngIf='!mobile'>
         <span><a routerLink="/">Home</a></span>
         <span><a routerLink="/halls">Halls</a></span>
+        <span><a routerLink="/movies">Movies</a></span>
         <span><a routerLink="/about">About</a></span>
         <span *ngIf='!username'><a routerLink="/login">Login</a></span>
         <span *ngIf='!username'><a routerLink="/register">Register</a></span>
@@ -33,7 +35,6 @@
     <p *ngIf="!username">You're not logged in</p>
     <p style="color: chartreuse;" *ngIf="msg"> {{msg.message}}</p>
     <router-outlet (activate)="onActivate($event)"></router-outlet>
-    <!-- <router-outlet></router-outlet> -->
     
 
   </mat-sidenav-content>

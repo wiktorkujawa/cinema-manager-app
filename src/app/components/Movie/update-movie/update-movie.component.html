@@ -5,6 +5,11 @@
   <mat-form-field appearance="outline">
     <input matInput [(ngModel)]="name" name="name">
   </mat-form-field>
+
+  <mat-form-field style="width: 100%;" appearance="outline">
+    <mat-label>Add Content</mat-label>
+    <textarea matInput [(ngModel)]="description" name="description" maxlength="400" ></textarea>
+  </mat-form-field>
   <div>
   <button mat-raised-button type="submit" color="primary">Submit </button>
 </div>

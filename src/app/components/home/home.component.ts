@@ -32,20 +32,21 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MovieService } from 'src/app/services/movie.service';
 
-const colors: any = {
-  red: {
+const colors: any = [
+  {
     primary: '#ad2121',
     secondary: '#FAE3E3',
   },
-  blue: {
+  {
     primary: '#1e90ff',
     secondary: '#D1E8FF',
   },
-  yellow: {
+  {
     primary: '#e3bc08',
     secondary: '#FDF1BA',
   },
-};
+
+];
 
 @Component({
   selector: 'app-home',
@@ -72,11 +73,20 @@ export class HomeComponent implements OnInit {
     start:''
   };
 
+  select: any;
   selectHall = new FormControl();
+  
+  onChange(){
 
-  halls_id: any=[];  
-  halls_names: any=[];
+      this.events=[]
+      this.AllEvents.forEach((element, index) => {
+        this.selectHall.value.forEach( (selected:string) => {
+          selected==element[0].hall_id ? this.events=this.events.concat(...this.AllEvents[index]) : null })
+          
+        });
+  }
 
+  halls: any = [];
   form = new FormGroup({});
 fields: FormlyFieldConfig[] = [
     {
@@ -113,7 +123,6 @@ fields: FormlyFieldConfig[] = [
         placeholder: 'Placeholder',
         description: 'Description',
         required: true,
-        //what to put here to disable future dates?
       }
     }
   ];
@@ -159,11 +168,10 @@ fields: FormlyFieldConfig[] = [
   ngOnInit(): void {
     this.hallService.getHalls().subscribe( halls => {
       halls.forEach( hall => {
-        this.halls_id.push(hall._id);
-        this.halls_names.push(hall.name);
+        this.halls.push({id:hall._id, name:hall.name});
       });
 
-      const events = new Array(this.halls_id.length);
+      const events = new Array(this.halls.length);
       for (var i = 0; i < events.length; i++) {
         events[i] = [];
       }
@@ -171,13 +179,13 @@ fields: FormlyFieldConfig[] = [
       halls.forEach((showings, index) => {
         showings.taken_sessions.forEach( (showing: { _id: any, movie: string, start: string, end: string }) => {
           events[index].push({
-            hall_id: this.halls_id[index],
+            hall_id: this.halls[index].id,
             showing_id: showing._id,
             title: showing.movie,
             actions: this.actions,
             start: parseISO(showing.start),
             end: parseISO(showing.end),
-            color: colors.red,
+            color: colors[index],
             resizable: {
               beforeStart: true,
               afterEnd: true,
@@ -186,10 +194,17 @@ fields: FormlyFieldConfig[] = [
           })  
         });
 
-        this.events= events[0];
+       
+        
 
       })
-      
+      // this.AllEvents = events[0];
+      events.forEach((element) => {
+        if(element != 0){
+          this.AllEvents.push(element);
+        }
+        this.events= [].concat(...this.AllEvents);
+      });
     });
 
   }

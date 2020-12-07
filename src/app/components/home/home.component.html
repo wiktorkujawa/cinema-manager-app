@@ -1,18 +1,5 @@
 <div class="row text-center">
-  <div class="col-md-4">
-
-    <!-- <mat-form-field appearance="fill">
-      <mat-label>Select hall</mat-label>
-      <mat-select [formControl]="selectHall" multiple>
-        <mat-select-trigger>
-          {{selectHall.value ? selectHall.value[0] : ''}}
-          <span *ngIf="selectHall.value?.length > 1" class="example-additional-selection">
-            (+{{selectHall.value.length - 1}} {{selectHall.value?.length === 2 ? 'other' : 'others'}})
-          </span>
-        </mat-select-trigger>
-        <mat-option *ngFor="let hall of halls_names" [value]="hall">{{hall}}</mat-option>
-      </mat-select>
-    </mat-form-field> -->
+  <div class="col-md-3">
     <div class="btn-group">
       <div
         class="btn btn-primary"
@@ -41,10 +28,18 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
+    <mat-form-field appearance="fill">
+      <mat-label>Select hall</mat-label>
+      <mat-select [formControl]="selectHall" (selectionChange)="onChange()" multiple>
+        <mat-option *ngFor="let hall of halls" [value]="hall.id">{{hall.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-3">
     <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="btn-group">
       <div
         class="btn btn-primary"
@@ -194,6 +189,20 @@
     </tbody>
   </table>
 </div>
+
+<!-- <mat-form-field appearance="fill">
+  <mat-label>Select hall</mat-label>
+  <mat-select [formControl]="selectHall" multiple>
+    <mat-select-trigger>
+      {{selectHall.value ? selectHall.value[0] : ''}}
+      <span *ngIf="selectHall.value?.length > 1" class="example-additional-selection">
+        (+{{selectHall.value.length - 1}} {{selectHall.value?.length === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let hall of halls" [value]="hall.id">{{hall.name}}</mat-option>
+  </mat-select>
+</mat-form-field> -->
+
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">

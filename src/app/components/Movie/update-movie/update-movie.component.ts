@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UpdateMovieComponent implements OnInit {
   name!: string;
+  description!: string;
   environment: string = environment.apiUrl;
   // in app.component.ts
   id: any;
@@ -22,6 +23,7 @@ export class UpdateMovieComponent implements OnInit {
 
   ngOnInit(): void {
     this.name=this.data.movie[0].name
+    this.description=this.data.movie[0].description
   }
 
   onNoClick() {
@@ -32,6 +34,7 @@ export class UpdateMovieComponent implements OnInit {
   onSubmit() {
       const movie = {
         name: this.name,
+        description: this.description
       }
       this.updateMovie.emit(movie);
     }

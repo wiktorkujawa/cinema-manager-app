@@ -2,6 +2,7 @@
   <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie._id)" class="del">X</button>
 </mat-grid-tile-header>
 <div class="block-with-text">{{movie.name}}</div>
+<div class="block-with-text">{{movie.description}}</div>
 <mat-grid-tile-footer>
 <button *ngIf="username" mat-raised-button (click)="onUpdate(movie._id)" class="mod">Modify</button>
 </mat-grid-tile-footer>
