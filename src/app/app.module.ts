@@ -23,6 +23,10 @@ import { CommonModule } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HallsComponent } from './components/Hall/halls/halls.component';
+import { HallItemComponent } from './components/Hall/hall-item/hall-item.component';
+import { AddHallComponent } from './components/Hall/add-hall/add-hall.component';
+import { UpdateHallComponent } from './components/Hall/update-hall/update-hall.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +35,13 @@ import { MatNativeDateModule } from '@angular/material/core';
     AboutComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    HomeComponent
+    HomeComponent,
+    HallsComponent,
+    HallItemComponent,
+    AddHallComponent,
+    UpdateHallComponent
   ],
+  entryComponents: [AddHallComponent],
   imports: [
     CommonModule,
     NgbModalModule,
