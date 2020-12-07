@@ -28,7 +28,7 @@ import {
 } from 'angular-calendar';
 import { HallService } from 'src/app/services/hall.service';
 import { Subject } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -72,7 +72,10 @@ export class HomeComponent implements OnInit {
     start:''
   };
 
+  selectHall = new FormControl();
+
   halls_id: any=[];  
+  halls_names: any=[];
 
   form = new FormGroup({});
 fields: FormlyFieldConfig[] = [
@@ -120,6 +123,8 @@ fields: FormlyFieldConfig[] = [
     event: CalendarEvent;
   } | undefined;
 
+
+  
   
 
   actions: CalendarEventAction[] = [
@@ -153,7 +158,10 @@ fields: FormlyFieldConfig[] = [
 
   ngOnInit(): void {
     this.hallService.getHalls().subscribe( halls => {
-      halls.forEach( hall => this.halls_id.push(hall._id));
+      halls.forEach( hall => {
+        this.halls_id.push(hall._id);
+        this.halls_names.push(hall.name);
+      });
 
       const events = new Array(this.halls_id.length);
       for (var i = 0; i < events.length; i++) {
@@ -178,7 +186,7 @@ fields: FormlyFieldConfig[] = [
           })  
         });
 
-        this.events= events[2];
+        this.events= events[0];
 
       })
       
@@ -230,23 +238,19 @@ fields: FormlyFieldConfig[] = [
     
     
     this.movieService.getMovie(movie_id).subscribe( (movies: any) => {
-      const object ={
-        name: movies.name,
-        start: start,
-        end: new Date(Date.parse(start) + movies.duration*60000)
-      }
+  
       this.hallService.addShowingToHall(hall_id, {
-        'name': movies.name,
+        'movie': movies.name,
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
-      }).subscribe();
+      }).subscribe( data => console.log(data));
 
     this.events = [
       ...this.events,
       {
         hall_id: hall_id,
         showing_id: movies._id,
-        title: movies.title,
+        title: movies.name,
         start: start,
         end: new Date(Date.parse(start) + movies.duration*60000),
         color: colors.red,
