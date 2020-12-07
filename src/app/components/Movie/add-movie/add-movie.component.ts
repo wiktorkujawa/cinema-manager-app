@@ -10,6 +10,7 @@ export class AddMovieComponent implements OnInit {
   @Output() addMovie: EventEmitter<any> = new EventEmitter();
 
   name!: string;
+  description!: string;
   // in app.component.ts
 
   constructor(public dialog: MatDialog,
@@ -22,14 +23,11 @@ export class AddMovieComponent implements OnInit {
 
 
   onSubmit() {
-
-
       const movie = {
         name: this.name,
+        description: this.description
       }
-      this.addMovie.emit(movie);
-    
-    
+      this.addMovie.emit(movie);  
   }
 
   onNoClick() {
