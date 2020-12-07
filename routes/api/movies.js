@@ -10,11 +10,18 @@ router.get('/', (_, res) => {
     .then(movies => res.json(movies))
 });
 
+// Get single Hall schedule
+router.get('/:id', (req,res) =>{
+
+  Movie.findById(req.params.id).then(movie => res.json(movie))
+})
+
 // Add movie to Cinema list
 router.post('/', (req, res) => {
   const newMovie = new Movie({
       name: req.body.name,
-      duration: req.body.duration
+      duration: req.body.duration,
+      description: req.body.description
     })
     newMovie.save() 
     .then( () => res.status(201).json({msg: `Movie ${req.body.name} has been added to Cinema schedule`}))
@@ -39,7 +46,8 @@ router.put('/:id', async (req, res) => {
   const _id = req.params.id;
     Movie.findByIdAndUpdate( _id, {
       name: req.body.name,
-      duration: req.body.duration
+      duration: req.body.duration,
+      description: req.body.description
     })
     .then(() => res.json({ msg: 'Name and/or duration updated' }))
     .catch(err =>

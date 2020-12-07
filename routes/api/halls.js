@@ -109,7 +109,7 @@ router.put('/name/:id', (req, res) => {
 });
 
 //  Add showing to Hall
-router.put('/takens_sessions/:id', async (req, res) => {
+router.put('/taken_sessions/:id', async (req, res) => {
   const _id = req.params.id;
 
   let can_add;
