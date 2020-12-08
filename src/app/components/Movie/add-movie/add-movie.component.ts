@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-add-movie',
@@ -9,8 +11,45 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddMovieComponent implements OnInit {
   @Output() addMovie: EventEmitter<any> = new EventEmitter();
 
-  name!: string;
-  description!: string;
+  movieData = {
+    name: '',
+    description: '',
+    duration: 0
+  };
+  form = new FormGroup({});
+fields: FormlyFieldConfig[] = [
+    {
+      key: 'name',
+      type: 'input',
+      templateOptions: {
+        label: 'Movie title',
+        placeholder: 'Enter title',
+        required: true,
+        appearance: 'outline'
+      }
+    },
+    {
+      key: 'description',
+      type: 'textarea',
+      templateOptions: {
+        label: 'Description',
+        placeholder: 'Add description',
+        rows: 10,
+        appearance: 'outline'
+      }
+    },
+    {
+      key: 'duration',
+      type: 'input',
+      templateOptions: {
+        type: 'number',
+        label: 'Movie duration[minutes]',
+        placeholder: 'Add duration[minutes]',
+        appearance: 'outline'
+      }
+    }
+  ];
+
   // in app.component.ts
 
   constructor(public dialog: MatDialog,
@@ -18,16 +57,11 @@ export class AddMovieComponent implements OnInit {
     public data:any) { }
 
   ngOnInit(): void {
-    this.name = this.data.name;
   }
 
 
   onSubmit() {
-      const movie = {
-        name: this.name,
-        description: this.description
-      }
-      this.addMovie.emit(movie);  
+      this.addMovie.emit(this.movieData);  
   }
 
   onNoClick() {
