@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -8,7 +10,22 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./update-hall.component.scss']
 })
 export class UpdateHallComponent implements OnInit {
-  name!: string;
+  hallData = {
+    name: ''
+  };
+  form = new FormGroup({});
+fields: FormlyFieldConfig[] = [
+    {
+      key: 'name',
+      type: 'input',
+      templateOptions: {
+        label: 'Hall name',
+        placeholder: 'Enter name',
+        required: true,
+        appearance: 'outline'
+      }
+    }
+  ];
   environment: string = environment.apiUrl;
   // in app.component.ts
   id: any;
@@ -21,7 +38,7 @@ export class UpdateHallComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.name=this.data.hall[0].name
+    this.hallData.name=this.data.hall[0].name
   }
 
   onNoClick() {
@@ -30,10 +47,8 @@ export class UpdateHallComponent implements OnInit {
   
 
   onSubmit() {
-      const hall = {
-        name: this.name,
-      }
-      this.updateHall.emit(hall);
+
+      this.updateHall.emit(this.hallData);
     }
 
 }

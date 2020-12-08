@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 const MaterialComponents = [ 
@@ -30,6 +31,7 @@ const MaterialComponents = [
   MatOptionModule,
   // MatOptionSelectionChange,
   MatSelectModule,
+  MatMenuModule
   // MatSelect
  ]
 

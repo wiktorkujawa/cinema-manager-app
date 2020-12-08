@@ -1,3 +1,7 @@
+
+$link-color: #FF4136;
+$sidenav-color: #001f3f;
+
 .navbar{
   justify-content: space-between;
 }
@@ -5,10 +9,25 @@
 span {
   padding-right: 1rem;
 }
-a{
+
+
+a {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
+
+    &.active {
+      opacity: 0.6;
+      &:hover {
+        color: $link-color;
+        font-weight: 900;
+      }
+
+      &:focus {
+        opacity: 1;
+      }
+      
+  }
 }
 
 li{
@@ -24,7 +43,7 @@ mat-sidenav, mat-sidenav-content {
 }
 
 mat-sidenav{
-  background-color: lightcoral;
+  background-color: $sidenav-color;
   width: 200px;
 }
 
