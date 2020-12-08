@@ -1,17 +1,10 @@
 <button class="close" mat-button (click)="onNoClick()">X</button>
-<h2 mat-dialog-title>Update message</h2>
+<h2 mat-dialog-title>Update movie</h2>
+<hr>
 <mat-dialog-content>
-<form (ngSubmit)="onSubmit()" class="form">
-  <mat-form-field appearance="outline">
-    <input matInput [(ngModel)]="name" name="name">
-  </mat-form-field>
 
-  <mat-form-field style="width: 100%;" appearance="outline">
-    <mat-label>Add Content</mat-label>
-    <textarea matInput [(ngModel)]="description" name="description" maxlength="400" ></textarea>
-  </mat-form-field>
-  <div>
-  <button mat-raised-button type="submit" color="primary">Submit </button>
-</div>
-</form>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <formly-form [form]="form" [fields]="fields" [model]="movieData"></formly-form>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Submit </button>
+  </form>
 </mat-dialog-content>

@@ -102,13 +102,13 @@ openDialog(){
   minWidth:"350px",
   panelClass: 'my-dialog', 
   data: this.username
-});
-const sub = ref.componentInstance.addMovie.subscribe((movie:any) => {
-  this.movieService.addMovie(movie).subscribe( movie => this.movies.push(movie));
-});
-  ref.afterClosed().subscribe(() => {
-  sub.unsubscribe();
-});
+  });
+  const sub = ref.componentInstance.addMovie.subscribe((movie:any) => {
+    this.movieService.addMovie(movie).subscribe( movie => this.movies.push(movie));
+  });
+    ref.afterClosed().subscribe(() => {
+    sub.unsubscribe();
+  });
 }
 
 openUpdateDialog(id:any){
@@ -129,10 +129,10 @@ openUpdateDialog(id:any){
 
 
 deleteMovie(id:any) {
-// Remove from UI
-this.movies = this.movies.filter( (t:any) => t._id !== id );
-// Remove from server
-this.movieService.deleteMovie(id).subscribe();
+  // Remove from UI
+  this.movies = this.movies.filter( (t:any) => t._id !== id );
+  // Remove from server
+  this.movieService.deleteMovie(id).subscribe();
 }
 
 
