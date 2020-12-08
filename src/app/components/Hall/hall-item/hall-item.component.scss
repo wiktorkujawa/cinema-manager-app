@@ -21,55 +21,7 @@
 }
 
 .del{
-  background-color: red; 
-  color: cornsilk; 
-  text-align: center; 
-  margin: 0 auto;
+  position: absolute;
+  right:0;
+  margin: 0.5em;
 }
-
-
-/* styles for '...' */ 
-// .block-with-text {
-//   color:#111111;
-//   /* hide text if it more than N lines  */
-//   overflow: hidden;
-//   /* for set '...' in absolute position */
-//   position: relative; 
-//   /* use this value to count block height */
-//   line-height: 1.2em;
-//   font-size: 0.9em;
-//   /* max-height = line-height (1.2) * lines max number (3) */
-//   max-height: 8.4em; 
-//   /* fix problem when last visible word doesn't adjoin right side  */
-//   text-align: justify;  
-//   /* place for '...' */
-//   margin-top: -0.5em;
-//   margin-right: -5em;
-//   margin-left: -4em;
-//   padding-right: 1em;
-// }
-// /* create the ... */
-// .block-with-text:before {
-//   /* points in the end */
-//   content: '...';
-//   /* absolute position */
-//   position: absolute;
-//   /* set position to right bottom corner of block */
-//   right: 0;
-//   bottom: 0;
-// }
-// /* hide ... if we have text, which is less than or equal to max lines */
-// .block-with-text:after {
-//   /* points in the end */
-//   content: '';
-//   /* absolute position */
-//   position: absolute;
-//   /* set position to right bottom corner of text */
-//   right: 0;
-//   /* set width and height */
-//   width: 1em;
-//   height: 1em;
-//   margin-top: 0.2em;
-//   /* bg color = bg color under block */
-//   background: white;
-// }

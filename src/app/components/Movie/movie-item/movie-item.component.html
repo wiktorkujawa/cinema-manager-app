@@ -1,8 +1,8 @@
 <mat-grid-tile-header style="display: flex; justify-content: space-between" >
+  <h2 class="title">{{movie.name}}</h2>
   <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie._id)" class="del">X</button>
 </mat-grid-tile-header>
 <div class="movie-card">
-  <h2 class="title">{{movie.name}}</h2>
   <div class="block-with-text">{{movie.description}}</div>
 </div>
 <mat-grid-tile-footer>
