@@ -86,7 +86,7 @@ router.post('/', (req, res) => {
     taken_sessions: []
   })
   newHall.save()
-  .then(halls => res.status(201).json({msg: `Hall with name:${req.body.name} has been added`}))
+  .then( hall => res.status(201).json(hall))
   .catch((err) => {
     if(err.code == 11000){
         return res.status(409).json({msg: "Hall with this name already exists"})
@@ -99,7 +99,7 @@ router.post('/', (req, res) => {
 router.put('/name/:id', (req, res) => {
 
   Hall.findByIdAndUpdate(req.params.id, { name: req.body.name })
-  .then(() => res.json({ msg: `Changed name to ${req.body.name}` }))
+  .then( () => res.status(201).json(req.body))
   .catch((err) => {
     if(err.code == 11000){
         return res.status(409).json({msg: "Hall with this name already exists"})

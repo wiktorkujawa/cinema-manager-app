@@ -120,7 +120,12 @@ openUpdateDialog(id:any){
 }});
   const sub = ref.componentInstance.updateMovie.subscribe((movie: any) => {
   const index = this.movies.findIndex((movie:any) => movie._id === id);
-  this.movieService.updateMovie(id,movie).subscribe( movie => this.movies[index] = movie);
+  this.movieService.updateMovie(id,movie).subscribe( (movie: any) => {
+    this.movies[index].name = movie.name;
+    this.movies[index].description = movie.description;
+    this.movies[index].duration = movie.duration;
+
+  });
 });
   ref.afterClosed().subscribe(() => {
   sub.unsubscribe();

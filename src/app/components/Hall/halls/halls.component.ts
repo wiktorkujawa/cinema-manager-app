@@ -90,40 +90,40 @@ export class HallsComponent implements OnInit {
     }
 
 ngOnInit(): void {
-this.hallService.getHalls().subscribe( halls => {
-this.halls = halls;
-})
+  this.hallService.getHalls().subscribe( halls => {
+    this.halls = halls;
+  })
 }
 
 
 openDialog(){
-const ref = this.dialog.open(AddHallComponent, { width: '60vw',
-minWidth:"350px",
-panelClass: 'my-dialog', 
-data: this.username
-});
-const sub = ref.componentInstance.addHall.subscribe((hall:any) => {
-  this.hallService.addHall(hall).subscribe( hall => this.halls.push(hall));
-});
-ref.afterClosed().subscribe(() => {
-sub.unsubscribe();
-});
+  const ref = this.dialog.open(AddHallComponent, { width: '60vw',
+    minWidth:"350px",
+    panelClass: 'my-dialog', 
+    data: this.username
+  });
+  const sub = ref.componentInstance.addHall.subscribe((hall:any) => {
+    this.hallService.addHall(hall).subscribe( hall => this.halls.push(hall));
+  });
+    ref.afterClosed().subscribe(() => {
+    sub.unsubscribe();
+  });
 }
 
 openUpdateDialog(id:any){
-const ref = this.dialog.open(UpdateHallComponent, { width: '60vw',
-minWidth:"350px",
-panelClass: 'my-dialog', data: {
-hall: this.halls.filter( (hall:any) => id === hall._id ),
-username: this.username
-}});
-const sub = ref.componentInstance.updateHall.subscribe((hall: any) => {
-const index = this.halls.findIndex((hall:any) => hall._id === id);
-this.hallService.changeHallName(id,hall).subscribe( hall => this.halls[index] = hall);
-});
-ref.afterClosed().subscribe(() => {
-sub.unsubscribe();
-});
+  const ref = this.dialog.open(UpdateHallComponent, { width: '60vw',
+    minWidth:"350px",
+    panelClass: 'my-dialog', data: {
+    hall: this.halls.filter( (hall:any) => id === hall._id ),
+    username: this.username
+  }});
+  const sub = ref.componentInstance.updateHall.subscribe((hall: any) => {
+    const index = this.halls.findIndex((hall:any) => hall._id === id);
+    this.hallService.changeHallName(id,hall).subscribe( (hall: any) => this.halls[index].name = hall.name );
+  });
+  ref.afterClosed().subscribe(() => {
+  sub.unsubscribe();
+  });
 }
 
 
