@@ -5,11 +5,6 @@
 }
 
 
-.mod{
-  margin:0 auto;
-  width: 200px;
-}
-
 .title {
   text-align: center;
   margin: 0 auto;
@@ -23,6 +18,13 @@
   margin-top: 3.4em;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+.del{
+  background-color: red; 
+  color: cornsilk; 
+  text-align: center; 
+  margin: 0 auto;
 }
 
 

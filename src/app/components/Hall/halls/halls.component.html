@@ -5,6 +5,7 @@
       [username]="username" 
       [hall]="hall"
       (deleteHall)="deleteHall(hall._id)"
+      (deleteMovie)="deleteMovie($event)"
       (openUpdateDialog)="openUpdateDialog(hall._id)"
       >
     </app-hall-item>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { environment } from 'src/environments/environment';
@@ -26,8 +26,8 @@ export class HallsComponent implements OnInit {
 
   Breakpoint = {
     grid:{
-      xl: 5,
-      lg: 4,
+      xl: 4,
+      lg: 3,
       md: 3,
       sm: 2,
       xs: 1
@@ -133,6 +133,22 @@ this.halls = this.halls.filter( (t:any) => t._id !== id );
 // Remove from server
 this.hallService.removeHall(id).subscribe();
 }
+
+deleteMovie(data: any) {
+  
+  
+  // Remove from UI
+this.halls = this.halls.map(function(hall: any) {
+  return {
+    _id: data.hall_id,
+    taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.movie_id )
+  };
+});
+  // Remove from server
+  this.hallService.removeShowing(data.hall_id, data.movie_id).subscribe();
+  }
+
+
 
 
 }

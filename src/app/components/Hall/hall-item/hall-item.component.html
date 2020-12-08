@@ -10,6 +10,7 @@
           <th>Title</th>
           <th>Starts at</th>
           <th>Ends at</th>
+          <th *ngIf="username">Remove</th>
         </tr>
       </thead>
 
@@ -23,6 +24,9 @@
           </td>
           <td>
             {{session.end | date:'short'}}
+          </td>
+          <td *ngIf="username">
+            <button mat-raised-button type="submit" color="warn" (click)="onDeleteFromHall(session._id)">X</button>
           </td>
         </tr>
       </tbody>
