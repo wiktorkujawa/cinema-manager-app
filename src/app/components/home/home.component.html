@@ -190,19 +190,6 @@
   </table>
 </div>
 
-<!-- <mat-form-field appearance="fill">
-  <mat-label>Select hall</mat-label>
-  <mat-select [formControl]="selectHall" multiple>
-    <mat-select-trigger>
-      {{selectHall.value ? selectHall.value[0] : ''}}
-      <span *ngIf="selectHall.value?.length > 1" class="example-additional-selection">
-        (+{{selectHall.value.length - 1}} {{selectHall.value?.length === 2 ? 'other' : 'others'}})
-      </span>
-    </mat-select-trigger>
-    <mat-option *ngFor="let hall of halls" [value]="hall.id">{{hall.name}}</mat-option>
-  </mat-select>
-</mat-form-field> -->
-
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
