@@ -67,6 +67,11 @@ export class HomeComponent implements OnInit {
 
   viewDate: Date = new Date();
 
+  modalData!: {
+    action: string;
+    event: CalendarEvent;
+  };
+
   addMovietoHall = {
     hall_id:'',
     movie_id:'',
@@ -82,7 +87,6 @@ export class HomeComponent implements OnInit {
       this.AllEvents.forEach((element, index) => {
         this.selectHall.value.forEach( (selected:string) => {
           selected==element[0].hall_id ? this.events=this.events.concat(...this.AllEvents[index]) : null })
-          
         });
   }
 
@@ -127,10 +131,7 @@ fields: FormlyFieldConfig[] = [
     }
   ];
 
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  } | undefined;
+  
 
 
   
@@ -198,7 +199,7 @@ fields: FormlyFieldConfig[] = [
         
 
       })
-      // this.AllEvents = events[0];
+
       events.forEach((element) => {
         if(element != 0){
           this.AllEvents.push(element);
