@@ -91,39 +91,39 @@ export class MoviesComponent implements OnInit {
     }
 
 ngOnInit(): void {
-this.movieService.getMovies().subscribe( movies => {
-this.movies = movies;
-})
+  this.movieService.getMovies().subscribe( movies => {
+    this.movies = movies;
+  })
 }
 
 
 openDialog(){
-const ref = this.dialog.open(AddMovieComponent, { width: '60vw',
-minWidth:"350px",
-panelClass: 'my-dialog', 
-data: this.username
+  const ref = this.dialog.open(AddMovieComponent, { width: '60vw',
+  minWidth:"350px",
+  panelClass: 'my-dialog', 
+  data: this.username
 });
 const sub = ref.componentInstance.addMovie.subscribe((movie:any) => {
   this.movieService.addMovie(movie).subscribe( movie => this.movies.push(movie));
 });
-ref.afterClosed().subscribe(() => {
-sub.unsubscribe();
+  ref.afterClosed().subscribe(() => {
+  sub.unsubscribe();
 });
 }
 
 openUpdateDialog(id:any){
-const ref = this.dialog.open(UpdateMovieComponent, { width: '60vw',
-minWidth:"350px",
-panelClass: 'my-dialog', data: {
-movie: this.movies.filter( (movie:any) => id === movie._id ),
-username: this.username
+  const ref = this.dialog.open(UpdateMovieComponent, { width: '60vw',
+  minWidth:"350px",
+  panelClass: 'my-dialog', data: {
+  movie: this.movies.filter( (movie:any) => id === movie._id ),
+  username: this.username
 }});
-const sub = ref.componentInstance.updateMovie.subscribe((movie: any) => {
-const index = this.movies.findIndex((movie:any) => movie._id === id);
-this.movieService.updateMovie(id,movie).subscribe( movie => this.movies[index] = movie);
+  const sub = ref.componentInstance.updateMovie.subscribe((movie: any) => {
+  const index = this.movies.findIndex((movie:any) => movie._id === id);
+  this.movieService.updateMovie(id,movie).subscribe( movie => this.movies[index] = movie);
 });
-ref.afterClosed().subscribe(() => {
-sub.unsubscribe();
+  ref.afterClosed().subscribe(() => {
+  sub.unsubscribe();
 });
 }
 
