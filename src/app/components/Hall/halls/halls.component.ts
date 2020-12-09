@@ -124,13 +124,14 @@ openAddMovieDialog(id: any){
       username: this.username
     }
   });
+
   const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
     
     this.hallService.addShowingToHall(id,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( hall => {
       this.halls[this.halls.map( (e:any) => { return e._id; }).indexOf(id)].taken_sessions.push(hall);
     });
   });
-  ref.afterClosed().subscribe(() => {
+    ref.afterClosed().subscribe(() => {
     sub.unsubscribe();
   });
 }
@@ -154,7 +155,6 @@ openUpdateDialog(id:any){
     sub.unsubscribe();
   });
 }
-
 
 deleteHall(id:any) {
   // Remove from UI

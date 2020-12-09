@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
       description: req.body.description
     })
     newMovie.save() 
-    .then( () => res.status(201).json({msg: `Movie ${req.body.name} has been added to Cinema schedule`}))
+    .then( movie => res.status(201).json(movie))
     .catch((err) => {
       if(err.code == 11000){
           return res.status(409).json({msg: "Movie with this name already exists"})
@@ -49,8 +49,8 @@ router.put('/:id', async (req, res) => {
       duration: req.body.duration,
       description: req.body.description
     })
-    .then(() => res.json({ msg: 'Name and/or duration updated' }))
-    .catch(err =>
+    .then( () => res.status(201).json(req.body) )
+    .catch( () =>
       res.status(400).json({ error: 'Unable to update the name' })
     );
   });
