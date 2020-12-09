@@ -13,10 +13,9 @@ export class HallItemComponent implements OnInit {
   @Output() deleteHall : EventEmitter<any> = new EventEmitter();
   @Output() openUpdateDialog : EventEmitter<any> = new EventEmitter();
   @Output() deleteMovie : EventEmitter<{hall_id:any, movie_id:any}> = new EventEmitter();
+  @Output() openAddMovieDialog : EventEmitter<any> = new EventEmitter();
   environment: string = environment.apiUrl;
-  constructor(
-    private hallService: HallService
-  ) {}
+  constructor() {}
 
   
   ngOnInit(): void {
@@ -26,11 +25,17 @@ export class HallItemComponent implements OnInit {
   onDeleteFromHall(movie_id: string){
     this.deleteMovie.emit({hall_id: this.hall._id, movie_id: movie_id});
   }
+
   onUpdate(_id:any) {
     this.openUpdateDialog.emit(_id);
   }
+  
   onDelete(_id:any) {
     this.deleteHall.emit(_id);
+  }
+
+  onAddMovie(_id:any){
+    this.openAddMovieDialog.emit(_id);
   }
 
 }

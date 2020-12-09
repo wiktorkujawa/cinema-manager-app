@@ -99,7 +99,7 @@ router.post('/', (req, res) => {
 router.put('/name/:id', (req, res) => {
 
   Hall.findByIdAndUpdate(req.params.id, { name: req.body.name })
-  .then( () => res.status(201).json(req.body))
+  .then(() => res.json(req.body.name))
   .catch((err) => {
     if(err.code == 11000){
         return res.status(409).json({msg: "Hall with this name already exists"})
@@ -116,7 +116,7 @@ router.put('/taken_sessions/:id', async (req, res) => {
   await Hall.findById(_id ).then( ({taken_sessions}) => {
     can_add = true;
         taken_sessions.some( ( { start, end } ) => {
-            if(req.body.end>start && req.body.start<end){
+            if(Date.parse(req.body.end)>Date.parse(start) && Date.parse(req.body.start)<Date.parse(end)){
                 can_add = false;
                 return true;
             }
@@ -124,14 +124,9 @@ router.put('/taken_sessions/:id', async (req, res) => {
     });
   if(can_add){
     Hall.findByIdAndUpdate(_id, 
-      { $push: { taken_sessions: req.body } },
-      (error, success) => {
-        if (error) {
-          res.status(404).json({ msg:error });
-        } else {
-          res.status(201).json({msg:`Showing ${req.body.movie} added to hall ${success.name}`});
-        }
-      });
+      { $push: { taken_sessions: req.body } })
+      Hall.findById(_id).then( ({taken_sessions}) => res.json(taken_sessions[0]));
+      
     }
   else return res.status(404).json({msg:"Already booked"});
 });

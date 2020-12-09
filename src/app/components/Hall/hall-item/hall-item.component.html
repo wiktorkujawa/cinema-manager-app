@@ -1,9 +1,9 @@
 <mat-grid-tile-header style="display: flex; justify-content: space-between" >
   <h1 class="title">{{hall.name}}</h1>
-  <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions.length==0" (click)="onDelete(hall._id)" class="del">X</button>
+  <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions?.length==0" (click)="onDelete(hall._id)" class="del">X</button>
 </mat-grid-tile-header>
 
-  <div *ngIf="hall.taken_sessions.length!=0" class="table-responsive">
+  <div *ngIf="hall.taken_sessions?.length!=0" class="table-responsive">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -32,7 +32,20 @@
       </tbody>
    </table>
   </div>
-  <h1 *ngIf="hall.taken_sessions.length==0"> No showings in this hall</h1>
+  <h1 *ngIf="hall.taken_sessions?.length==0"> No showings in this hall</h1>
 <mat-grid-tile-footer>
-<button *ngIf="username" mat-raised-button (click)="onUpdate(hall._id)" class="mod">Modify</button>
+  <button *ngIf="username" mat-raised-button (click)="onUpdate(hall._id)" class="mod">Modify</button>
+  <button *ngIf="username" mat-raised-button (click)="onAddMovie(hall._id)" class="mod">Add movie</button>
+
+<!-- <button class="close" mat-button (click)="onNoClick()">X</button>
+<h2 mat-dialog-title>Add Hall</h2>
+<hr>
+<mat-dialog-content>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <formly-form [form]="form" [fields]="fields" [model]="selectedMovie"></formly-form>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Submit </button>
+  </form>
+</mat-dialog-content> -->
+
 </mat-grid-tile-footer>

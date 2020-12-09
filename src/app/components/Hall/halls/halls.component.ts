@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { HallService } from 'src/app/services/hall.service';
 import { AddHallComponent } from '../add-hall/add-hall.component';
 import { UpdateHallComponent } from '../update-hall/update-hall.component';
+import { AddMovieToHallComponent } from '../add-movie-to-hall/add-movie-to-hall.component';
+import { endOfDay } from 'date-fns';
 
 @Component({
   selector: 'app-halls',
@@ -91,13 +93,14 @@ export class HallsComponent implements OnInit {
 
 ngOnInit(): void {
   this.hallService.getHalls().subscribe( halls => {
-    this.halls = halls;
+  this.halls = halls;
   })
 }
 
 
 openDialog(){
-  const ref = this.dialog.open(AddHallComponent, { width: '60vw',
+  const ref = this.dialog.open(AddHallComponent, { 
+    width: '60vw',
     minWidth:"350px",
     panelClass: 'my-dialog', 
     data: this.username
@@ -105,50 +108,79 @@ openDialog(){
   const sub = ref.componentInstance.addHall.subscribe((hall:any) => {
     this.hallService.addHall(hall).subscribe( hall => this.halls.push(hall));
   });
+  ref.afterClosed().subscribe(() => {
+    sub.unsubscribe();
+  });
+}
+
+openAddMovieDialog(id: any){
+  console.log(id);
+  const ref = this.dialog.open(AddMovieToHallComponent, { 
+    width: '60vw',
+    minWidth:"350px",
+    panelClass: 'my-dialog', 
+    data: {
+      hall_id: id,
+      username: this.username
+    }
+  });
+  const sub = ref.componentInstance.addMovieToHall.subscribe((hall: any) => {
+    
+    this.hallService.addShowingToHall(id,{ movie: hall.movie, start: hall.start, end: hall.end}).subscribe( hall => {
+      console.log(hall);
+      // this.halls[index].taken_sessions.push(hall);
+      console.log(this.halls.find((hall_id:any) => {
+        hall_id._id==id
+        console.log(hall_id)}))
+    });
+  });
     ref.afterClosed().subscribe(() => {
     sub.unsubscribe();
   });
 }
 
 openUpdateDialog(id:any){
-  const ref = this.dialog.open(UpdateHallComponent, { width: '60vw',
+  const ref = this.dialog.open(UpdateHallComponent, { 
+    width: '60vw',
     minWidth:"350px",
-    panelClass: 'my-dialog', data: {
-    hall: this.halls.filter( (hall:any) => id === hall._id ),
-    username: this.username
-  }});
+    panelClass: 'my-dialog', 
+    data: {
+      hall: this.halls.filter( (hall:any) => id === hall._id ),
+      username: this.username
+    }
+  });
   const sub = ref.componentInstance.updateHall.subscribe((hall: any) => {
     const index = this.halls.findIndex((hall:any) => hall._id === id);
-    this.hallService.changeHallName(id,hall).subscribe( (hall: any) => this.halls[index].name = hall.name );
+    this.hallService.changeHallName(id,hall).subscribe( 
+      (hall) => this.halls[index].name = hall);
   });
   ref.afterClosed().subscribe(() => {
-  sub.unsubscribe();
+    sub.unsubscribe();
   });
 }
 
-
 deleteHall(id:any) {
-// Remove from UI
-this.halls = this.halls.filter( (t:any) => t._id !== id );
-// Remove from server
-this.hallService.removeHall(id).subscribe();
+  // Remove from UI
+  this.halls = this.halls.filter( (t:any) => t._id !== id );
+  // Remove from server
+  this.hallService.removeHall(id).subscribe();
+}
+
+addShowing( data:any){
+  this.hallService.addShowingToHall( data._id, data.movie).subscribe();
 }
 
 deleteMovie(data: any) {
-  
-  
-  // Remove from UI
-this.halls = this.halls.map(function(hall: any) {
+// Remove from UI
+this.halls = this.halls.map( (hall: any) => {
   return {
     _id: data.hall_id,
+    name: hall.name,
     taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.movie_id )
   };
 });
   // Remove from server
   this.hallService.removeShowing(data.hall_id, data.movie_id).subscribe();
   }
-
-
-
 
 }
