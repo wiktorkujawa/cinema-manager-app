@@ -125,15 +125,6 @@ openAddMovieDialog(id: any){
     }
   });
   const sub = ref.componentInstance.addMovieToHall.subscribe((hall: any) => {
-    console.log(hall);
-    // const index = this.halls.findIndex((search:any) => {
-    //   search._id === id
-    //   console.log(search);
-    // });
-    // console.log(hall);
-    // console.log(index);
-    // this.halls.filter( (hall:any) => id === hall._id )
-
     
     this.hallService.addShowingToHall(id,{ movie: hall.movie, start: hall.start, end: hall.end}).subscribe( hall => {
       console.log(hall);
@@ -143,7 +134,7 @@ openAddMovieDialog(id: any){
         console.log(hall_id)}))
     });
   });
-  ref.afterClosed().subscribe(() => {
+    ref.afterClosed().subscribe(() => {
     sub.unsubscribe();
   });
 }
@@ -167,7 +158,6 @@ openUpdateDialog(id:any){
     sub.unsubscribe();
   });
 }
-
 
 deleteHall(id:any) {
   // Remove from UI
