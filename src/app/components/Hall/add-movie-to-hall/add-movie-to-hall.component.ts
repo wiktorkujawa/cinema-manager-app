@@ -27,6 +27,7 @@ export class AddMovieToHallComponent implements OnInit {
         required: true,
         label: 'Movie',
         options: this.movieService.getMovies(),
+        appearance: 'outline',
         valueProp: (option: any) => option,
         compareWith: (o1: any, o2: any) => o1.value === o2.value,
         labelProp: 'name',
@@ -36,8 +37,8 @@ export class AddMovieToHallComponent implements OnInit {
       key: 'start',
       type: 'datepicker',
       templateOptions: {
-        label: 'Hall name',
-        placeholder: 'Enter Hall name',
+        label: 'Start of showing',
+        placeholder: 'Enter start date',
         required: true,
         appearance: 'outline'
       }

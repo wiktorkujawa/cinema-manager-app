@@ -30,6 +30,6 @@ export class WebService {
   }
 
   put(uri:string, id:any,object:object){
-    return this.http.put(`${environment.apiUrl}/${uri}/${id}`, object)
+    return this.http.put(`${environment.apiUrl}/${uri}/${id}`, object, httpOptions)
   }
 }
