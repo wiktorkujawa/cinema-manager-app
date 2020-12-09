@@ -123,9 +123,9 @@ router.put('/taken_sessions/:id', async (req, res) => {
         })
     });
   if(can_add){
-    Hall.findByIdAndUpdate(_id, 
+    await Hall.findByIdAndUpdate(_id, 
       { $push: { taken_sessions: req.body } })
-      Hall.findById(_id).then( ({taken_sessions}) => res.json(taken_sessions[0]));
+    Hall.findById(_id).then( ({taken_sessions}) => res.json(taken_sessions[taken_sessions.length-1]));
       
     }
   else return res.status(404).json({msg:"Already booked"});

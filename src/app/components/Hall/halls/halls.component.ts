@@ -124,14 +124,11 @@ openAddMovieDialog(id: any){
       username: this.username
     }
   });
-  const sub = ref.componentInstance.addMovieToHall.subscribe((hall: any) => {
+
+  const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
     
-    this.hallService.addShowingToHall(id,{ movie: hall.movie, start: hall.start, end: hall.end}).subscribe( hall => {
-      console.log(hall);
-      // this.halls[index].taken_sessions.push(hall);
-      console.log(this.halls.find((hall_id:any) => {
-        hall_id._id==id
-        console.log(hall_id)}))
+    this.hallService.addShowingToHall(id,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( hall => {
+      this.halls[this.halls.map( (e:any) => { return e._id; }).indexOf(id)].taken_sessions.push(hall);
     });
   });
     ref.afterClosed().subscribe(() => {
@@ -171,16 +168,17 @@ addShowing( data:any){
 }
 
 deleteMovie(data: any) {
-// Remove from UI
-this.halls = this.halls.map( (hall: any) => {
-  return {
-    _id: data.hall_id,
-    name: hall.name,
-    taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.movie_id )
-  };
-});
+  // Remove from UI
+
+  this.halls = this.halls.map( (hall: any) => {
+    return {
+      _id: hall._id,
+      name: hall.name,
+      taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.movie_id )
+    };
+  });
+
   // Remove from server
   this.hallService.removeShowing(data.hall_id, data.movie_id).subscribe();
   }
-
 }
