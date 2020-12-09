@@ -39,9 +39,7 @@ fields: FormlyFieldConfig[] = [
 
 
   onSubmit() {
-
-      this.addHall.emit(this.hallData);
-        
+      this.addHall.emit(this.hallData);      
   }
 
   onNoClick() {

@@ -47,9 +47,8 @@ fields: FormlyFieldConfig[] = [
   
 
   onSubmit() {
-
-      this.updateHall.emit(this.hallData);
-    }
+    this.updateHall.emit(this.hallData);
+  }
 
 }
 

@@ -10,7 +10,7 @@ router.get('/', (_, res) => {
     .then(movies => res.json(movies))
 });
 
-// Get single Hall schedule
+// Get single Movie data
 router.get('/:id', (req,res) =>{
 
   Movie.findById(req.params.id).then(movie => res.json(movie))
