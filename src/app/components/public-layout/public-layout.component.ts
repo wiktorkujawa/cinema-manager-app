@@ -71,8 +71,11 @@ export class PublicLayoutComponent implements OnInit {
     .subscribe(
       data=>{
         this.username='';
+        this._router.navigate(['/login'])
+        .then(() => this.msg = data);
+        
       },
-      error=>console.error(error)
+      error => console.error(error)
     )
   }
 
