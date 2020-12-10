@@ -70,7 +70,6 @@ export class PublicLayoutComponent implements OnInit {
     this.authService.logout()
     .subscribe(
       data=>{
-        this.msg = data;
         this.username='';
       },
       error=>console.error(error)
