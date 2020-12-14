@@ -3,7 +3,7 @@
 MEAN stack App to manage Cinema schedules.
 
 ## Description
-App written with MEANStack(MongoDB, Express, Angular, Node.js) contains passport session authentication, API REST. Frontend created with REACT have to be based on angular-calendar component, but have to be finished.
+App written with MEAN Stack(MongoDB, Express, Angular, Node.js) contains passport session authentication, API REST. Frontend created with Angular with interactive components, especially Home component with calendar(angular-calendar).
 ### Usage
 To run create .env file with 'mongoUri' varible to connect to mongodb database.
 ```bash
