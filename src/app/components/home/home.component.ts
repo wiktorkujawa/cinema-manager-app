@@ -28,7 +28,7 @@ import {
 } from 'angular-calendar';
 import { HallService } from 'src/app/services/hall.service';
 import { Subject } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -151,7 +151,6 @@ export class HomeComponent implements OnInit {
 
   lastChange: any;
   onChange(){
-    console.log("Change occured!")
 
     if(this.selectHall.value.hall_id && this.events==this.lastChange){
       this.events=[];
@@ -210,20 +209,21 @@ fields: FormlyFieldConfig[] = [
 
   actions: CalendarEventAction[] = [
     {
-      label: 'Edit',
+      label: '<i class="material-icons mat-icon">edit</i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
       },
     },
     {
-      label: 'Delete',
+      label: '<i class="material-icons mat-icon">delete</i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        console.log(event);
-        // this.hallService.removeShowing(event.hall_id, event.showing_id).subscribe();
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+      onClick: ({ event }: { event: any }): void => {
+    
+        this.hallService.removeShowing(event.hall_id, event.showing_id).subscribe(() =>{
+          this.events = this.events.filter((iEvent) => iEvent !== event);
+          this.handleEvent('Deleted', event);
+        });
       },
     },
   ];
@@ -384,31 +384,35 @@ fields: FormlyFieldConfig[] = [
   };
 
   deleteEvent( eventToDelete: {hall_id: any, showing_id: any} ) {
-    console.log(eventToDelete);
+    // console.log(eventToDelete);
     this.AllEvents=[];
-    this.hallService.getHalls().subscribe( (halls:any) => {
-      halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
-        taken_sessions.forEach( (showing:any) => {
-          this.AllEvents.push({
-            hall_id: _id,
-            hall_name: name, 
-            showing_id: showing._id,
-            title: showing.movie,
-            actions: this.actions,
-            start: parseISO(showing.start),
-            end: parseISO(showing.end),
-            color: colors[index%19],
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-            draggable: true
-            }
-          )
+
+    this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe( () =>
+      this.hallService.getHalls().subscribe( (halls:any) => {
+        halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
+          taken_sessions.forEach( (showing:any) => {
+            this.AllEvents.push({
+              hall_id: _id,
+              hall_name: name, 
+              showing_id: showing._id,
+              title: showing.movie,
+              actions: this.actions,
+              start: parseISO(showing.start),
+              end: parseISO(showing.end),
+              color: colors[index%19],
+              resizable: {
+                beforeStart: true,
+                afterEnd: true,
+              },
+              draggable: true
+              }
+            )
+          })
         })
       })
-    })
-    this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe();
+
+    )
+    // this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe();
 
   }
 
