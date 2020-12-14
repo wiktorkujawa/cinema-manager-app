@@ -1,12 +1,10 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { environment } from 'src/environments/environment';
 import { HallService } from 'src/app/services/hall.service';
 import { AddHallComponent } from '../add-hall/add-hall.component';
 import { UpdateHallComponent } from '../update-hall/update-hall.component';
 import { AddMovieToHallComponent } from '../add-movie-to-hall/add-movie-to-hall.component';
-import { endOfDay } from 'date-fns';
 
 @Component({
   selector: 'app-halls',
@@ -17,13 +15,9 @@ export class HallsComponent implements OnInit {
   @Input() username: any;
   halls: any;
 
-  // onOutletLoaded(event : any) {
-  //   console.log(event);
-  // }
   cols! : number;
   margin!: string;
   gutter!: string;
-  environment: string = environment.apiUrl;
 
 
   Breakpoint = {
@@ -114,7 +108,6 @@ openDialog(){
 }
 
 openAddMovieDialog(id: any){
-  console.log(id);
   const ref = this.dialog.open(AddMovieToHallComponent, { 
     width: '60vw',
     minWidth:"350px",
@@ -124,14 +117,13 @@ openAddMovieDialog(id: any){
       username: this.username
     }
   });
-
   const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
     
     this.hallService.addShowingToHall(id,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( hall => {
       this.halls[this.halls.map( (e:any) => { return e._id; }).indexOf(id)].taken_sessions.push(hall);
     });
   });
-    ref.afterClosed().subscribe(() => {
+  ref.afterClosed().subscribe(() => {
     sub.unsubscribe();
   });
 }
@@ -155,6 +147,7 @@ openUpdateDialog(id:any){
     sub.unsubscribe();
   });
 }
+
 
 deleteHall(id:any) {
   // Remove from UI
