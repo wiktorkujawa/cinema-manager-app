@@ -60,7 +60,6 @@ export class AddMovieToHallComponent implements OnInit {
   
 
   onSubmit() {
-    console.log(this.selectedMovie);
     this.addMovieToHall.emit({
       movie: this.selectedMovie.movieData.name, 
       start: this.selectedMovie.start,

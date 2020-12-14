@@ -55,7 +55,7 @@ const register = async (req, res) => {
 
 const isValidUser = (req,res,next) => {
   if(req.isAuthenticated()) next();
-  else return res.status(401).json({message:'Unauthorized Request'});
+  else return res.status(401).json({message:"You're not logged in"});
 }
 
 router.post('/register', function (req, res, next) {

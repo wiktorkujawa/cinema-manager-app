@@ -45,6 +45,70 @@ const colors: any = [
     primary: '#e3bc08',
     secondary: '#FDF1BA',
   },
+  {
+    primary: '#9BC4E5',
+    secondary: '#310106',
+  },
+  {
+    primary: '#04640D',
+    secondary: '#FEFB0A',
+  },
+  {
+    primary: '#FB5514',
+    secondary: '#E115C0',
+  },
+  {
+    primary: '#00587F',
+    secondary: '#0BC582',
+  },
+  {
+    primary: '#FEB8C8',
+    secondary: '#9E8317',
+  },
+  {
+    primary: '#01190F',
+    secondary: '#847D81',
+  },
+  {
+    primary: '#58018B',
+    secondary: '#B70639',
+  },
+  {
+    primary: '#703B01',
+    secondary: '#F7F1DF',
+  },
+  {
+    primary: '#118B8A',
+    secondary: '#4AFEFA',
+  },
+  {
+    primary: '#FCB164',
+    secondary: '#796EE6',
+  },
+  {
+    primary: '#000D2C',
+    secondary: '#53495F',
+  },
+  {
+    primary: '#F95475',
+    secondary: '#61FC03',
+  },
+  {
+    primary: '#5D9608',
+    secondary: '#DE98FD',
+  },
+  {
+    primary: '#98A088',
+    secondary: '#4F584E',
+  },
+  {
+    primary: '#248AD0',
+    secondary: '#5C5300',
+  },
+  {
+    primary: '#9F6551',
+    secondary: '#BCFEC6',
+  },
 
 ];
 
@@ -72,6 +136,7 @@ export class HomeComponent implements OnInit {
     event: CalendarEvent;
   };
 
+
   addMovietoHall = {
     hall_id:'',
     movie_id:'',
@@ -79,18 +144,30 @@ export class HomeComponent implements OnInit {
   };
 
   select: any;
-  selectHall = new FormControl();
-  
-  onChange(){
+  halls: any = [];
+  selectHall = new FormGroup({});
 
-      this.events=[]
-      this.AllEvents.forEach((element, index) => {
-        this.selectHall.value.forEach( (selected:string) => {
-          selected==element[0].hall_id ? this.events=this.events.concat(...this.AllEvents[index]) : null })
-        });
+  selectFields: FormlyFieldConfig[] 
+
+  lastChange: any;
+  onChange(){
+    console.log("Change occured!")
+
+    if(this.selectHall.value.hall_id && this.events==this.lastChange){
+      this.events=[];
+      this.selectHall.value.hall_id.map( (selected:any) =>{
+        this.AllEvents.map( event =>{
+          if(event.hall_id==selected){
+            this.events.push(event);
+          }
+        })
+      })
+    }
+
+    this.lastChange = this.events;
   }
 
-  halls: any = [];
+  
   form = new FormGroup({});
 fields: FormlyFieldConfig[] = [
     {
@@ -103,7 +180,7 @@ fields: FormlyFieldConfig[] = [
         options: this.hallService.getHalls(),
         valueProp: '_id',
         labelProp: 'name',
-        // appearance: 'outline'
+        appearance: 'outline'
       }
     },
     {
@@ -116,7 +193,7 @@ fields: FormlyFieldConfig[] = [
         options: this.movieService.getMovies(),
         valueProp: '_id',
         labelProp: 'name',
-        // appearance: 'outline'
+        appearance: 'outline'
       }
     },
     {
@@ -124,22 +201,16 @@ fields: FormlyFieldConfig[] = [
       type: 'datepicker',
       templateOptions: {
         label: 'Date',
-        placeholder: 'Placeholder',
-        description: 'Description',
+        placeholder: 'Choose start date',
         required: true,
+        appearance: 'outline'
       }
     }
   ];
 
-  
-
-
-  
-  
-
   actions: CalendarEventAction[] = [
     {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
+      label: 'Edit',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
@@ -149,6 +220,8 @@ fields: FormlyFieldConfig[] = [
       label: 'Delete',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
+        console.log(event);
+        // this.hallService.removeShowing(event.hall_id, event.showing_id).subscribe();
         this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
@@ -164,53 +237,72 @@ fields: FormlyFieldConfig[] = [
 
   constructor( private hallService: HallService,
     private movieService: MovieService,
-    private modal: NgbModal) { }
+    private modal: NgbModal) {
+      
+      this.selectFields = [
+        {
+          key: 'hall_id',
+          type: 'select',
+           hooks: {
+            onInit(field: any) {
+              const control = field.formControl;
+              if (control.value === null) {
+
+                const newHalls:any = [];
+
+                hallService.getHalls().subscribe( (halls:any) => {
+      
+                  halls.forEach( (hall:any) =>{
+                    newHalls.push(hall._id);
+                  })
+                });
+                control.setValue(newHalls);
+              }
+            }
+          },
+          templateOptions: {
+            label: 'Hall',
+            placeholder: 'Choose hall',
+            required: true,
+            options: this.hallService.getHalls(),
+            valueProp: '_id',
+            labelProp: 'name',
+            multiple: true,
+            appearance: 'outline'
+          }
+        }
+      ];
+    }
 
   ngOnInit(): void {
-    this.hallService.getHalls().subscribe( halls => {
-      halls.forEach( hall => {
-        this.halls.push({id:hall._id, name:hall.name});
-      });
 
-      const events = new Array(this.halls.length);
-      for (var i = 0; i < events.length; i++) {
-        events[i] = [];
-      }
-      
-      halls.forEach((showings, index) => {
-        showings.taken_sessions.forEach( (showing: { _id: any, movie: string, start: string, end: string }) => {
-          events[index].push({
-            hall_id: this.halls[index].id,
+    this.hallService.getHalls().subscribe( (halls:any) => {
+      halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
+        taken_sessions.forEach( (showing:any) => {
+          this.AllEvents.push({
+            hall_id: _id,
+            hall_name: name, 
             showing_id: showing._id,
             title: showing.movie,
             actions: this.actions,
             start: parseISO(showing.start),
             end: parseISO(showing.end),
-            color: colors[index],
+            color: colors[index%19],
             resizable: {
               beforeStart: true,
               afterEnd: true,
             },
             draggable: true
-          })  
-        });
-
-       
-        
-
+            }
+          )
+        })
       })
+    })
 
-      events.forEach((element) => {
-        if(element != 0){
-          this.AllEvents.push(element);
-        }
-        this.events= [].concat(...this.AllEvents);
-      });
-    });
-
+    this.lastChange = this.AllEvents;
+    this.events = this.AllEvents;
   }
   
-
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -251,6 +343,14 @@ fields: FormlyFieldConfig[] = [
   addEvent(): void {
 
     const { hall_id, movie_id, start } = this.addMovietoHall;
+
+
+    const hall_name:any=[];
+      this.hallService.getHalls().subscribe( (halls:any) => {
+        halls.map((hall:any) => {
+          return hall._id === hall_id ? hall_name.push(hall.name) : null
+        })
+      });
     
     
     this.movieService.getMovie(movie_id).subscribe( (movies: any) => {
@@ -265,24 +365,51 @@ fields: FormlyFieldConfig[] = [
       ...this.events,
       {
         hall_id: hall_id,
+        hall_name: hall_name[0],
         showing_id: movies._id,
         title: movies.name,
         start: start,
         end: new Date(Date.parse(start) + movies.duration*60000),
-        color: colors.red,
+        color: colors[0],
         draggable: true,
         resizable: {
           beforeStart: true,
           afterEnd: true,
         },
       },
-    ]});
+    ]
+  
+  });
+
   };
 
-  deleteEvent(eventToDelete: CalendarEvent) {
+  deleteEvent( eventToDelete: {hall_id: any, showing_id: any} ) {
     console.log(eventToDelete);
-    // this.hallService.removeShowing(events.hall_id, events.showing_id).subscribe();
-    this.events = this.events.filter((event) => event !== eventToDelete);
+    this.AllEvents=[];
+    this.hallService.getHalls().subscribe( (halls:any) => {
+      halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
+        taken_sessions.forEach( (showing:any) => {
+          this.AllEvents.push({
+            hall_id: _id,
+            hall_name: name, 
+            showing_id: showing._id,
+            title: showing.movie,
+            actions: this.actions,
+            start: parseISO(showing.start),
+            end: parseISO(showing.end),
+            color: colors[index%19],
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+            draggable: true
+            }
+          )
+        })
+      })
+    })
+    this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe();
+
   }
 
   setView(view: CalendarView) {

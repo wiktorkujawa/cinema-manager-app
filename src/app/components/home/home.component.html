@@ -1,5 +1,5 @@
 <div class="row text-center">
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="btn-group">
       <div
         class="btn btn-primary"
@@ -28,18 +28,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3">
-    <mat-form-field appearance="fill">
-      <mat-label>Select hall</mat-label>
-      <mat-select [formControl]="selectHall" (selectionChange)="onChange()" multiple>
-        <mat-option *ngFor="let hall of halls" [value]="hall.id">{{hall.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-md-3">
+
+  <div class="col-md-4">
     <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="btn-group">
       <div
         class="btn btn-primary"
@@ -97,26 +90,36 @@
   >
   </mwl-calendar-day-view>
 </div>
-<div *ngFor="let event of events">
-  {{event.title}}
-</div>
-<br /><br /><br />
 
-<h3>
-  Edit events
+<br>
+<div class="row text-center" style="margin: 1rem;">
+<div class="col-md-12 col-lg-6 select-hall">
+
+  <h1 style="text-align: center;">Select Hall </h1>
+    <formly-form [form]="selectHall" [fields]="selectFields" [model]="onChange()"></formly-form>
+  <div class="clearfix"></div>
+
+</div>
+
+
+<div class="col-md-12 offset-lg-1 col-lg-5 select-hall">
+<h1>
+  Add events
+</h1>
   <form (ngSubmit)="addEvent()" class="form">
     <formly-form [form]="form" [fields]="fields" [model]="addMovietoHall"></formly-form>
+    <button class="btn btn-primary float-right" type="submit">
+      Add new
+    </button>
   </form>
-  <button class="btn btn-primary float-right" (click)="addEvent()">
-    Add new
-  </button>
-  <div class="clearfix"></div>
-</h3>
+</div>
+</div>
 
 <div class="table-responsive">
   <table class="table table-bordered">
     <thead>
       <tr>
+        <th>Hall</th>
         <th>Title</th>
         <th>Primary color</th>
         <th>Secondary color</th>
@@ -128,6 +131,15 @@
 
     <tbody>
       <tr *ngFor="let event of events">
+
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.hall_name"
+            (keyup)="refresh.next()"
+          />
+        </td>
         <td>
           <input
             type="text"
@@ -150,36 +162,11 @@
             (change)="refresh.next()"
           />
         </td>
-        <td>
-          <input
-            class="form-control"
-            type="text"
-            mwlFlatpickr
-            [(ngModel)]="event.start"
-            (ngModelChange)="refresh.next()"
-            [altInput]="true"
-            [convertModelValue]="true"
-            [enableTime]="true"
-            dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i"
-            placeholder="Not set"
-          />
-        </td>
-        <td>
-          <input
-            class="form-control"
-            type="text"
-            mwlFlatpickr
-            [(ngModel)]="event.end"
-            (ngModelChange)="refresh.next()"
-            [altInput]="true"
-            [convertModelValue]="true"
-            [enableTime]="true"
-            dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i"
-            placeholder="Not set"
-          />
-        </td>
+
+        <td>{{event.start | date:'short'}}</td>
+
+
+        <td>{{event.end | date:'short'}}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             Delete

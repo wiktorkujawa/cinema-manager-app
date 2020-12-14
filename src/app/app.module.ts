@@ -51,7 +51,7 @@ import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add
     AddMovieComponent,
     AddMovieToHallComponent
   ],
-  entryComponents: [AddHallComponent],
+  entryComponents: [],
   imports: [
     CommonModule,
     NgbModalModule,
@@ -71,6 +71,7 @@ import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   providers: [AuthService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [HomeComponent]
 })
 export class AppModule { }

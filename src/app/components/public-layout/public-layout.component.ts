@@ -61,7 +61,11 @@ export class PublicLayoutComponent implements OnInit {
         this.addName(data);
         this.username = data.username;
         component.username = this.username;
-      });
+      }
+      ,
+      error => component.msg = error.error.message
+      );
+
     }
 
 
@@ -71,6 +75,7 @@ export class PublicLayoutComponent implements OnInit {
     .subscribe(
       data=>{
         this.username='';
+        this.msg = 'Logout success'
         this._router.navigate(['/login'])
         .then(() => this.msg = data);
         
