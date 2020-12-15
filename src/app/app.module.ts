@@ -32,6 +32,7 @@ import { MovieItemComponent } from './components/Movie/movie-item/movie-item.com
 import { UpdateMovieComponent } from './components/Movie/update-movie/update-movie.component';
 import { AddMovieComponent } from './components/Movie/add-movie/add-movie.component';
 import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add-movie-to-hall.component';
+import { SingleMovieComponent } from './components/Movie/single-movie/single-movie.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add
     MovieItemComponent,
     UpdateMovieComponent,
     AddMovieComponent,
-    AddMovieToHallComponent
+    AddMovieToHallComponent,
+    SingleMovieComponent
   ],
   entryComponents: [],
   imports: [
