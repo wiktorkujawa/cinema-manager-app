@@ -124,6 +124,7 @@ openUpdateDialog(id:any){
     this.movies[index].name = movie.name;
     this.movies[index].description = movie.description;
     this.movies[index].duration = movie.duration;
+    this.movies[index].poster = movie.poster;
 
   });
 });

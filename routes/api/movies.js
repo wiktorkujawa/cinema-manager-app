@@ -20,6 +20,7 @@ router.get('/:id', (req,res) =>{
 router.post('/', (req, res) => {
   const newMovie = new Movie({
       name: req.body.name,
+      poster: req.body.poster,
       duration: req.body.duration,
       description: req.body.description
     })
@@ -47,6 +48,7 @@ router.put('/:id', async (req, res) => {
     Movie.findByIdAndUpdate( _id, {
       name: req.body.name,
       duration: req.body.duration,
+      poster: req.body.poster,
       description: req.body.description
     })
     .then( () => res.status(201).json(req.body) )

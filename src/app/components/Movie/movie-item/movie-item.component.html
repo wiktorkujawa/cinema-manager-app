@@ -4,6 +4,7 @@
 </mat-grid-tile-header>
 <div class="movie-card">
   <div class="block-with-text">{{movie.description}}</div>
+  <img [src]="movie.poster"/>
 </div>
 <mat-grid-tile-footer>
 <button *ngIf="username" mat-raised-button (click)="onUpdate(movie._id)" class="mod">Modify</button>
