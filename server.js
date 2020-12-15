@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Express session
 app.use(
   session({
-    secret: 'secret',
+    secret: process.env.session_secret,
     resave: true,
     saveUninitialized: true
   })

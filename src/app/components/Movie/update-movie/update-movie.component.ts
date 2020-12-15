@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { environment } from 'src/environments/environment';
-import axios from 'axios';
+import { WebService } from 'src/app/services/web.service';
 
 @Component({
   selector: 'app-update-movie',
@@ -60,20 +59,12 @@ export class UpdateMovieComponent implements OnInit {
       // },
       templateOptions: {
         label: 'Movie title',
-        change: (field: any) => {
-          axios.request({
-            method: 'GET',
-            url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-            params: {s: this.movieData.name, page: '1', r: 'json'},
-            headers: {
-              'x-rapidapi-key': 'a16322f6admsh01988b356dbb0cfp1d6770jsn9b2faae37767',
-              'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
-            }
-          }).then( (response) => {
-            this.fields[2].templateOptions.options = response.data.Search;
-          }).catch( (error) => {
-            console.error(error);
-          });
+        change: () => {
+
+          this.webService.getImdb(this.movieData.name).subscribe( (response:any) =>{
+            this.fields[2].templateOptions.options = response.Search;
+          })
+
       },
         placeholder: 'Enter title',
         required: true,
@@ -132,7 +123,8 @@ export class UpdateMovieComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) 
     public data:any,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private webService: WebService
     ) { }
 
   ngOnInit(): void {

@@ -5,6 +5,7 @@ import { HallsComponent } from './components/Hall/halls/halls.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MoviesComponent } from './components/Movie/movies/movies.component';
+import { SingleMovieComponent } from './components/Movie/single-movie/single-movie.component';
 import { PublicLayoutComponent } from './components/public-layout/public-layout.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 
@@ -18,7 +19,8 @@ const routes: Routes = [
       {path: 'login', component: LoginFormComponent},
       {path: 'register', component: RegisterFormComponent},
       {path: 'halls', component: HallsComponent},
-      {path: 'movies', component: MoviesComponent}
+      {path: 'movies', component: MoviesComponent},
+      {path: 'movies/:name', component: SingleMovieComponent}
 
     ]
   }

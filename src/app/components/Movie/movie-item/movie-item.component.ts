@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,13 +10,16 @@ import { environment } from 'src/environments/environment';
 export class MovieItemComponent implements OnInit {
   @Input() movie: any;
   @Input() username: any;
+
+  root: any = this.route;
   @Output() deleteMovie : EventEmitter<any> = new EventEmitter();
   @Output() openUpdateDialog : EventEmitter<any> = new EventEmitter();
   environment: string = environment.apiUrl;
-  constructor() {}
+  constructor( private route: ActivatedRoute) {}
 
   
   ngOnInit(): void {
+    console.log(environment);
   }
   
 
