@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const axios = require('axios');
 // File Model
 const Movie = require('../../models/movie');
 
@@ -40,6 +40,23 @@ router.delete('/:id', (req, res) => {
   Movie.findOneAndDelete({_id: req.params.id})
   .then(() => res.json({ msg: `Movie removed from Cinema list` }))
   .catch(err => res.status(404).json({ error: err }));
+});
+
+router.get('/search/:name', (req,res) => {
+    var options = {
+      method: 'GET',
+      url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
+      params: {s: req.params.name, page: '1', r: 'json'},
+      headers: {
+        'x-rapidapi-key': process.env.rapidApiKey,
+        'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
+      }
+    };
+  axios.request(options).then( (response) => {
+    res.status(200).json(response.data);
+  }).catch( (error) => {
+    res.status(404).json(error);
+  });
 });
 
 // Update movie data

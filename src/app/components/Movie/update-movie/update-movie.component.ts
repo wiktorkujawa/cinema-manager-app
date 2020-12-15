@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { WebService } from 'src/app/services/web.service';
+import { MovieService } from 'src/app/services/movie.service';
 
 @Component({
   selector: 'app-update-movie',
@@ -61,7 +62,7 @@ export class UpdateMovieComponent implements OnInit {
         label: 'Movie title',
         change: () => {
 
-          this.webService.getImdb(this.movieData.name).subscribe( (response:any) =>{
+          this.movieService.searchMovie(this.movieData.name).subscribe( (response:any) =>{
             this.fields[2].templateOptions.options = response.Search;
           })
 
@@ -124,7 +125,7 @@ export class UpdateMovieComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) 
     public data:any,
     public dialog: MatDialog,
-    private webService: WebService
+    private movieService: MovieService
     ) { }
 
   ngOnInit(): void {
