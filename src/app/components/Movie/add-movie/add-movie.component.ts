@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MovieService } from 'src/app/services/movie.service';
 import { WebService } from 'src/app/services/web.service';
 
 @Component({
@@ -33,8 +34,7 @@ fields: any[] = [
         label: 'Movie title',
         change: () => {
 
-          this.webService.getImdb(this.movieData.name).subscribe( (response:any) =>{
-            console.log(response);
+          this.movieService.searchMovie(this.movieData.name).subscribe( (response:any) =>{
             this.fields[2].templateOptions.options = response.Search;
           })
          
@@ -98,7 +98,7 @@ fields: any[] = [
   constructor(public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) 
     public data:any,
-    private webService: WebService) { }
+    private movieService: MovieService) { }
 
   ngOnInit(): void {}
 

@@ -9,13 +9,6 @@ const httpOptions = {
   withCredentials: true
 }
 
-const imdbHeaders = {
-  headers: new HttpHeaders({
-    'x-rapidapi-key': 'a16322f6admsh01988b356dbb0cfp1d6770jsn9b2faae37767',
-    'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
-  })
-}
-
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +19,6 @@ export class WebService {
 
   get(uri:string, id: any) {
     return this.http.get<any[]>(`${environment.apiUrl}/${uri}/${id}`, httpOptions)
-  }
-  
-  getImdb(name: string){
-    return this.http.get(`https://movie-database-imdb-alternative.p.rapidapi.com/?s=${name}&page=1&r=json`, imdbHeaders)
   }
 
   post(uri:string, object: any){
