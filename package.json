@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run config && node server.js",
-    "config": "node set-env.js",
-    "server": "npm run config && nodemon server.js",
+    "config-env": "node set-env.js",
+    "start": "yarn config-env && node server.js",
+    "server": "yarn config-env && nodemon server.js",
     "dev": "concurrently \"yarn server\" \"ng serve --open\" ",
-    "build": "npm run config && ng build --prod --output-path dist",
+    "build": "yarn config-env && ng build --prod --output-path dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

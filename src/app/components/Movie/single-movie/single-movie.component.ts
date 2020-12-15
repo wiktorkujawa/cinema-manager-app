@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MovieService } from 'src/app/services/movie.service';
 
 @Component({
   selector: 'app-single-movie',
@@ -8,7 +9,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SingleMovieComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute,
+    private movieService: MovieService
+    ) {
     this.activatedRoute.queryParams.subscribe(params => {
           let date = params['name'];
           console.log(params); // Print the parameter to the console. 
@@ -18,6 +21,8 @@ export class SingleMovieComponent implements OnInit {
   ngOnInit(): void {
     let name = this.activatedRoute.snapshot.paramMap.get('name');
     console.log(name);
+
+    // this.movieService.getMovie()
   }
 
 }
