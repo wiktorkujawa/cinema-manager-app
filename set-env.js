@@ -19,7 +19,7 @@ const envConfigProdFile = `export const environment = {
 };
 `;
 
-writeFile(targetDevPath, envConfigDevFile, function (err:any) {
+writeFile(targetDevPath, envConfigDevFile, function (err) {
    if (err) {
        throw console.error(err);
    } else {
@@ -27,7 +27,7 @@ writeFile(targetDevPath, envConfigDevFile, function (err:any) {
    }
 });
 
-writeFile(targetProdPath, envConfigProdFile, function (err:any) {
+writeFile(targetProdPath, envConfigProdFile, function (err) {
   if (err) {
       throw console.error(err);
   } else {
