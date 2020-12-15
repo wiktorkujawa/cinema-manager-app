@@ -7,6 +7,9 @@ const movieSchema = new Schema({
     type: String,
     unique: true
   },
+  poster: {
+    type: String
+  },
   description: {
     type: String,
     },

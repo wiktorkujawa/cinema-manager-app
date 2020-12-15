@@ -17,6 +17,10 @@
   border-left: #111111 solid 1px;
 }
 
+img {
+  height: calc(100% - 5em);
+}
+
 
 /* styles for '...' */ 
 .block-with-text {
