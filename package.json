@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run config && node server.js",
-    "config": "ts-node set-env.ts",
+    "config": "node set-env.js",
     "server": "npm run config && nodemon server.js",
     "dev": "concurrently \"yarn server\" \"ng serve --open\" ",
     "build": "npm run config && ng build --prod --output-path dist",
