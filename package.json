@@ -7,7 +7,7 @@
     "config": "ts-node set-env.ts",
     "server": "npm run config && nodemon server.js",
     "dev": "concurrently \"yarn server\" \"ng serve --open\" ",
-    "build": "ng build --prod --output-path dist",
+    "build": "npm run config && ng build --prod --output-path dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
