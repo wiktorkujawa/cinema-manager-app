@@ -5,6 +5,7 @@
 }
 
 .movie-card {
+  cursor: pointer;
   margin-top: 3.5em;
   text-align: center;
   position: absolute;
@@ -15,15 +16,28 @@
   height: calc(100% - 7em);
   border-right: #111111 solid 1px;
   border-left: #111111 solid 1px;
+  
+  &:hover{
+    img{
+      display: none;
+    }
+
+    .block-with-text{
+      display: block;
+    }
+  }
 }
 
 img {
-  height: calc(100% - 5em);
+  height: 100%;
 }
 
 
 /* styles for '...' */ 
 .block-with-text {
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
   color:#111111;
   /* hide text if it more than N lines  */
   overflow: hidden;
@@ -37,7 +51,6 @@ img {
   /* fix problem when last visible word doesn't adjoin right side  */
   text-align: justify;  
   /* place for '...' */
-  margin-top: 1em;
   margin-right: 0.5em;
   margin-left: 1em;
   padding-right: 1em;
@@ -75,6 +88,7 @@ img {
 }
 
 .title {
+  cursor: pointer;
   text-align: center;
   margin: 0 auto;
   padding-right: 3.5rem;

@@ -1,14 +1,14 @@
-<a class="active" routerLink="/{{root.url}}/{{movie.name}}">
-  <mat-grid-tile-header style="display: flex; justify-content: space-between" >
-  <h2 class="title">{{movie.name}}</h2>
+<mat-grid-tile-header style="display: flex; justify-content: space-between" >
+  <h2 (click)="onSelect()" class="title">{{movie.name}}</h2>
   <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie._id)" class="del">X</button>
 </mat-grid-tile-header>
-<div class="movie-card">
+
+<div (click)="onSelect()" class="movie-card">
   <div class="block-with-text">{{movie.description}}</div>
   <img [src]="movie.poster"/>
 </div>
+
 <mat-grid-tile-footer>
-<button *ngIf="username" mat-raised-button (click)="onUpdate(movie._id)" class="mod">Modify</button>
+  <button *ngIf="username" mat-raised-button (click)="onUpdate(movie._id)" class="mod">Modify</button>
 </mat-grid-tile-footer>
-</a>
 
