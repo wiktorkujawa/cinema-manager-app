@@ -20,7 +20,7 @@ const routes: Routes = [
       {path: 'register', component: RegisterFormComponent},
       {path: 'halls', component: HallsComponent},
       {path: 'movies', component: MoviesComponent},
-      {path: 'movies/:name', component: SingleMovieComponent}
+      {path: 'movies/:title', component: SingleMovieComponent}
 
     ]
   }

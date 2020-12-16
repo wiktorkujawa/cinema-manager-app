@@ -1,6 +1,6 @@
 <mat-grid-tile-header style="display: flex; justify-content: space-between" >
-  <h2 (click)="onSelect()" class="title">{{movie.name}}</h2>
-  <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie._id)" class="del">X</button>
+  <h2 (click)="onSelect()" class="title">{{movie.title}}</h2>
+  <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie.title)" class="del">X</button>
 </mat-grid-tile-header>
 
 <div (click)="onSelect()" class="movie-card">
@@ -9,6 +9,6 @@
 </div>
 
 <mat-grid-tile-footer>
-  <button *ngIf="username" mat-raised-button (click)="onUpdate(movie._id)" class="mod">Modify</button>
+  <button *ngIf="username" mat-raised-button (click)="onUpdate(movie.title)" class="mod">Modify</button>
 </mat-grid-tile-footer>
 

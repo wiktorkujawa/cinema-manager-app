@@ -13,7 +13,7 @@ export class AddMovieComponent implements OnInit {
   @Output() addMovie: EventEmitter<any> = new EventEmitter();
 
   movieData = {
-    name: '',
+    title: '',
     description: '',
     poster: '',
     duration: 0,
@@ -28,13 +28,13 @@ export class AddMovieComponent implements OnInit {
   form = new FormGroup({});
 fields: any[] = [
     {
-      key: 'name',
+      key: 'title',
       type: 'input',
       templateOptions: {
         label: 'Movie title',
         change: () => {
 
-          this.movieService.searchMovie(this.movieData.name).subscribe( (response:any) =>{
+          this.movieService.searchMovie(this.movieData.title).subscribe( (response:any) =>{
             this.fields[2].templateOptions.options = response.Search;
           })
          
@@ -60,7 +60,7 @@ fields: any[] = [
       templateOptions: {
         label: 'Movie',
         change: () => {
-          this.form.controls.name.setValue(`${this.movieData.imdb.Title}(${this.movieData.imdb.Year})`);
+          this.form.controls.title.setValue(`${this.movieData.imdb.Title}(${this.movieData.imdb.Year})`);
           this.form.controls.poster.setValue(this.movieData.imdb.Poster);
 
       },
@@ -109,7 +109,12 @@ fields: any[] = [
 
 
   onSubmit() {
-      this.addMovie.emit(this.movieData);  
+      this.addMovie.emit({
+        title: this.movieData.title,
+        description: this.movieData.description,
+        duration: this.movieData.duration,
+        poster: this.movieData.poster
+      });  
   }
 
   onNoClick() {

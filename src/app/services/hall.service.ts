@@ -9,15 +9,15 @@ export class HallService {
   constructor( private webService: WebService) { }
 
   getHalls(){
-    return this.webService.get(this.hallUrl,'');
+    return this.webService.get(this.hallUrl);
   }
 
   getHall(id: any){
-    return this.webService.get(this.hallUrl, id);
+    return this.webService.get(`${this.hallUrl}/${id}`);
   }
 
   getShowing(name: string){
-    return this.webService.get(this.hallUrl+'/movie', name );
+    return this.webService.get(`${this.hallUrl}/movie/${name}` );
   }
 
   addHall(object: object){

@@ -4,8 +4,8 @@
     <app-movie-item
       [username]="username" 
       [movie]="movie"
-      (deleteMovie)="deleteMovie(movie._id)"
-      (openUpdateDialog)="openUpdateDialog(movie._id)"
+      (deleteMovie)="deleteMovie(movie.title)"
+      (openUpdateDialog)="openUpdateDialog(movie.title)"
       >
     </app-movie-item>
   </mat-grid-tile>
