@@ -138,8 +138,8 @@ export class HomeComponent implements OnInit {
 
 
   addMovietoHall = {
-    hall_id:'',
-    movie_id:'',
+    hall_name:'',
+    title:'',
     start:''
   };
 
@@ -152,11 +152,11 @@ export class HomeComponent implements OnInit {
   lastChange: any;
   onChange(){
 
-    if(this.selectHall.value.hall_id && this.events==this.lastChange){
+    if(this.selectHall.value.hall_name && this.events==this.lastChange){
       this.events=[];
-      this.selectHall.value.hall_id.map( (selected:any) =>{
+      this.selectHall.value.hall_name.map( (selected:any) =>{
         this.AllEvents.map( event =>{
-          if(event.hall_id==selected){
+          if(event.hall_name==selected){
             this.events.push(event);
           }
         })
@@ -170,28 +170,28 @@ export class HomeComponent implements OnInit {
   form = new FormGroup({});
 fields: FormlyFieldConfig[] = [
     {
-      key: 'hall_id',
+      key: 'hall_name',
       type: 'select',
       templateOptions: {
         label: 'Hall',
         placeholder: 'Choose hall',
         required: true,
         options: this.hallService.getHalls(),
-        valueProp: '_id',
+        valueProp: 'name',
         labelProp: 'name',
         appearance: 'outline'
       }
     },
     {
-      key: 'movie_id',
+      key: 'title',
       type: 'select',
       templateOptions: {
         label: 'Movie',
         placeholder: 'Choose movie',
         required: true,
         options: this.movieService.getMovies(),
-        valueProp: '_id',
-        labelProp: 'name',
+        valueProp: 'title',
+        labelProp: 'title',
         appearance: 'outline'
       }
     },
@@ -220,7 +220,7 @@ fields: FormlyFieldConfig[] = [
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: any }): void => {
     
-        this.hallService.removeShowing(event.hall_id, event.showing_id).subscribe(() =>{
+        this.hallService.removeShowing(event.hall_name, event.showing_id).subscribe(() =>{
           this.events = this.events.filter((iEvent) => iEvent !== event);
           this.handleEvent('Deleted', event);
         });
@@ -241,7 +241,7 @@ fields: FormlyFieldConfig[] = [
       
       this.selectFields = [
         {
-          key: 'hall_id',
+          key: 'hall_name',
           type: 'select',
            hooks: {
             onInit(field: any) {
@@ -253,7 +253,7 @@ fields: FormlyFieldConfig[] = [
                 hallService.getHalls().subscribe( (halls:any) => {
       
                   halls.forEach( (hall:any) =>{
-                    newHalls.push(hall._id);
+                    newHalls.push(hall.name);
                   })
                 });
                 control.setValue(newHalls);
@@ -265,7 +265,7 @@ fields: FormlyFieldConfig[] = [
             placeholder: 'Choose hall',
             required: true,
             options: this.hallService.getHalls(),
-            valueProp: '_id',
+            valueProp: 'name',
             labelProp: 'name',
             multiple: true,
             appearance: 'outline'
@@ -277,10 +277,9 @@ fields: FormlyFieldConfig[] = [
   ngOnInit(): void {
 
     this.hallService.getHalls().subscribe( (halls:any) => {
-      halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
+      halls.map( ({ name, taken_sessions}:any, index: number) =>{
         taken_sessions.forEach( (showing:any) => {
           this.AllEvents.push({
-            hall_id: _id,
             hall_name: name, 
             showing_id: showing._id,
             title: showing.movie,
@@ -342,57 +341,46 @@ fields: FormlyFieldConfig[] = [
 
   addEvent(): void {
 
-    const { hall_id, movie_id, start } = this.addMovietoHall;
-
-
-    const hall_name:any=[];
-      this.hallService.getHalls().subscribe( (halls:any) => {
-        halls.map((hall:any) => {
-          return hall._id === hall_id ? hall_name.push(hall.name) : null
-        })
-      });
+    const { hall_name, title, start } = this.addMovietoHall;
     
-    
-    this.movieService.getMovie(movie_id).subscribe( (movies: any) => {
+    this.movieService.getMovie(title).subscribe( (movies: any) => {
   
-      this.hallService.addShowingToHall(hall_id, {
-        'movie': movies.name,
+      this.hallService.addShowingToHall(hall_name, {
+        'movie': movies.title,
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
-      }).subscribe( data => console.log(data));
-
-    this.events = [
-      ...this.events,
-      {
-        hall_id: hall_id,
-        hall_name: hall_name[0],
-        showing_id: movies._id,
-        title: movies.name,
-        start: start,
-        end: new Date(Date.parse(start) + movies.duration*60000),
-        color: colors[0],
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ]
+      }).subscribe( (data:any) => {
+        this.events = [
+          ...this.events,
+          {
+            hall_name: hall_name,
+            showing_id: data._id,
+            title: data.movie,
+            start: parseISO(data.start),
+            end: parseISO(data.end),
+            color: colors[0],
+            draggable: true,
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+          },
+        ]
+      });
   
   });
 
   };
 
-  deleteEvent( eventToDelete: {hall_id: any, showing_id: any} ) {
+  deleteEvent( eventToDelete: {hall_name: any, showing_id: any} ) {
     // console.log(eventToDelete);
     this.AllEvents=[];
 
-    this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe( () =>
+    this.hallService.removeShowing(eventToDelete.hall_name, eventToDelete.showing_id).subscribe( () =>
       this.hallService.getHalls().subscribe( (halls:any) => {
-        halls.map( ({ _id, name, taken_sessions}:any, index: number) =>{
+        halls.map( ({ name, taken_sessions}:any, index: number) =>{
           taken_sessions.forEach( (showing:any) => {
             this.AllEvents.push({
-              hall_id: _id,
               hall_name: name, 
               showing_id: showing._id,
               title: showing.movie,
@@ -412,7 +400,7 @@ fields: FormlyFieldConfig[] = [
       })
 
     )
-    // this.hallService.removeShowing(eventToDelete.hall_id, eventToDelete.showing_id).subscribe();
+    // this.hallService.removeShowing(eventToDelete.hall_name, eventToDelete.showing_id).subscribe();
 
   }
 

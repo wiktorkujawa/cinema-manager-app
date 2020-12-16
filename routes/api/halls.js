@@ -7,26 +7,57 @@ const Hall = require('../../models/hall');
 // ----------------------------------
 // Get all Halls
 router.get('/', (_,res) =>{
-  Hall.find().
-  sort({ name: 1}).
-  then( halls => res.json(halls))
+  
+  Hall.aggregate([
+    {
+      "$unwind": { 
+        "path": "$taken_sessions",
+        "preserveNullAndEmptyArrays": true
+      }
+    },
+    {
+      "$sort": {
+        "taken_sessions.start": 1
+      }
+    },
+    {
+      "$group": {
+        "_id": "$_id",
+        "name": { "$first": "$name"},
+        "taken_sessions": {
+          "$push": "$taken_sessions"
+        }
+      }
+    },
+    {
+      "$sort": {
+        "name": 1
+      }
+    },
+    
+  ]).then( halls => {
+    console.log(halls);
+    res.json(halls)
+  })
 })
 
 // Get single Hall schedule
-router.get('/:id', (req,res) =>{
+router.get('/:name', (req,res) =>{
 
   Hall.aggregate([{
       "$match": {
-          "_id": mongoose.Types.ObjectId(req.params.id)
+          "name": req.params.name
       }
   },
   {
       "$unwind": "$taken_sessions"
-  }, {
+  },
+   {
       "$sort": {
-          "taken_sessions.movie": 1
+          "taken_sessions.start": 1
       }
-  }, {
+  },
+   {
       "$group": {
           "taken_sessions": {
               "$push": "$taken_sessions"
@@ -44,17 +75,17 @@ router.get('/:id', (req,res) =>{
 })
 
 // Get showings schedule
-router.get('/movie/:name',(req,res) => {
+router.get('/movie/:title',(req,res) => {
   Hall.aggregate([{
     "$match": {
-        "taken_sessions.movie": req.params.name
+        "taken_sessions.movie": req.params.title
       }
     },
     {
       "$unwind": "$taken_sessions"
     },
     {  
-            "$match": { "taken_sessions.movie": req.params.name },
+            "$match": { "taken_sessions.movie": req.params.title },
         },
     
     {
@@ -96,11 +127,12 @@ router.post('/', (req, res) => {
 });
 
 // Update Hall name
-router.put('/name/:id', (req, res) => {
-
-  Hall.findByIdAndUpdate(req.params.id, { name: req.body.name })
+router.put('/name/:name', (req, res) => {
+  console.log(req.body);
+  Hall.findOneAndUpdate({ name: req.params.name} , { name: req.body.name })
   .then(() => res.json(req.body.name))
   .catch((err) => {
+    console.log(err);
     if(err.code == 11000){
         return res.status(409).json({msg: "Hall with this name already exists"})
     }
@@ -109,11 +141,11 @@ router.put('/name/:id', (req, res) => {
 });
 
 //  Add showing to Hall
-router.put('/taken_sessions/:id', async (req, res) => {
-  const _id = req.params.id;
+router.put('/taken_sessions/:name', async (req, res) => {
+  const name = req.params.name;
 
   let can_add;
-  await Hall.findById(_id ).then( ({taken_sessions}) => {
+  await Hall.findOne({ name: name } ).then( ({taken_sessions}) => {
     can_add = true;
         taken_sessions.some( ( { start, end } ) => {
             if(Date.parse(req.body.end)>Date.parse(start) && Date.parse(req.body.start)<Date.parse(end)){
@@ -123,9 +155,9 @@ router.put('/taken_sessions/:id', async (req, res) => {
         })
     });
   if(can_add){
-    await Hall.findByIdAndUpdate(_id, 
+    await Hall.findOneAndUpdate({ name: name }, 
       { $push: { taken_sessions: req.body } })
-    Hall.findById(_id).then( ({taken_sessions}) => res.json(taken_sessions[taken_sessions.length-1]));
+    Hall.findOne({name: name}).then( ({taken_sessions}) => res.json(taken_sessions[taken_sessions.length-1]));
       
     }
   else return res.status(404).json({msg:"Already booked"});
@@ -133,12 +165,12 @@ router.put('/taken_sessions/:id', async (req, res) => {
 
 // Move showing from one hall to second
 
-router.put('/:showing_id/from/:id_from/to/:id_to', async (req, res) => {
-  const { showing_id, id_from, id_to } = req.params;
+router.put('/:showing_id/from/:name_from/to/:name_to', async (req, res) => {
+  const { showing_id, name_from, name_to } = req.params;
 
   const transferred_object = await Hall.aggregate([{
     "$match": {
-        "_id": mongoose.Types.ObjectId(id_from)
+        "name": name_from
       }
     },
     {
@@ -161,7 +193,7 @@ router.put('/:showing_id/from/:id_from/to/:id_to', async (req, res) => {
   const showing = transferred_object[0].taken_sessions;
   let can_add;
 
-  await Hall.findById(id_to ).then( ({ taken_sessions }) => {
+  await Hall.findOne({name:name_to} ).then( ({ taken_sessions }) => {
     can_add = true;
         taken_sessions.some( ( { start, end } ) => {
             if(showing.end>start && showing.start<end){
@@ -173,10 +205,10 @@ router.put('/:showing_id/from/:id_from/to/:id_to', async (req, res) => {
 
   if(can_add){
 
-    await Hall.findByIdAndUpdate(id_from, 
+    await Hall.findOneAndUpdate({ name: name_from }, 
       { $pull: { 'taken_sessions': {'_id': showing_id} } })
 
-    Hall.findByIdAndUpdate(id_to, 
+    Hall.findOneAndUpdate({name: name_to }, 
       { $push: { taken_sessions: showing } },
       (error, success) => {
         if (error) {
@@ -196,10 +228,10 @@ router.put('/:showing_id/from/:id_from/to/:id_to', async (req, res) => {
 
 // ----------------------------------
 // Delete Hall, if not occupied
-router.delete('/:id', async (req, res) => {
-  Hall.findOneAndDelete({_id: req.params.id, taken_sessions: []})
-    .then((user) => {
-      if(user){
+router.delete('/:name', async (req, res) => {
+  Hall.findOneAndDelete({name: req.params.name, taken_sessions: []})
+    .then((hall) => {
+      if(hall){
           return res.status(200).json({ msg: "Hall removed" })
       }
       else 
@@ -211,8 +243,8 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Delete Showing from Hall
-router.delete('/:hall_id/:movie_id', (req,res) => {
-  Hall.findByIdAndUpdate(req.params.hall_id, 
+router.delete('/:name/:movie_id', (req,res) => {
+  Hall.findOneAndUpdate({name: req.params.name}, 
     { $pull: { 'taken_sessions': {'_id':req.params.movie_id} } },
     (error, success) => {
       if (error) {
