@@ -13,14 +13,14 @@ export class SingleMovieComponent implements OnInit {
     private movieService: MovieService
     ) {
     this.activatedRoute.queryParams.subscribe(params => {
-          let date = params['name'];
+          let date = params['title'];
           console.log(params); // Print the parameter to the console. 
       });
   }
 
   ngOnInit(): void {
-    let name = this.activatedRoute.snapshot.paramMap.get('name');
-    console.log(name);
+    let title = this.activatedRoute.snapshot.paramMap.get('title');
+    console.log(title);
 
     // this.movieService.getMovie()
   }

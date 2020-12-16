@@ -111,17 +111,17 @@ openDialog(){
   });
 }
 
-openUpdateDialog(id:any){
+openUpdateDialog(title:any){
   const ref = this.dialog.open(UpdateMovieComponent, { width: '60vw',
   minWidth:"350px",
   panelClass: 'my-dialog', data: {
-  movie: this.movies.filter( (movie:any) => id === movie._id ),
+  movie: this.movies.filter( (movie:any) => title === movie.title ),
   username: this.username
 }});
   const sub = ref.componentInstance.updateMovie.subscribe((movie: any) => {
-  const index = this.movies.findIndex((movie:any) => movie._id === id);
-  this.movieService.updateMovie(id,movie).subscribe( (movie: any) => {
-    this.movies[index].name = movie.name;
+  const index = this.movies.findIndex((movie:any) => movie.title === title);
+  this.movieService.updateMovie(title,movie).subscribe( (movie: any) => {
+    this.movies[index].title = movie.title;
     this.movies[index].description = movie.description;
     this.movies[index].duration = movie.duration;
     this.movies[index].poster = movie.poster;
@@ -134,11 +134,11 @@ openUpdateDialog(id:any){
 }
 
 
-deleteMovie(id:any) {
+deleteMovie(title:any) {
   // Remove from UI
-  this.movies = this.movies.filter( (t:any) => t._id !== id );
+  this.movies = this.movies.filter( (t:any) => t.title !== title );
   // Remove from server
-  this.movieService.deleteMovie(id).subscribe();
+  this.movieService.deleteMovie(title).subscribe();
 }
 
 

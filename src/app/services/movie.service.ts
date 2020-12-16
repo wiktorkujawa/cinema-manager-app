@@ -9,15 +9,15 @@ export class MovieService {
   constructor( private webService: WebService) { }
 
   getMovies(){
-    return this.webService.get(this.movieUrl, '');
+    return this.webService.get(this.movieUrl);
   }
 
   getMovie(id: any){
-    return this.webService.get(this.movieUrl, id);
+    return this.webService.get(`${this.movieUrl}/${id}`);
   }
 
   searchMovie(name: string){
-    return this.webService.get(`${this.movieUrl}/search/${name}`,'');
+    return this.webService.get(`${this.movieUrl}/search/${name}`);
   }
 
   addMovie( object: object){

@@ -18,17 +18,19 @@ export class MovieItemComponent implements OnInit {
   constructor( private router: Router, private route: ActivatedRoute) {}
 
   
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.movie);
+  }
   
 
   onSelect(){
-    this.router.navigate([this.movie.name], {relativeTo: this.route})
+    this.router.navigate([this.movie.title], {relativeTo: this.route})
   }
-  onUpdate(_id:any) {
-    this.openUpdateDialog.emit(_id);
+  onUpdate(title:any) {
+    this.openUpdateDialog.emit(title);
   }
-  onDelete(_id:any) {
-    this.deleteMovie.emit(_id);
+  onDelete(title:any) {
+    this.deleteMovie.emit(title);
   }
 
 }

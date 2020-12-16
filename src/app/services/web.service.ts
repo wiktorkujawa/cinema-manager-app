@@ -17,8 +17,8 @@ export class WebService {
 
   constructor(private http:HttpClient) { }
 
-  get(uri:string, id: any) {
-    return this.http.get<any[]>(`${environment.apiUrl}/${uri}/${id}`, httpOptions)
+  get(uri:string) {
+    return this.http.get<any[]>(`${environment.apiUrl}/${uri}`, httpOptions)
   }
 
   post(uri:string, object: any){

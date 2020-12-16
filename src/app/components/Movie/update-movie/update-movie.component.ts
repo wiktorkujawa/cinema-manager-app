@@ -13,10 +13,10 @@ import { MovieService } from 'src/app/services/movie.service';
 export class UpdateMovieComponent implements OnInit {
   environment: string = environment.apiUrl;
   // in app.component.ts
-  id: any;
+  title: any;
 
   movieData = {
-    name: '',
+    title: '',
     description: '',
     poster: '',
     duration: 0,
@@ -30,7 +30,7 @@ export class UpdateMovieComponent implements OnInit {
   form = new FormGroup({});
   fields: any[] = [
     {
-      key: 'name',
+      key: 'title',
       type: 'input',
       // hooks: {
       //   onInit(field: any) {
@@ -62,7 +62,7 @@ export class UpdateMovieComponent implements OnInit {
         label: 'Movie title',
         change: () => {
 
-          this.movieService.searchMovie(this.movieData.name).subscribe( (response:any) =>{
+          this.movieService.searchMovie(this.movieData.title).subscribe( (response:any) =>{
             this.fields[2].templateOptions.options = response.Search;
           })
 
@@ -88,7 +88,7 @@ export class UpdateMovieComponent implements OnInit {
       templateOptions: {
         label: 'Movie',
         change: () => {
-          this.form.controls.name.setValue(`${this.movieData.imdb.Title}(${this.movieData.imdb.Year})`);
+          this.form.controls.title.setValue(`${this.movieData.imdb.Title}(${this.movieData.imdb.Year})`);
           this.form.controls.poster.setValue(this.movieData.imdb.Poster);
         },
         placeholder: 'Choose movie',
@@ -129,7 +129,7 @@ export class UpdateMovieComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.movieData.name=this.data.movie[0].name;
+    this.movieData.title=this.data.movie[0].title;
     this.movieData.description=this.data.movie[0].description;
     this.movieData.duration=this.data.movie[0].duration;
     this.movieData.poster=this.data.movie[0].poster;
@@ -137,7 +137,7 @@ export class UpdateMovieComponent implements OnInit {
   }
 
   onNoClick() {
-    this.movieData.name=this.data.movie[0].name;
+    this.movieData.title=this.data.movie[0].title;
     this.movieData.description=this.data.movie[0].description;
     this.movieData.duration=this.data.movie[0].duration;
     this.movieData.duration=this.data.movie[0].poster;
@@ -147,7 +147,7 @@ export class UpdateMovieComponent implements OnInit {
 
   onSubmit() {
       const movie = {
-        name: this.movieData.name,
+        title: this.movieData.title,
         description: this.movieData.description,
         duration: this.movieData.duration,
         poster: this.movieData.poster
