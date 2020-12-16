@@ -30,7 +30,7 @@ export class AddMovieToHallComponent implements OnInit {
         appearance: 'outline',
         valueProp: (option: any) => option,
         compareWith: (o1: any, o2: any) => o1.value === o2.value,
-        labelProp: 'name',
+        labelProp: 'title',
       },
     },
     {
@@ -61,7 +61,7 @@ export class AddMovieToHallComponent implements OnInit {
 
   onSubmit() {
     this.addMovieToHall.emit({
-      movie: this.selectedMovie.movieData.name, 
+      movie: this.selectedMovie.movieData.title, 
       start: this.selectedMovie.start,
       end: new Date(Date.parse(this.selectedMovie.start) + this.selectedMovie.movieData.duration*60000)
     });

@@ -4,9 +4,9 @@
     <app-hall-item
       [username]="username" 
       [hall]="hall"
-      (deleteHall)="deleteHall(hall._id)"
+      (deleteHall)="deleteHall(hall.name)"
       (deleteMovie)="deleteMovie($event)"
-      (openUpdateDialog)="openUpdateDialog(hall._id)"
+      (openUpdateDialog)="openUpdateDialog(hall.name)"
       (openAddMovieDialog)="openAddMovieDialog($event)"
       (addShowing)="addShowing($event)"
       >

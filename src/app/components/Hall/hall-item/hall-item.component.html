@@ -1,6 +1,6 @@
 <mat-grid-tile-header style="display: flex; justify-content: space-between" >
   <h1 class="title">{{hall.name}}</h1>
-  <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions?.length==0" (click)="onDelete(hall._id)" class="del">X</button>
+  <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions?.length==0" (click)="onDelete(hall.name)" class="del">X</button>
 </mat-grid-tile-header>
 
   <div *ngIf="hall.taken_sessions?.length!=0" class="table-responsive">
@@ -34,8 +34,8 @@
   </div>
   <h1 *ngIf="hall.taken_sessions?.length==0"> No showings in this hall</h1>
 <mat-grid-tile-footer>
-  <button *ngIf="username" mat-raised-button (click)="onUpdate(hall._id)" class="mod">Modify</button>
-  <button *ngIf="username" mat-raised-button (click)="onAddMovie(hall._id)" class="mod">Add movie</button>
+  <button *ngIf="username" mat-raised-button (click)="onUpdate(hall.name)" class="mod">Modify</button>
+  <button *ngIf="username" mat-raised-button (click)="onAddMovie(hall.name)" class="mod">Add movie</button>
 
 <!-- <button class="close" mat-button (click)="onNoClick()">X</button>
 <h2 mat-dialog-title>Add Hall</h2>
