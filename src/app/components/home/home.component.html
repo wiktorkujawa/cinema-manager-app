@@ -163,10 +163,10 @@
           />
         </td>
 
-        <td>{{event.start | date:'short'}}</td>
+        <td>{{event.start | date:'MMM d, y, h:mm'}}</td>
 
 
-        <td>{{event.end | date:'short'}}</td>
+        <td>{{event.end | date:'MMM d, y, h:mm'}}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             Delete

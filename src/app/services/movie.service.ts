@@ -12,24 +12,24 @@ export class MovieService {
     return this.webService.get(this.movieUrl);
   }
 
-  getMovie(id: any){
-    return this.webService.get(`${this.movieUrl}/${id}`);
+  getMovie(title: any){
+    return this.webService.get(`${this.movieUrl}/${title}`);
   }
 
-  searchMovie(name: string){
-    return this.webService.get(`${this.movieUrl}/search/${name}`);
+  searchMovie(title: string){
+    return this.webService.get(`${this.movieUrl}/search/${title}`);
   }
 
   addMovie( object: object){
     return this.webService.post(this.movieUrl, object);
   }
 
-  updateMovie(id: any, object: object){
-    return this.webService.put(this.movieUrl,id, object);
+  updateMovie(title: any, object: object){
+    return this.webService.put(this.movieUrl,title, object);
   }
 
-  deleteMovie(id: any){
-    return this.webService.delete(this.movieUrl, id);
+  deleteMovie(title: any){
+    return this.webService.delete(this.movieUrl, title);
   }
 
 }

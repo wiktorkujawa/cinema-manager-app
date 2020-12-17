@@ -60,7 +60,7 @@ fields: any[] = [
       templateOptions: {
         label: 'Movie',
         change: () => {
-          this.form.controls.title.setValue(`${this.movieData.imdb.Title}(${this.movieData.imdb.Year})`);
+          this.form.controls.title.setValue(`${this.movieData.imdb.Title} (${this.movieData.imdb.Year})`);
           this.form.controls.poster.setValue(this.movieData.imdb.Poster);
 
       },

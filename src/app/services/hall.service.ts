@@ -12,36 +12,36 @@ export class HallService {
     return this.webService.get(this.hallUrl);
   }
 
-  getHall(id: any){
-    return this.webService.get(`${this.hallUrl}/${id}`);
+  getHall(name: any){
+    return this.webService.get(`${this.hallUrl}/${name}`);
   }
 
-  getShowing(name: string){
-    return this.webService.get(`${this.hallUrl}/movie/${name}` );
+  getShowing(title: any){
+    return this.webService.get(`${this.hallUrl}/movie/${title}` );
   }
 
   addHall(object: object){
     return this.webService.post(this.hallUrl, object);
   }
 
-  changeHallName(id:any, name: object){
-    return this.webService.put(this.hallUrl+'/name',id, name)
+  changeHallName(name:any, object: object){
+    return this.webService.put(this.hallUrl+'/name',name, object)
   }
 
-  addShowingToHall(id: any, object: object){
-    return this.webService.put(this.hallUrl+'/taken_sessions', id, object);
+  addShowingToHall(name: any, object: object){
+    return this.webService.put(this.hallUrl+'/taken_sessions', name, object);
   }
 
-  moveShowing( showing_id: any, id_from: any, id_to: any){
-    return this.webService.put(this.hallUrl,`${showing_id}/from/${id_from}/to/${id_to}` , {});
+  moveShowing( showing_id: any, name_from: any, name_to: any){
+    return this.webService.put(this.hallUrl,`${showing_id}/from/${name_from}/to/${name_to}` , {});
   }
 
-  removeHall( id:any ){
-    return this.webService.delete(this.hallUrl,id);
+  removeHall( name:any ){
+    return this.webService.delete(this.hallUrl,name);
   }
 
-  removeShowing(hall_id: any, movie_id: any){
-    return this.webService.delete(this.hallUrl,`${hall_id}/${movie_id}`)
+  removeShowing(hall_name: any, movie_id: any){
+    return this.webService.delete(this.hallUrl,`${hall_name}/${movie_id}`)
   }
 
 }

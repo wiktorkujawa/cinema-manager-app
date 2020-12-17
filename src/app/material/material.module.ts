@@ -11,6 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
@@ -31,7 +32,8 @@ const MaterialComponents = [
   MatOptionModule,
   // MatOptionSelectionChange,
   MatSelectModule,
-  MatMenuModule
+  MatMenuModule,
+  MatExpansionModule
   // MatSelect
  ]
 

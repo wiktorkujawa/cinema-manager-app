@@ -36,7 +36,6 @@ router.get('/', (_,res) =>{
     },
     
   ]).then( halls => {
-    console.log(halls);
     res.json(halls)
   })
 })
@@ -91,7 +90,7 @@ router.get('/movie/:title',(req,res) => {
     {
       "$sort": 
       {
-        "name": 1
+        "taken_sessions.start": 1
       },
     },
     {
