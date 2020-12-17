@@ -1,4 +1,4 @@
-<mat-grid-tile-header style="display: flex; justify-content: space-between" >
+<mat-grid-tile-header style="padding: 2rem 0;">
   <h2 (click)="onSelect()" class="title">{{movie.title}}</h2>
   <button mat-raised-button color="warn" *ngIf="username" (click)="onDelete(movie.title)" class="del">X</button>
 </mat-grid-tile-header>

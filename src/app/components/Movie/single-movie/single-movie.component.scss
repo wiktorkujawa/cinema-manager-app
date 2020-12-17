@@ -1,0 +1,21 @@
+mat-card {
+  min-width: 200px; 
+}
+
+mat-expansion-panel {
+  background-color: #DDDDDD;
+}
+
+mat-card-header{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center; 
+}
+
+.title{
+  background-color: #001f3f;
+  color: white;
+  border-radius: 25px;
+  margin: 0 2em;
+}
