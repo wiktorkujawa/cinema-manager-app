@@ -29,10 +29,10 @@ export class SingleMovieComponent implements OnInit {
 
   Breakpoint = {
     contentMargin:{
-      xl: "0 15rem",
-      lg: "0 10rem",
-      md: "0 5rem",
-      sm: "0 1rem",
+      xl: "0 20rem",
+      lg: "0 15rem",
+      md: "0 10rem",
+      sm: "0 2rem",
       xs: "0 0.5rem"
     },
     imagePadding:{
@@ -50,15 +50,6 @@ export class SingleMovieComponent implements OnInit {
     private movieService: MovieService,
     private hallService: HallService,
     private breakpointObserver: BreakpointObserver) {
-
-      // let title = this.activatedRoute.snapshot.paramMap.get('title');
-      // movieService.getMovie(title).subscribe( (movieInfo) => this.movieInfo = movieInfo);
-
-      // hallService.getShowing(title).subscribe( (movieSchedule) => {
-      //   console.log(movieSchedule);
-      //   this.movieSchedule = movieSchedule});
-
-
 
       this.breakpointObserver.observe([
         Breakpoints.XSmall,

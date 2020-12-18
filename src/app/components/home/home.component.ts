@@ -136,6 +136,7 @@ export class HomeComponent implements OnInit {
     event: CalendarEvent;
   };
 
+  // colors: any;
 
   addMovietoHall = {
     hall_name:'',
@@ -143,28 +144,39 @@ export class HomeComponent implements OnInit {
     start:''
   };
 
-  select: any;
-  halls: any = [];
-  selectHall = new FormGroup({});
-
-  selectFields: FormlyFieldConfig[] 
-
-  lastChange: any;
-  onChange(){
-
-    if(this.selectHall.value.hall_name && this.events==this.lastChange){
-      this.events=[];
-      this.selectHall.value.hall_name.map( (selected:any) =>{
-        this.AllEvents.map( event =>{
-          if(event.hall_name==selected){
-            this.events.push(event);
-          }
-        })
-      })
-    }
-
-    this.lastChange = this.events;
+  selectedHall:any = {
+    hall_name: []
   }
+  
+  selectHallForm = new FormGroup({});
+
+
+  selectFields: any = [
+    {
+      key: 'hall_name',
+      type: 'select',
+      templateOptions: {
+        change: () => {
+          this.events=[];
+          this.selectedHall.hall_name.map( (selected:any) =>{
+            this.AllEvents.map( event =>{
+              if(event.meta.hall_name==selected){
+                this.events.push(event);
+              }
+            })
+          })
+        },
+        label: 'Hall',
+        placeholder: 'Choose hall',
+        required: true,
+        options: this.hallService.getHalls(),
+        valueProp: 'name',
+        labelProp: 'name',
+        multiple: true,
+        appearance: 'outline'
+      }
+    }
+  ];
 
   
   form = new FormGroup({});
@@ -218,10 +230,20 @@ fields: FormlyFieldConfig[] = [
     {
       label: '<i class="material-icons mat-icon">delete</i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: any }): void => {
+      onClick: ({ event }: { event: CalendarEvent }): void => {
     
-        this.hallService.removeShowing(event.hall_name, event.showing_id).subscribe(() =>{
-          this.events = this.events.filter((iEvent) => iEvent !== event);
+        this.hallService.removeShowing(event.meta.hall_name, event.meta.showing_id).subscribe((msg) =>{
+
+          this.AllEvents = this.AllEvents.filter( delEvent => delEvent.meta.showing_id !== event.meta.showing_id);
+          this.events=[];
+          this.selectedHall.hall_name.map( (selected:any) =>{
+            this.AllEvents.map( event =>{
+              if(event.meta.hall_name==selected){
+                this.events.push(event);
+              }
+            })
+          })
+          console.log(msg);
           this.handleEvent('Deleted', event);
         });
       },
@@ -230,58 +252,26 @@ fields: FormlyFieldConfig[] = [
 
   refresh: Subject<any> = new Subject();
   
-  AllEvents: any[] = [];
-  events: any[] = [];
+  AllEvents: CalendarEvent[] = [];
+  events: CalendarEvent[] = [];
 
   activeDayIsOpen: boolean = true;
 
   constructor( private hallService: HallService,
     private movieService: MovieService,
-    private modal: NgbModal) {
-      
-      this.selectFields = [
-        {
-          key: 'hall_name',
-          type: 'select',
-           hooks: {
-            onInit(field: any) {
-              const control = field.formControl;
-              if (control.value === null) {
-
-                const newHalls:any = [];
-
-                hallService.getHalls().subscribe( (halls:any) => {
-      
-                  halls.forEach( (hall:any) =>{
-                    newHalls.push(hall.name);
-                  })
-                });
-                control.setValue(newHalls);
-              }
-            }
-          },
-          templateOptions: {
-            label: 'Hall',
-            placeholder: 'Choose hall',
-            required: true,
-            options: this.hallService.getHalls(),
-            valueProp: 'name',
-            labelProp: 'name',
-            multiple: true,
-            appearance: 'outline'
-          }
-        }
-      ];
-    }
+    private modal: NgbModal) {}
 
   ngOnInit(): void {
 
     this.hallService.getHalls().subscribe( (halls:any) => {
       halls.map( ({ name, taken_sessions}:any, index: number) =>{
+        this.selectedHall.hall_name.push(name);
         taken_sessions.forEach( (showing:any) => {
           this.AllEvents.push({
-            hall_name: name, 
-            showing_id: showing._id,
+            meta:{
+              hall_name: name, 
+              showing_id: showing._id
+            },
             title: showing.movie,
             actions: this.actions,
             start: parseISO(showing.start),
@@ -296,10 +286,8 @@ fields: FormlyFieldConfig[] = [
           )
         })
       })
+      this.events = this.AllEvents;
     })
-
-    this.lastChange = this.AllEvents;
-    this.events = this.AllEvents;
   }
   
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -350,11 +338,14 @@ fields: FormlyFieldConfig[] = [
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
       }).subscribe( (data:any) => {
+        this.refresh.next();
         this.events = [
           ...this.events,
           {
-            hall_name: hall_name,
-            showing_id: data._id,
+            meta:{
+              hall_name: hall_name,
+              showing_id: data._id,
+            },
             title: data.movie,
             start: parseISO(data.start),
             end: parseISO(data.end),
@@ -372,36 +363,22 @@ fields: FormlyFieldConfig[] = [
 
   };
 
-  deleteEvent( eventToDelete: {hall_name: any, showing_id: any} ) {
-    // console.log(eventToDelete);
-    this.AllEvents=[];
+  deleteEvent( eventToDelete: CalendarEvent ) {
 
-    this.hallService.removeShowing(eventToDelete.hall_name, eventToDelete.showing_id).subscribe( () =>
-      this.hallService.getHalls().subscribe( (halls:any) => {
-        halls.map( ({ name, taken_sessions}:any, index: number) =>{
-          taken_sessions.forEach( (showing:any) => {
-            this.AllEvents.push({
-              hall_name: name, 
-              showing_id: showing._id,
-              title: showing.movie,
-              actions: this.actions,
-              start: parseISO(showing.start),
-              end: parseISO(showing.end),
-              color: colors[index%19],
-              resizable: {
-                beforeStart: true,
-                afterEnd: true,
-              },
-              draggable: true
-              }
-            )
-          })
+    this.hallService.removeShowing(eventToDelete.meta.hall_name, eventToDelete.meta.showing_id).subscribe( (msg) =>{
+      this.refresh.next();
+
+      this.AllEvents = this.AllEvents.filter( event => event.meta.showing_id !== eventToDelete.meta.showing_id);
+      this.events=[];
+      this.selectedHall.hall_name.map( (selected:any) =>{
+        this.AllEvents.map( event =>{
+          if(event.meta.hall_name==selected){
+            this.events.push(event);
+          }
         })
       })
-
-    )
-    // this.hallService.removeShowing(eventToDelete.hall_name, eventToDelete.showing_id).subscribe();
-
+      console.log(msg);
+      })
   }
 
   setView(view: CalendarView) {
