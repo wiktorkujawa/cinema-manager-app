@@ -31,6 +31,7 @@ import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MovieService } from 'src/app/services/movie.service';
+import { DatePipe } from '@angular/common'
 
 const colors: any = [
   {
@@ -224,6 +225,7 @@ fields: FormlyFieldConfig[] = [
       label: '<i class="material-icons mat-icon">edit</i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
+        
         this.handleEvent('Edited', event);
       },
     },
@@ -232,7 +234,7 @@ fields: FormlyFieldConfig[] = [
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
     
-        this.hallService.removeShowing(event.meta.hall_name, event.meta.showing_id).subscribe((msg) =>{
+        this.hallService.removeShowing(event.meta.hall_name, event.meta.showing_id).subscribe((msg: any) =>{
 
           this.AllEvents = this.AllEvents.filter( delEvent => delEvent.meta.showing_id !== event.meta.showing_id);
           this.events=[];
@@ -243,8 +245,7 @@ fields: FormlyFieldConfig[] = [
               }
             })
           })
-          console.log(msg);
-          this.handleEvent('Deleted', event);
+          this.handleEvent('Deleted', msg.msg);
         });
       },
     },
@@ -259,7 +260,8 @@ fields: FormlyFieldConfig[] = [
 
   constructor( private hallService: HallService,
     private movieService: MovieService,
-    private modal: NgbModal) {}
+    private modal: NgbModal,
+    public datepipe: DatePipe) {}
 
   ngOnInit(): void {
 
@@ -304,6 +306,46 @@ fields: FormlyFieldConfig[] = [
     }
   }
 
+  eventClicked({ event }: { event: CalendarEvent }): void {
+
+    let start =this.datepipe.transform(event.start, 'medium');
+    let end =this.datepipe.transform(event.end, 'medium');
+
+    const description = `<div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Location</th>
+          <th>Starts at</th>
+          <th>Ends at</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <tr>
+
+        <td>
+          ${event.title}
+        </td>
+        <td>
+          ${event.meta.hall_name}
+        </td>
+        <td>
+          ${start}
+        </td>
+        <td>
+          ${end}
+        </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+      `
+
+    this.handleEvent('Event summary', description);
+  }
+
   eventTimesChanged({
     event,
     newStart,
@@ -322,9 +364,10 @@ fields: FormlyFieldConfig[] = [
     this.handleEvent('Dropped or resized', event);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: any): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.modal.open(this.modalContent, { size: 'lg', backdrop : 'static',
+    keyboard : false, centered: true });
   }
 
   addEvent(): void {
@@ -338,7 +381,6 @@ fields: FormlyFieldConfig[] = [
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
       }).subscribe( (data:any) => {
-        this.refresh.next();
         this.events = [
           ...this.events,
           {
@@ -357,7 +399,19 @@ fields: FormlyFieldConfig[] = [
             },
           },
         ]
-      });
+
+        let formatted_date =this.datepipe.transform(this.addMovietoHall.start, 'medium');
+
+        
+
+        const message = `Movie ${this.addMovietoHall.title} added to ${this.addMovietoHall.hall_name} on ${formatted_date}`
+        this.handleEvent('Event Added', message);
+      }, (error) =>{
+        this.handleEvent("Event can't be added", error.error.msg);
+      }
+      
+      );
+      // this.handleEvent('Event Added', this.addMovietoHall);
   
   });
 
@@ -365,9 +419,7 @@ fields: FormlyFieldConfig[] = [
 
   deleteEvent( eventToDelete: CalendarEvent ) {
 
-    this.hallService.removeShowing(eventToDelete.meta.hall_name, eventToDelete.meta.showing_id).subscribe( (msg) =>{
-      this.refresh.next();
-
+    this.hallService.removeShowing(eventToDelete.meta.hall_name, eventToDelete.meta.showing_id).subscribe( (msg: any) =>{
       this.AllEvents = this.AllEvents.filter( event => event.meta.showing_id !== eventToDelete.meta.showing_id);
       this.events=[];
       this.selectedHall.hall_name.map( (selected:any) =>{
@@ -378,7 +430,9 @@ fields: FormlyFieldConfig[] = [
         })
       })
       console.log(msg);
+      this.handleEvent('Event deleted', msg.msg);
       })
+      // this.handleEvent('Event deleted', eventToDelete);
   }
 
   setView(view: CalendarView) {

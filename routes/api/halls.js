@@ -127,11 +127,9 @@ router.post('/', (req, res) => {
 
 // Update Hall name
 router.put('/name/:name', (req, res) => {
-  console.log(req.body);
   Hall.findOneAndUpdate({ name: req.params.name} , { name: req.body.name })
   .then(() => res.json(req.body.name))
   .catch((err) => {
-    console.log(err);
     if(err.code == 11000){
         return res.status(409).json({msg: "Hall with this name already exists"})
     }

@@ -161,17 +161,7 @@ addShowing( data:any){
 }
 
 deleteMovie(data: any) {
-  // Remove from UI
-
-  // console.log(data);
-  // this.halls = this.halls.map( (hall: any) => {
-  //   return {
-  //     name: hall.name,
-  //     taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.movie_id )
-  //   };
-  // });
-
-  // Remove from server
+  // Remove from UI and server
   this.hallService.removeShowing(data.name, data.movie_id).subscribe(() => {
     this.halls = this.halls.map( (hall: any) => {
       return {

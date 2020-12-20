@@ -52,7 +52,6 @@ export class PublicLayoutComponent implements OnInit {
 
 
   onActivate(component: any) {
-    console.log(component);
     this.msg = null;
     this.authService.user()
     .subscribe(
