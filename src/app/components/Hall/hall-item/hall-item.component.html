@@ -10,6 +10,7 @@
           <th>Title</th>
           <th>Starts at</th>
           <th>Ends at</th>
+          <th *ngIf="username">Move to hall</th>
           <th *ngIf="username">Remove</th>
         </tr>
       </thead>
@@ -24,6 +25,9 @@
           </td>
           <td>
             {{session.end | date:'MMM d, y, h:mm'}}
+          </td>
+          <td *ngIf="username">
+            <button mat-raised-button type="submit" color="primary" (click)="onMoveShowing(session._id)"><mat-icon>trending_flat</mat-icon>></button>
           </td>
           <td *ngIf="username">
             <button mat-raised-button type="submit" color="warn" (click)="onDeleteFromHall(session._id)">X</button>

@@ -5,6 +5,7 @@ import { HallService } from 'src/app/services/hall.service';
 import { AddHallComponent } from '../add-hall/add-hall.component';
 import { UpdateHallComponent } from '../update-hall/update-hall.component';
 import { AddMovieToHallComponent } from '../add-movie-to-hall/add-movie-to-hall.component';
+import { MoveShowingComponent } from '../move-showing/move-showing.component';
 
 @Component({
   selector: 'app-halls',
@@ -142,6 +143,38 @@ openUpdateDialog(name:any){
     const index = this.halls.findIndex((hall:any) => hall.name === name);
     this.hallService.changeHallName( name, hall).subscribe( 
       (hall) => this.halls[index].name = hall);
+  });
+  ref.afterClosed().subscribe(() => {
+    sub.unsubscribe();
+  });
+}
+
+openMoveShowingDialog(data:any){
+  const ref = this.dialog.open(MoveShowingComponent, { 
+    width: '60vw',
+    minWidth:"350px",
+    panelClass: 'my-dialog', 
+    data: {
+      hall_name: data.hall_name,
+      showing_id: data.showing_id
+    }
+  });
+  const sub = ref.componentInstance.onMoveShowing.subscribe((newHall: any) => {
+
+    this.hallService.moveShowing(data.showing_id, data.hall_name, newHall).subscribe( success => {
+
+      this.halls = this.halls.map( (hall: any) => {
+        return {
+          name: hall.name,
+          taken_sessions: hall.taken_sessions.filter( (movie:any) => movie._id!= data.showing_id )
+        };
+      });
+      
+      const indexNew = this.halls.findIndex((hall:any) => hall.name === newHall);
+      return this.halls[indexNew] = success;
+
+      
+      });
   });
   ref.afterClosed().subscribe(() => {
     sub.unsubscribe();

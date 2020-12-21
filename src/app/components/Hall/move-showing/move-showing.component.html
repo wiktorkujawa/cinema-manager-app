@@ -1,0 +1,14 @@
+<button class="close" mat-button (click)="onNoClick()">X</button>
+<h2 mat-dialog-title>Move Showing:</h2>
+<hr>
+<mat-dialog-content>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>From: <b>{{data.hall_name}}</b></p>
+    <div style="display: flex; margin-top: 2rem;">
+    <p style="margin-top: 1.4rem;">To:</p> 
+    <formly-form [form]="form" [fields]="fields" [model]="newHall"></formly-form>
+  </div>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid || newHall.name===data.hall_name">Submit </button>
+  </form>
+</mat-dialog-content>
