@@ -12,6 +12,7 @@ export class HallItemComponent implements OnInit {
   @Input() username: any;
   @Output() deleteHall : EventEmitter<any> = new EventEmitter();
   @Output() openUpdateDialog : EventEmitter<any> = new EventEmitter();
+  @Output() openMoveShowingDialog : EventEmitter<{hall_name: any, showing_id: any}> = new EventEmitter();
   @Output() deleteMovie : EventEmitter<{name:any, movie_id:any}> = new EventEmitter();
   @Output() openAddMovieDialog : EventEmitter<any> = new EventEmitter();
   environment: string = environment.apiUrl;
@@ -28,6 +29,10 @@ export class HallItemComponent implements OnInit {
 
   onUpdate(name :any) {
     this.openUpdateDialog.emit(name);
+  }
+
+  onMoveShowing(showing_id: any) {
+    this.openMoveShowingDialog.emit({hall_name: this.hall.name, showing_id: showing_id});
   }
   
   onDelete(name:any) {

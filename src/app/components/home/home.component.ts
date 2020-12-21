@@ -353,6 +353,9 @@ fields: FormlyFieldConfig[] = [
   }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
+        console.log(event);
+      console.log(iEvent);
+      
         return {
           ...event,
           start: newStart,

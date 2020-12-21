@@ -187,6 +187,7 @@ router.put('/:showing_id/from/:name_from/to/:name_to', async (req, res) => {
   )
   .then( hall => hall);
 
+
   const showing = transferred_object[0].taken_sessions;
   let can_add;
 
@@ -205,15 +206,19 @@ router.put('/:showing_id/from/:name_from/to/:name_to', async (req, res) => {
     await Hall.findOneAndUpdate({ name: name_from }, 
       { $pull: { 'taken_sessions': {'_id': showing_id} } })
 
-    Hall.findOneAndUpdate({name: name_to }, 
-      { $push: { taken_sessions: showing } },
+    await Hall.findOneAndUpdate({name: name_to },
+      {$addToSet: 
+        {taken_sessions : showing}},
+        {upsert: true, new: true}, 
       (error, success) => {
         if (error) {
           res.status(404).json({ msg:error });
         } else {
-          res.status(201).json({msg:`Showing ${showing.movie} moved to hall ${success.name}`});
+          res.status(201).json(success);
         }
       });
+
+    
 
     }
   else return res.status(404).json({msg:"No place in second hall"});
