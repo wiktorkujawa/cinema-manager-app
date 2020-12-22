@@ -35,82 +35,45 @@ import { DatePipe } from '@angular/common'
 
 const colors: any = [
   {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
+    primary: '#FF3333',
+    secondary: '#990000',
   },
   {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
+    primary: '#FF9933',
+    secondary: '#994C00',
   },
   {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
+    primary: '#FFFF33',
+    secondary: '#999900',
   },
   {
-    primary: '#9BC4E5',
-    secondary: '#310106',
+    primary: '#33FF33',
+    secondary: '#009900',
   },
   {
-    primary: '#04640D',
-    secondary: '#FEFB0A',
+    primary: '#33FFFF',
+    secondary: '#009999',
   },
   {
-    primary: '#FB5514',
-    secondary: '#E115C0',
+    primary: '#3333FF',
+    secondary: '#000099',
   },
   {
-    primary: '#00587F',
-    secondary: '#0BC582',
+    primary: '#9933FF',
+    secondary: '#4C0099',
   },
   {
-    primary: '#FEB8C8',
-    secondary: '#9E8317',
+    primary: '#FF33FF',
+    secondary: '#990099',
   },
   {
-    primary: '#01190F',
-    secondary: '#847D81',
+    primary: '#FF3399',
+    secondary: '#99004C',
   },
   {
-    primary: '#58018B',
-    secondary: '#B70639',
-  },
-  {
-    primary: '#703B01',
-    secondary: '#F7F1DF',
-  },
-  {
-    primary: '#118B8A',
-    secondary: '#4AFEFA',
-  },
-  {
-    primary: '#FCB164',
-    secondary: '#796EE6',
-  },
-  {
-    primary: '#000D2C',
-    secondary: '#53495F',
-  },
-  {
-    primary: '#F95475',
-    secondary: '#61FC03',
-  },
-  {
-    primary: '#5D9608',
-    secondary: '#DE98FD',
-  },
-  {
-    primary: '#98A088',
-    secondary: '#4F584E',
-  },
-  {
-    primary: '#248AD0',
-    secondary: '#5C5300',
-  },
-  {
-    primary: '#9F6551',
-    secondary: '#BCFEC6',
-  },
-
+    primary: '#A0A0A0',
+    secondary: '#404040',
+  }
 ];
 
 @Component({
@@ -278,7 +241,7 @@ fields: FormlyFieldConfig[] = [
             actions: this.actions,
             start: parseISO(showing.start),
             end: parseISO(showing.end),
-            color: colors[index%19],
+            color: colors[index%10],
             resizable: {
               beforeStart: true,
               afterEnd: true,
@@ -380,7 +343,18 @@ fields: FormlyFieldConfig[] = [
         'movie': movies.title,
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
-      }).subscribe( (data:any) => {
+      }).subscribe( async (data:any) => {
+
+        
+        const colorArray = await this.hallService.getHalls().toPromise().then( 
+          (data) => { 
+             return data;
+          });
+
+        let colorIndex:any;
+        colorArray.some( (el:any, index: number) =>{
+          return el.name==hall_name? colorIndex = index: null 
+        })
 
         const added_event = {
           meta:{
@@ -390,7 +364,7 @@ fields: FormlyFieldConfig[] = [
           title: data.movie,
           start: parseISO(data.start),
           end: parseISO(data.end),
-          color: colors[0],
+          color: colors[colorIndex%10],
           draggable: true,
           resizable: {
             beforeStart: true,
@@ -434,10 +408,8 @@ fields: FormlyFieldConfig[] = [
           }
         })
       })
-      console.log(msg);
       this.handleEvent('Event deleted', msg.msg);
       })
-      // this.handleEvent('Event deleted', eventToDelete);
   }
 
   setView(view: CalendarView) {
