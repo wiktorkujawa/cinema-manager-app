@@ -46,7 +46,7 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(JSON.stringify(this.userData))
     .subscribe(
       data => {
-        this._router.navigate(['/about']);
+        this._router.navigate(['/']);
       } ,
       error => this.msg = error.error.message
     )
