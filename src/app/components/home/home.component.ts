@@ -39,8 +39,8 @@ const colors: any = [
     secondary: '#990000',
   },
   {
-    primary: '#FF9933',
-    secondary: '#994C00',
+    primary: '#3333FF',
+    secondary: '#000099',
   },
   {
     primary: '#FFFF33',
@@ -55,12 +55,12 @@ const colors: any = [
     secondary: '#009999',
   },
   {
-    primary: '#3333FF',
-    secondary: '#000099',
-  },
-  {
     primary: '#9933FF',
     secondary: '#4C0099',
+  },
+  {
+    primary: '#FF9933',
+    secondary: '#994C00',
   },
   {
     primary: '#FF33FF',
