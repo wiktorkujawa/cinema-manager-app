@@ -40,6 +40,10 @@ export class HallService {
     return this.webService.delete(this.hallUrl,name);
   }
 
+  changeTimeofShowing(hall_name:any, showing_id:any, object: any){
+    return this.webService.put(this.hallUrl+'/change_time',`${hall_name}/${showing_id}`, object);
+  }
+  
   removeShowing(hall_name: any, movie_id: any){
     return this.webService.delete(this.hallUrl,`${hall_name}/${movie_id}`)
   }
