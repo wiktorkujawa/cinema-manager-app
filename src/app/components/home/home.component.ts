@@ -381,23 +381,30 @@ fields: FormlyFieldConfig[] = [
         'start': start,
         'end': new Date(Date.parse(start) + movies.duration*60000)
       }).subscribe( (data:any) => {
+
+        const added_event = {
+          meta:{
+            hall_name: hall_name,
+            showing_id: data._id,
+          },
+          title: data.movie,
+          start: parseISO(data.start),
+          end: parseISO(data.end),
+          color: colors[0],
+          draggable: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+        }
+        this.AllEvents = [
+          ...this.AllEvents,
+          added_event
+        ]
+
         this.events = [
           ...this.events,
-          {
-            meta:{
-              hall_name: hall_name,
-              showing_id: data._id,
-            },
-            title: data.movie,
-            start: parseISO(data.start),
-            end: parseISO(data.end),
-            color: colors[0],
-            draggable: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-          },
+          added_event
         ]
 
         let formatted_date =this.datepipe.transform(this.addMovietoHall.start, 'medium');
@@ -411,8 +418,6 @@ fields: FormlyFieldConfig[] = [
       }
       
       );
-      // this.handleEvent('Event Added', this.addMovietoHall);
-  
   });
 
   };
