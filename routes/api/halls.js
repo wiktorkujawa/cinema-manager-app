@@ -137,7 +137,7 @@ router.put('/name/:name', (req, res) => {
   })
 });
 
-router.put('/move_showing/:hall_name/:showing_id', async (req, res) => {
+router.put('/change_time/:hall_name/:showing_id', async (req, res) => {
   
   const { hall_name, showing_id } = req.params;
 
@@ -154,18 +154,17 @@ router.put('/move_showing/:hall_name/:showing_id', async (req, res) => {
         })
     });
 
-  if(cand_add){
-    Hall.update({ 'name': hall_name,'taken_sessions._id': showing_id}, 
+  if(can_add){
+    Hall.updateOne({ 'name': hall_name,'taken_sessions._id': showing_id}, 
     {
       '$set': 
       {
         'taken_sessions.$.start': req.body.start,
         'taken_sessions.$.end': req.body.end
       }
-    }, err => {
-      console.log(err);
     }
-  )}
+  ).then( () => res.status(200).json({msg:"Showing moved from "}))
+}
   else return res.status(404).json({msg:"Already booked"});
 
 

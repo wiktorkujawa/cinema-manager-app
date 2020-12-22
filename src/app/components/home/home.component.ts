@@ -100,8 +100,6 @@ export class HomeComponent implements OnInit {
     event: CalendarEvent;
   };
 
-  // colors: any;
-
   addMovietoHall = {
     hall_name:'',
     title:'',
@@ -316,15 +314,24 @@ fields: FormlyFieldConfig[] = [
   }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
+        this.hallService.changeTimeofShowing(event.meta.hall_name, event.meta.showing_id,{ start: newStart, end: newEnd }).subscribe(
+          (message:any) =>{
+            const response = `${message.msg}${event.start} to ${newStart}`;
+            this.handleEvent('Event time changed', response);
+          },
+          (error:any) =>{
+            // console.log(error);
+            this.handleEvent('Event time changed', error.error.msg);
+          }
+        );
         return {
           ...event,
           start: newStart,
-          end: newEnd,
+          end: newEnd
         };
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
   }
 
   handleEvent(action: string, event: any): void {
