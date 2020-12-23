@@ -145,7 +145,7 @@ router.put('/change_time/:hall_name/:showing_id', async (req, res) => {
   await Hall.findOne({ name: hall_name } ).then( ({taken_sessions}) => {
     can_add = true;
         taken_sessions.some( ( { _id, start, end } ) => {
-          if(_id!==showing_id){
+          if(_id!=showing_id){
             if(Date.parse(req.body.end)>Date.parse(start) && Date.parse(req.body.start)<Date.parse(end)){
                 can_add = false;
                 return true;
@@ -163,7 +163,7 @@ router.put('/change_time/:hall_name/:showing_id', async (req, res) => {
         'taken_sessions.$.end': req.body.end
       }
     }
-  ).then( () => res.status(200).json({msg:"Showing moved from "}))
+  ).then( () => res.status(200).json({ msg:"Showing now displayed from " }))
 }
   else return res.status(404).json({msg:"Already booked"});
 

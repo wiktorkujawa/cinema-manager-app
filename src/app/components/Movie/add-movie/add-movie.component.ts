@@ -103,9 +103,7 @@ fields: any[] = [
   ngOnInit(): void {}
 
 
-  onChange(){
-    console.log("change");
-  }
+  onChange(){}
 
 
   onSubmit() {

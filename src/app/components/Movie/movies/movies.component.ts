@@ -16,9 +16,6 @@ export class MoviesComponent implements OnInit {
   @Input() username: any;
   movies: any;
 
-  // onOutletLoaded(event : any) {
-  //   console.log(event);
-  // }
   cols! : number;
   margin!: string;
   gutter!: string;

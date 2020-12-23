@@ -38,10 +38,7 @@ fields: FormlyFieldConfig[] = [
   public dialog: MatDialog,
   private hallService: HallService) { }
 
-  ngOnInit(): void {
-    
-    console.log(this.data);
-  }
+  ngOnInit(): void {}
 
   onNoClick() {
     this.dialog.closeAll();

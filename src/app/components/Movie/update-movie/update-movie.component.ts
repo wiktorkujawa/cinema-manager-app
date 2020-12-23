@@ -31,33 +31,7 @@ export class UpdateMovieComponent implements OnInit {
   fields: any[] = [
     {
       key: 'title',
-      type: 'input',
-      // hooks: {
-      //   onInit(field: any) {
-      //     const control = field.formControl;
-      //     if (control.value !== null) {
-      //       if(control.value.endsWith(')')){
-      //         control.value=control.value.slice(0,-6);
-      //       }
-      //       console.log(control.value);
-      //       axios.request({
-      //         method: 'GET',
-      //         url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-      //         params: {s: control.value, page: '1', r: 'json'},
-      //         headers: {
-      //           'x-rapidapi-key': 'a16322f6admsh01988b356dbb0cfp1d6770jsn9b2faae37767',
-      //           'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
-      //         }
-      //       }).then( (response) => {
-      //         console.log(response.data.Search);
-      //         console.log(field);
-      //         // this.fields[2].templateOptions.options = response.data.Search;
-      //       }).catch( (error) => {
-      //         console.error(error);
-      //       });
-      //     }
-      //   }
-      // },
+      type: 'input',    
       templateOptions: {
         label: 'Movie title',
         change: () => {
