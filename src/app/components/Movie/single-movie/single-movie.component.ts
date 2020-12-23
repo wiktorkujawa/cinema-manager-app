@@ -93,7 +93,6 @@ export class SingleMovieComponent implements OnInit {
       this.movieService.getMovie(title).subscribe( movieInfo => this.movieInfo = movieInfo);
 
       this.hallService.getShowing(title).subscribe( movieSchedule =>{ 
-        console.log(movieSchedule);
         this.movieSchedule = movieSchedule });
    }
 

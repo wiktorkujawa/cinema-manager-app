@@ -307,31 +307,37 @@ fields: FormlyFieldConfig[] = [
     this.handleEvent('Event summary', description);
   }
 
-  eventTimesChanged({
+  async eventTimesChanged({
     event,
     newStart,
     newEnd,
-  }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
+  }: CalendarEventTimesChangedEvent): Promise<any> {
+    this.events = await Promise.all(this.events.map( async (iEvent) => {
       if (iEvent === event) {
-        this.hallService.changeTimeofShowing(event.meta.hall_name, event.meta.showing_id,{ start: newStart, end: newEnd }).subscribe(
+        const message = await this.hallService.changeTimeofShowing(event.meta.hall_name, event.meta.showing_id,{ start: newStart, end: newEnd }).toPromise().then(
           (message:any) =>{
-            const response = `${message.msg}${event.start} to ${newStart}`;
-            this.handleEvent('Event time changed', response);
+            const from = this.datepipe.transform(newStart, 'medium');
+            const to = this.datepipe.transform(newEnd, 'medium');
+            return `${message.msg}${from} to ${to}`
           },
           (error:any) =>{
-            // console.log(error);
-            this.handleEvent('Event time changed', error.error.msg);
+            return error
           }
         );
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
+        if(message.error){
+          this.handleEvent('Event summary', message.error.msg);
+        }
+        else{
+          this.handleEvent('Event summary', message);
+          return {
+            ...event,
+            start: newStart,
+            end: newEnd
+          };
+        }
       }
       return iEvent;
-    });
+    }));
   }
 
   handleEvent(action: string, event: any): void {
@@ -388,7 +394,7 @@ fields: FormlyFieldConfig[] = [
           added_event
         ]
 
-        let formatted_date =this.datepipe.transform(this.addMovietoHall.start, 'medium');
+        let formatted_date = this.datepipe.transform(this.addMovietoHall.start, 'medium');
 
         
 
