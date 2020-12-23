@@ -312,7 +312,7 @@ fields: FormlyFieldConfig[] = [
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): Promise<any> {
-    this.events = await Promise.all(this.events.map( async (iEvent) => {
+    this.AllEvents = await Promise.all(this.AllEvents.map( async (iEvent) => {
       if (iEvent === event) {
         const message = await this.hallService.changeTimeofShowing(event.meta.hall_name, event.meta.showing_id,{ start: newStart, end: newEnd }).toPromise().then(
           (message:any) =>{
@@ -338,6 +338,16 @@ fields: FormlyFieldConfig[] = [
       }
       return iEvent;
     }));
+    
+    this.events=[];
+    this.selectedHall.hall_name.map( (selected:any) =>{
+      this.AllEvents.map( event =>{
+        if(event.meta.hall_name==selected){
+          this.events.push(event);
+        }
+      })
+    })
+
   }
 
   handleEvent(action: string, event: any): void {
