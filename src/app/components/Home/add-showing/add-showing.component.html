@@ -1,0 +1,11 @@
+<button class="close" mat-button (click)="onNoClick()">X</button>
+<h2 mat-dialog-title>Add Showing</h2>
+<hr>
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" class="form">
+    <formly-form [form]="form" [fields]="fields" [model]="addMovietoHall"></formly-form>
+    <button class="btn btn-primary float-right" type="submit">
+      Add new
+    </button>
+  </form>
+<mat-dialog-content>

@@ -93,26 +93,15 @@
 
 <br>
 <div class="row text-center" style="margin: 1rem;">
-<div class="col-md-12 col-lg-6 select-hall">
+  <div class="select-hall col-md-12 ">
 
-  <h1 style="text-align: center;">Select Hall </h1>
-    <formly-form [form]="selectHallForm" [fields]="selectFields" [model]="selectedHall" ></formly-form>
-  <div class="clearfix"></div>
+    <h1>Select Hall </h1>
+    <hr>
+      <formly-form [form]="selectHallForm" [fields]="selectFields" [model]="selectedHall" ></formly-form>
+      <hr>
+    <button mat-raised-button color="primary" (click)=openDialog()>Add Event</button>
 
-</div>
-
-
-<div class="col-md-12 offset-lg-1 col-lg-5 select-hall">
-<h1>
-  Add events
-</h1>
-  <form (ngSubmit)="addEvent()" class="form">
-    <formly-form [form]="form" [fields]="fields" [model]="addMovietoHall"></formly-form>
-    <button class="btn btn-primary float-right" type="submit">
-      Add new
-    </button>
-  </form>
-</div>
+  </div>
 </div>
 
 <div class="table-responsive">
@@ -132,22 +121,10 @@
     <tbody>
       <tr *ngFor="let event of events">
 
-        <td>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="event.meta.hall_name"
-            (keyup)="refresh.next()"
-          />
-        </td>
-        <td>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="event.title"
-            (keyup)="refresh.next()"
-          />
-        </td>
+
+
+        <td>{{ event.meta.hall_name }}</td>
+        <td>{{ event.title }}</td>
         <td>
           <input
             type="color"
@@ -172,6 +149,8 @@
             Delete
           </button>
         </td>
+
+
       </tr>
     </tbody>
   </table>
