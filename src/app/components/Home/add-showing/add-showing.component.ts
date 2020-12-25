@@ -1,7 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import * as moment from 'moment';
 import { HallService } from 'src/app/services/hall.service';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -13,6 +15,7 @@ import { MovieService } from 'src/app/services/movie.service';
 export class AddShowingComponent implements OnInit {
 
   @Output() addShowing: EventEmitter<any> = new EventEmitter();
+
   constructor(public dialog: MatDialog,
      private hallService: HallService,
     private movieService: MovieService) { }
@@ -54,7 +57,7 @@ fields: FormlyFieldConfig[] = [
     },
     {
       key: 'start',
-      type: 'datepicker',
+      type: 'datetimepicker',
       templateOptions: {
         label: 'Date',
         placeholder: 'Choose start date',

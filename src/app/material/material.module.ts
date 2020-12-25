@@ -15,6 +15,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { MatDatepickerModule} from '@angular/material/datepicker';
 
 
 const MaterialComponents = [ 
@@ -33,7 +35,11 @@ const MaterialComponents = [
   // MatOptionSelectionChange,
   MatSelectModule,
   MatMenuModule,
-  MatExpansionModule
+  MatExpansionModule,
+  NgxMatDatetimePickerModule, 
+  NgxMatTimepickerModule,
+  NgxMatNativeDateModule,
+  MatDatepickerModule,
   // MatSelect
  ]
 

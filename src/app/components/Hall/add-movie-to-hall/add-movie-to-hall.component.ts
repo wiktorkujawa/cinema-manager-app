@@ -35,7 +35,7 @@ export class AddMovieToHallComponent implements OnInit {
     },
     {
       key: 'start',
-      type: 'datepicker',
+      type: 'datetimepicker',
       templateOptions: {
         label: 'Start of showing',
         placeholder: 'Enter start date',

@@ -99,7 +99,7 @@
     <hr>
       <formly-form [form]="selectHallForm" [fields]="selectFields" [model]="selectedHall" ></formly-form>
       <hr>
-    <button mat-raised-button color="primary" (click)=openDialog()>Add Event</button>
+    <button mat-raised-button color="primary" (click)=addShowingDialog()>Add Event</button>
 
   </div>
 </div>
@@ -140,10 +140,10 @@
           />
         </td>
 
-        <td>{{event.start | date:'MMM d, y, h:mm'}}</td>
+        <td>{{event.start | date:'MMM d, y, H:mm'}}</td>
 
 
-        <td>{{event.end | date:'MMM d, y, h:mm'}}</td>
+        <td>{{event.end | date:'MMM d, y, H:mm'}}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             Delete
