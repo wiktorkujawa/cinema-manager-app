@@ -3,8 +3,8 @@
 <hr>
 <mat-dialog-content>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="onSubmit()">
     <formly-form [form]="form" [fields]="fields" [model]="selectedMovie"></formly-form>
-    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Submit </button>
+    <button mat-raised-button type="submit" color="primary" class="btn btn-primary float-right" [disabled]="!form.valid">Submit </button>
   </form>
 </mat-dialog-content>

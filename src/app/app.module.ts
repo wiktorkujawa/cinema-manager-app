@@ -35,6 +35,7 @@ import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add
 import { SingleMovieComponent } from './components/Movie/single-movie/single-movie.component';
 import { MoveShowingComponent } from './components/Hall/move-showing/move-showing.component';
 import { AddShowingComponent } from './components/Home/add-showing/add-showing.component';
+import { FormlyDateTimePicker } from './formly-datetimepicker/formly-datetimepicker.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AddShowingComponent } from './components/Home/add-showing/add-showing.c
     AddMovieToHallComponent,
     SingleMovieComponent,
     MoveShowingComponent,
-    AddShowingComponent
+    AddShowingComponent,
+    FormlyDateTimePicker
   ],
   entryComponents: [],
   imports: [
@@ -70,7 +72,9 @@ import { AddShowingComponent } from './components/Home/add-showing/add-showing.c
     FlatpickrModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    FormlyModule.forRoot({ extras: { lazyRender: true } }),
+    FormlyModule.forRoot({ extras: { lazyRender: true }, types: [
+      { name: 'datetimepicker', component: FormlyDateTimePicker },
+    ] }),
     FormlyMaterialModule,
     MatNativeDateModule,
     FormlyMatDatepickerModule,

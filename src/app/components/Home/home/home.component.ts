@@ -144,8 +144,45 @@ export class HomeComponent implements OnInit {
       label: '<i class="material-icons mat-icon">edit</i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        
-        this.handleEvent('Edited', event);
+
+        console.log(event);
+
+        // this.openDialog();
+        let start =this.datepipe.transform(event.start, 'medium');
+    let end =this.datepipe.transform(event.end, 'medium');
+
+    const description = `<div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Location</th>
+          <th>Starts at</th>
+          <th>Ends at</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <tr>
+
+        <td>
+          ${event.title}
+        </td>
+        <td>
+          ${event.meta.hall_name}
+        </td>
+        <td>
+          ${start}
+        </td>
+        <td>
+          ${end}
+        </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+      `
+        // this.handleEvent('Edited', description);
       },
     },
     {
@@ -315,7 +352,7 @@ export class HomeComponent implements OnInit {
     keyboard : false, centered: true });
   }
 
-  openDialog(){
+  addShowingDialog(){
     const ref = this.matDialog.open(AddShowingComponent, { 
       width: '60vw',
       minWidth:"350px",
@@ -383,69 +420,6 @@ export class HomeComponent implements OnInit {
       sub.unsubscribe();
     });
   }
-
-  addEvent(): void {
-
-    const { hall_name, title, start } = this.addMovietoHall;
-    
-    this.movieService.getMovie(title).subscribe( (movies: any) => {
-  
-      this.hallService.addShowingToHall(hall_name, {
-        'movie': movies.title,
-        'start': start,
-        'end': new Date(Date.parse(start) + movies.duration*60000)
-      }).subscribe( async (data:any) => {
-
-        
-        const colorArray = await this.hallService.getHalls().toPromise().then( 
-          (data) => { 
-             return data;
-          });
-
-        let colorIndex:any;
-        colorArray.some( (el:any, index: number) =>{
-          return el.name==hall_name? colorIndex = index: null 
-        })
-
-        const added_event = {
-          meta:{
-            hall_name: hall_name,
-            showing_id: data._id,
-          },
-          title: data.movie,
-          start: parseISO(data.start),
-          end: parseISO(data.end),
-          color: colors[colorIndex%10],
-          draggable: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-        }
-        this.AllEvents = [
-          ...this.AllEvents,
-          added_event
-        ]
-
-        this.events = [
-          ...this.events,
-          added_event
-        ]
-
-        let formatted_date = this.datepipe.transform(this.addMovietoHall.start, 'medium');
-
-        
-
-        const message = `Movie ${this.addMovietoHall.title} added to ${this.addMovietoHall.hall_name} on ${formatted_date}`
-        this.handleEvent('Event Added', message);
-      }, (error) =>{
-        this.handleEvent("Event can't be added", error.error.msg);
-      }
-      
-      );
-  });
-
-  };
 
   deleteEvent( eventToDelete: CalendarEvent ) {
 
