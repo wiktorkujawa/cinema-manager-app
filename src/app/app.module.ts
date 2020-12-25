@@ -14,7 +14,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import { AboutComponent } from './components/about/about.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/Home/home/home.component';
 import { AuthService } from './services/auth.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -34,6 +34,7 @@ import { AddMovieComponent } from './components/Movie/add-movie/add-movie.compon
 import { AddMovieToHallComponent } from './components/Hall/add-movie-to-hall/add-movie-to-hall.component';
 import { SingleMovieComponent } from './components/Movie/single-movie/single-movie.component';
 import { MoveShowingComponent } from './components/Hall/move-showing/move-showing.component';
+import { AddShowingComponent } from './components/Home/add-showing/add-showing.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MoveShowingComponent } from './components/Hall/move-showing/move-showin
     AddMovieComponent,
     AddMovieToHallComponent,
     SingleMovieComponent,
-    MoveShowingComponent
+    MoveShowingComponent,
+    AddShowingComponent
   ],
   entryComponents: [],
   imports: [

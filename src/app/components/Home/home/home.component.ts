@@ -9,14 +9,8 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours,
   parseISO
 } from 'date-fns';
 
@@ -29,9 +23,10 @@ import {
 import { HallService } from 'src/app/services/hall.service';
 import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MovieService } from 'src/app/services/movie.service';
 import { DatePipe } from '@angular/common'
+import { MatDialog } from '@angular/material/dialog';
+import { AddShowingComponent } from '../add-showing/add-showing.component';
 
 const colors: any = [
   {
@@ -87,7 +82,10 @@ const colors: any = [
 
 export class HomeComponent implements OnInit {
   @ViewChild('modalContent', { static: true })
-  modalContent: TemplateRef<any> | undefined;
+  modalContent!: TemplateRef<any>;
+
+  
+  
 
   view: CalendarView = CalendarView.Month;
 
@@ -140,46 +138,6 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  
-  form = new FormGroup({});
-fields: FormlyFieldConfig[] = [
-    {
-      key: 'hall_name',
-      type: 'select',
-      templateOptions: {
-        label: 'Hall',
-        placeholder: 'Choose hall',
-        required: true,
-        options: this.hallService.getHalls(),
-        valueProp: 'name',
-        labelProp: 'name',
-        appearance: 'outline'
-      }
-    },
-    {
-      key: 'title',
-      type: 'select',
-      templateOptions: {
-        label: 'Movie',
-        placeholder: 'Choose movie',
-        required: true,
-        options: this.movieService.getMovies(),
-        valueProp: 'title',
-        labelProp: 'title',
-        appearance: 'outline'
-      }
-    },
-    {
-      key: 'start',
-      type: 'datepicker',
-      templateOptions: {
-        label: 'Date',
-        placeholder: 'Choose start date',
-        required: true,
-        appearance: 'outline'
-      }
-    }
-  ];
 
   actions: CalendarEventAction[] = [
     {
@@ -221,6 +179,7 @@ fields: FormlyFieldConfig[] = [
 
   constructor( private hallService: HallService,
     private movieService: MovieService,
+    private matDialog: MatDialog,
     private modal: NgbModal,
     public datepipe: DatePipe) {}
 
@@ -354,6 +313,75 @@ fields: FormlyFieldConfig[] = [
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg', backdrop : 'static',
     keyboard : false, centered: true });
+  }
+
+  openDialog(){
+    const ref = this.matDialog.open(AddShowingComponent, { 
+      width: '60vw',
+      minWidth:"350px",
+      panelClass: 'my-dialog', 
+    });
+    const sub = ref.componentInstance.addShowing.subscribe((movie:any) => {
+      
+      this.movieService.getMovie(movie.title).subscribe( (movies: any) => {
+  
+      this.hallService.addShowingToHall(movie.hall_name, {
+        'movie': movies.title,
+        'start': movie.start,
+        'end': new Date(Date.parse(movie.start) + movies.duration*60000)
+      }).subscribe( async (data:any) => {
+
+        
+        const colorArray = await this.hallService.getHalls().toPromise().then( 
+          (data) => { 
+             return data;
+          });
+
+        let colorIndex:any;
+        colorArray.some( (el:any, index: number) =>{
+          return el.name==movie.hall_name? colorIndex = index: null 
+        })
+
+        const added_event = {
+          meta:{
+            hall_name: movie.hall_name,
+            showing_id: data._id,
+          },
+          title: data.movie,
+          start: parseISO(data.start),
+          end: parseISO(data.end),
+          color: colors[colorIndex%10],
+          draggable: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+        }
+        this.AllEvents = [
+          ...this.AllEvents,
+          added_event
+        ]
+
+        this.events = [
+          ...this.events,
+          added_event
+        ]
+
+        let formatted_date = this.datepipe.transform(movie.start, 'medium');
+
+        
+        const message = `Movie ${movie.title} added to ${movie.hall_name} on ${formatted_date}`
+        this.handleEvent('Event Added', message);
+      }, (error) =>{
+        this.handleEvent("Event can't be added", error.error.msg);
+      }
+      
+      );
+  });
+    });
+    ref.afterClosed().subscribe(() => {
+      sub.unsubscribe();
+    });
   }
 
   addEvent(): void {
