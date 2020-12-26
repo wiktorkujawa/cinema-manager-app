@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-public-layout',
@@ -19,6 +20,7 @@ export class PublicLayoutComponent implements OnInit {
  
 
   constructor( private authService: AuthService,
+    @Inject(DOCUMENT) private document: Document,
     private _router:Router,
     private breakpointObserver: BreakpointObserver) {
       this.breakpointObserver.observe([
@@ -48,6 +50,10 @@ export class PublicLayoutComponent implements OnInit {
     }
 
   ngOnInit(): void {
+  }
+
+  onSwitchTheme(event:any){
+    event.checked ? this.document.body.classList.add('alternate-theme'): this.document.body.classList.remove('alternate-theme') 
   }
 
 
