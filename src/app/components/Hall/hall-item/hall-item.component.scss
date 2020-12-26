@@ -10,14 +10,20 @@
   margin: 0 auto;
 }
 
-.table-responsive {
-  position: absolute;
+mat-header-cell, mat-cell {
+  justify-content: space-around;
+  text-align: center;
+ }
+
+.mat-elevation-z8{
+    position: absolute;
   top: 0;
   overflow-y: auto;
   height: calc(100% - 6.6em);
   margin-top: 3.4em;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 100%;
 }
 
 .del{

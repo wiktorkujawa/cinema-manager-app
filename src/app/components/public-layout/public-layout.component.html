@@ -18,21 +18,22 @@
     <mat-toolbar class="navbar" color="primary">
   
       <mat-button-toggle *ngIf='mobile' (click)="opened=!opened"><mat-icon>menu</mat-icon></mat-button-toggle>
-      
-      <a routerLink="/" >Logo</a>
+      <div>
+        <a routerLink="/" >Logo</a>
+        <mat-slide-toggle *ngIf='mobile' (change)="onSwitchTheme($event)" ></mat-slide-toggle>
+      </div>
       <div *ngIf='!mobile'>
-        <span><a routerLink="/" class="active" >Home</a></span>
-        <span><a routerLink="/halls" class="active" >Halls</a></span>
-        <span><a routerLink="/movies" class="active" >Movies</a></span>
-        <span><a routerLink="/about" class="active" >About</a></span>
+        <span><a mat-button routerLink="/" class="active" >Home</a></span>
+        <span><a mat-button routerLink="/halls" class="active" >Halls</a></span>
+        <span><a mat-button routerLink="/movies" class="active" >Movies</a></span>
+        <span><a mat-button routerLink="/about" class="active" >About</a></span>
         <button *ngIf='!username' mat-flat-button [matMenuTriggerFor]="appMenu"><mat-icon>login</mat-icon></button>
         <mat-menu #appMenu="matMenu">
-          <a style="color: #111111; text-align: center;" mat-menu-item routerLink="/login">Login</a>
-          <a style="color: #111111; text-align: center;" mat-menu-item routerLink="/register">Register</a>
+          <a style="text-align: center;" class="active" mat-menu-item routerLink="/login">Login</a>
+          <a style="text-align: center;" class="active" mat-menu-item routerLink="/register">Register</a>
         </mat-menu>
         <span *ngIf='username'><a (click)="Logout()" class="active" >Logout</a></span>
         <mat-slide-toggle (change)="onSwitchTheme($event)" ></mat-slide-toggle>
-
       </div>  
     </mat-toolbar>
     <p *ngIf="username">Hello {{username}}</p>

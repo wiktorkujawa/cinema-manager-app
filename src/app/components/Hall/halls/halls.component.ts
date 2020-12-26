@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HallService } from 'src/app/services/hall.service';
@@ -48,6 +48,7 @@ export class HallsComponent implements OnInit {
 
   constructor(private hallService: HallService,
     public dialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver) {
       this.breakpointObserver.observe([
         Breakpoints.XSmall,
@@ -121,7 +122,7 @@ openAddMovieDialog(name: any){
   const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
     
     this.hallService.addShowingToHall(name,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( hall => {
-      this.halls[this.halls.map( (e:any) => { return e.name; }).indexOf(name)].taken_sessions.push(hall);
+      this.halls[this.halls.map( (e:any) => e.name).indexOf(name)].taken_sessions.push(hall);
     });
   });
   ref.afterClosed().subscribe(() => {
@@ -187,10 +188,6 @@ deleteHall( name :any) {
   this.halls = this.halls.filter( (t:any) => t.name !== name );
   // Remove from server
   this.hallService.removeHall(name).subscribe();
-}
-
-addShowing( data:any){
-  this.hallService.addShowingToHall( data.name, data.movie).subscribe();
 }
 
 deleteMovie(data: any) {

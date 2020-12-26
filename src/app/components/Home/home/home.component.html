@@ -92,16 +92,17 @@
 </div>
 
 <br>
-<div class="row text-center" style="margin: 1rem;">
-  <div class="select-hall col-md-12 ">
+<div class="row text-center select-hall">
+  <div class="col-md-10 ">
 
     <h1>Select Hall </h1>
     <hr>
       <formly-form [form]="selectHallForm" [fields]="selectFields" [model]="selectedHall" ></formly-form>
-      <hr>
-    <button mat-raised-button color="primary" (click)=addShowingDialog()>Add Event</button>
-
-  </div>
+    </div>
+    <div class="col-md-2">
+      <button style="top:50%" *ngIf="username" mat-raised-button color="primary" (click)=addShowingDialog()>Add Event</button>
+    </div>
+  
 </div>
 
 <mat-table [dataSource]="events" class="mat-elevation-z8">
@@ -148,7 +149,7 @@
     <mat-cell *matCellDef="let element"> {{element.end | date:'MMM d, y, H:mm'}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Remove">
+  <ng-container *ngIf="username" matColumnDef="Remove">
     <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
     <mat-cell *matCellDef="let element"> 
       <button mat-raised-button color="warn" (click)="deleteEvent(element)">
@@ -157,8 +158,8 @@
   </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-header-row *matHeaderRowDef="username ? displayedColumnsOnLog : displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: username ? displayedColumnsOnLog : displayedColumns;"></mat-row>
 
 </mat-table>
 

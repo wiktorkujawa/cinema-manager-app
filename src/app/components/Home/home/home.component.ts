@@ -3,7 +3,8 @@ import {
   OnInit,
   TemplateRef,
   ViewChild,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  Input
 } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -84,8 +85,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('modalContent', { static: true })
   modalContent!: TemplateRef<any>;
 
-  
-  displayedColumns: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at', 'Remove'];
+  @Input() username: any;
+  displayedColumnsOnLog: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at', 'Remove'];
+  displayedColumns: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at'];
 
   view: CalendarView = CalendarView.Month;
 

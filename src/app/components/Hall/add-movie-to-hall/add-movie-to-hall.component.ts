@@ -13,7 +13,7 @@ export class AddMovieToHallComponent implements OnInit {
 
   @Output() addMovieToHall: EventEmitter<{movie:any, start: any, end: any}> = new EventEmitter();
 
-  selectedMovie = <any>{};
+  selectedMovie = <any>{movieData:''};
 
   duration: any;
 
