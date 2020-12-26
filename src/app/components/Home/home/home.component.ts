@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
   modalContent!: TemplateRef<any>;
 
   
-  
+  displayedColumns: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at', 'Remove'];
 
   view: CalendarView = CalendarView.Month;
 

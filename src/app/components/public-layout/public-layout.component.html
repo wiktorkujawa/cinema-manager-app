@@ -31,6 +31,7 @@
           <a style="color: #111111; text-align: center;" mat-menu-item routerLink="/register">Register</a>
         </mat-menu>
         <span *ngIf='username'><a (click)="Logout()" class="active" >Logout</a></span>
+        <mat-slide-toggle (change)="onSwitchTheme($event)" ></mat-slide-toggle>
 
       </div>  
     </mat-toolbar>

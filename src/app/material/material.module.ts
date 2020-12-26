@@ -17,6 +17,8 @@ import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatTableModule} from '@angular/material/table';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 const MaterialComponents = [ 
@@ -40,6 +42,8 @@ const MaterialComponents = [
   NgxMatTimepickerModule,
   NgxMatNativeDateModule,
   MatDatepickerModule,
+  MatTableModule,
+  MatSlideToggleModule
   // MatSelect
  ]
 

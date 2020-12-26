@@ -104,58 +104,63 @@
   </div>
 </div>
 
-<div class="table-responsive">
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Hall</th>
-        <th>Title</th>
-        <th>Primary color</th>
-        <th>Secondary color</th>
-        <th>Starts at</th>
-        <th>Ends at</th>
-        <th>Remove</th>
-      </tr>
-    </thead>
+<mat-table [dataSource]="events" class="mat-elevation-z8">
 
-    <tbody>
-      <tr *ngFor="let event of events">
+  <ng-container matColumnDef="Hall">
+    <mat-header-cell *matHeaderCellDef>Hall</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.meta.hall_name}}</mat-cell>
+  </ng-container>
 
+  <ng-container matColumnDef="Title">
+    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.title}}</mat-cell>
+  </ng-container>
 
-
-        <td>{{ event.meta.hall_name }}</td>
-        <td>{{ event.title }}</td>
-        <td>
-          <input
+  <ng-container matColumnDef="Primary">
+    <mat-header-cell *matHeaderCellDef>Primary</mat-header-cell>
+    <mat-cell *matCellDef="let element"> 
+      <input
             type="color"
-            [(ngModel)]="event.color!.primary"
+            [(ngModel)]="element.color!.primary"
             (change)="refresh.next()"
           />
-        </td>
-        <td>
-          <input
-            type="color"
-            [(ngModel)]="event.color!.secondary"
-            (change)="refresh.next()"
-          />
-        </td>
+    </mat-cell>
+  </ng-container>
 
-        <td>{{event.start | date:'MMM d, y, H:mm'}}</td>
+  <ng-container matColumnDef="Secondary">
+    <mat-header-cell *matHeaderCellDef>Secondary</mat-header-cell>
+    <mat-cell *matCellDef="let element"> 
+      <input
+      type="color"
+      [(ngModel)]="element.color!.secondary"
+      (change)="refresh.next()"
+    />
+  </mat-cell>
+  </ng-container>
 
+  <ng-container matColumnDef="Starts at">
+    <mat-header-cell *matHeaderCellDef>Starts at</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.start | date:'MMM d, y, H:mm'}}</mat-cell>
+  </ng-container>
 
-        <td>{{event.end | date:'MMM d, y, H:mm'}}</td>
-        <td>
-          <button class="btn btn-danger" (click)="deleteEvent(event)">
-            Delete
-          </button>
-        </td>
+  <ng-container matColumnDef="Ends at">
+    <mat-header-cell *matHeaderCellDef>Ends at</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.end | date:'MMM d, y, H:mm'}}</mat-cell>
+  </ng-container>
 
+  <ng-container matColumnDef="Remove">
+    <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+    <mat-cell *matCellDef="let element"> 
+      <button mat-raised-button color="warn" (click)="deleteEvent(element)">
+        X
+      </button>
+  </mat-cell>
+  </ng-container>
 
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
+</mat-table>
 
 <ng-template #modalContent let-close="close">
   
