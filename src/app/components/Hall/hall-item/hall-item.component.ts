@@ -16,6 +16,11 @@ export class HallItemComponent implements OnInit {
   @Output() deleteMovie : EventEmitter<{name:any, movie_id:any}> = new EventEmitter();
   @Output() openAddMovieDialog : EventEmitter<any> = new EventEmitter();
   environment: string = environment.apiUrl;
+
+  displayedColumnsOnLog: string[] = [ 'Title', 'Starts at', 'Ends at', 'Move to Hall', 'Remove'];
+  displayedColumns: string[] = [ 'Title', 'Starts at', 'Ends at'];
+  
+
   constructor() {}
 
   
@@ -24,6 +29,7 @@ export class HallItemComponent implements OnInit {
   
 
   onDeleteFromHall(movie_id: string){
+    console.log(movie_id);
     this.deleteMovie.emit({ name: this.hall.name, movie_id: movie_id});
   }
 

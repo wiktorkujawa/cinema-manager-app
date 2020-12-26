@@ -4,6 +4,7 @@ $sidenav-color: #001f3f;
 
 .navbar{
   justify-content: space-between;
+  padding: 0 2rem;
 }
 
 span {
@@ -12,7 +13,6 @@ span {
 
 
 a {
-  color: #fff;
   text-decoration: none;
   cursor: pointer;
 
@@ -41,6 +41,9 @@ mat-sidenav-container {
 mat-sidenav{
   background-color: $sidenav-color;
   width: 200px;
+}
+mat-slide-toggle {
+  padding-left: 1rem;
 }
 
 router-outlet{

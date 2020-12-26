@@ -3,7 +3,47 @@
   <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions?.length==0" (click)="onDelete(hall.name)" class="del">X</button>
 </mat-grid-tile-header>
 
-  <div *ngIf="hall.taken_sessions?.length!=0" class="table-responsive">
+<mat-table *ngIf="hall.taken_sessions?.length!=0" [dataSource]="hall.taken_sessions" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="Title">
+    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+    <mat-cell *matCellDef="let session"> {{session.movie}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Starts at">
+    <mat-header-cell *matHeaderCellDef>Starts at</mat-header-cell>
+    <mat-cell *matCellDef="let session"> {{session.start | date:'MMM d, y, H:mm'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Ends at">
+    <mat-header-cell *matHeaderCellDef>Ends at</mat-header-cell>
+    <mat-cell *matCellDef="let session"> {{session.end | date:'MMM d, y, H:mm'}}</mat-cell>
+  </ng-container>
+
+  <ng-container *ngIf="username" matColumnDef="Move to Hall">
+    <mat-header-cell *matHeaderCellDef>Move to Hall</mat-header-cell>
+    <mat-cell *matCellDef="let session"> 
+      <button mat-raised-button color="primary" (click)="onMoveShowing(session._id)">
+        <mat-icon>trending_flat</mat-icon>
+      </button>
+  </mat-cell>
+  </ng-container>
+
+  <ng-container *ngIf="username" matColumnDef="Remove">
+    <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+    <mat-cell *matCellDef="let session"> 
+      <button mat-raised-button color="warn" (click)="onDeleteFromHall(session._id)">
+        X
+      </button>
+  </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="username ? displayedColumnsOnLog: displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: username ? displayedColumnsOnLog: displayedColumns;"></mat-row>
+
+
+</mat-table>
+  <!-- <div *ngIf="hall.taken_sessions?.length!=0" class="table-responsive">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -27,7 +67,7 @@
             {{session.end | date:'MMM d, y, H:mm'}}
           </td>
           <td *ngIf="username">
-            <button mat-raised-button type="submit" color="primary" (click)="onMoveShowing(session._id)"><mat-icon>trending_flat</mat-icon>></button>
+            <button mat-raised-button type="submit" color="primary" (click)="onMoveShowing(session._id)"><mat-icon>trending_flat</mat-icon></button>
           </td>
           <td *ngIf="username">
             <button mat-raised-button type="submit" color="warn" (click)="onDeleteFromHall(session._id)">X</button>
@@ -35,7 +75,7 @@
         </tr>
       </tbody>
    </table>
-  </div>
+  </div> -->
   <h1 *ngIf="hall.taken_sessions?.length==0"> No showings in this hall</h1>
 <mat-grid-tile-footer>
   <button *ngIf="username" mat-raised-button (click)="onUpdate(hall.name)" class="mod">Modify</button>
