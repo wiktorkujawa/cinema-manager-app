@@ -1,7 +1,7 @@
 <button class="add-button" mat-raised-button color="primary" *ngIf='username'(click)="openDialog()">Add hall</button> 
 <mat-grid-list [cols]="cols" [gutterSize]="gutter" [ngStyle]="{'margin': margin}" rowHeight="1:1">
   <mat-grid-tile *ngFor="let hall of halls">
-    <app-hall-item
+    <app-hall-item #child
       [username]="username" 
       [hall]="hall"
       (deleteHall)="deleteHall(hall.name)"
