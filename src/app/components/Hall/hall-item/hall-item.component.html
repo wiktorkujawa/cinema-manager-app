@@ -41,55 +41,11 @@
   <mat-header-row *matHeaderRowDef="username ? displayedColumnsOnLog: displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: username ? displayedColumnsOnLog: displayedColumns;"></mat-row>
 
-
 </mat-table>
-  <!-- <div *ngIf="hall.taken_sessions?.length!=0" class="table-responsive">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Starts at</th>
-          <th>Ends at</th>
-          <th *ngIf="username">Move to hall</th>
-          <th *ngIf="username">Remove</th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <tr *ngFor="let session of hall.taken_sessions">
-          <td>
-            <a routerLink="/movies/{{session.movie}}">{{session.movie}}</a>
-          </td>
-          <td>
-            {{session.start | date:'MMM d, y, H:mm'}}
-          </td>
-          <td>
-            {{session.end | date:'MMM d, y, H:mm'}}
-          </td>
-          <td *ngIf="username">
-            <button mat-raised-button type="submit" color="primary" (click)="onMoveShowing(session._id)"><mat-icon>trending_flat</mat-icon></button>
-          </td>
-          <td *ngIf="username">
-            <button mat-raised-button type="submit" color="warn" (click)="onDeleteFromHall(session._id)">X</button>
-          </td>
-        </tr>
-      </tbody>
-   </table>
-  </div> -->
   <h1 *ngIf="hall.taken_sessions?.length==0"> No showings in this hall</h1>
 <mat-grid-tile-footer>
   <button *ngIf="username" mat-raised-button (click)="onUpdate(hall.name)" class="mod">Modify</button>
   <button *ngIf="username" mat-raised-button (click)="onAddMovie(hall.name)" class="mod">Add movie</button>
-
-<!-- <button class="close" mat-button (click)="onNoClick()">X</button>
-<h2 mat-dialog-title>Add Hall</h2>
-<hr>
-<mat-dialog-content>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <formly-form [form]="form" [fields]="fields" [model]="selectedMovie"></formly-form>
-    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid">Submit </button>
-  </form>
-</mat-dialog-content> -->
 
 </mat-grid-tile-footer>

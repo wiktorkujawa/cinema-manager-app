@@ -69,7 +69,6 @@ export class AddMovieToHallComponent implements OnInit {
 
   ngOnInit(): void {
     this.movieService.getMovies().subscribe( movie => this.selectedMovie.movieData = movie[0]);
-
   }
 
 }

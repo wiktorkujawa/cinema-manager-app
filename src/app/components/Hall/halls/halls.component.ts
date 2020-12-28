@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HallService } from 'src/app/services/hall.service';
@@ -15,6 +15,8 @@ import { MoveShowingComponent } from '../move-showing/move-showing.component';
 export class HallsComponent implements OnInit {
   @Input() username: any;
   halls: any;
+
+  @ViewChildren('child') child:any;
 
   cols! : number;
   margin!: string;
@@ -48,7 +50,6 @@ export class HallsComponent implements OnInit {
 
   constructor(private hallService: HallService,
     public dialog: MatDialog,
-    private changeDetectorRefs: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver) {
       this.breakpointObserver.observe([
         Breakpoints.XSmall,
@@ -93,7 +94,6 @@ ngOnInit(): void {
   })
 }
 
-
 openDialog(){
   const ref = this.dialog.open(AddHallComponent, { 
     width: '60vw',
@@ -109,6 +109,7 @@ openDialog(){
   });
 }
 
+
 openAddMovieDialog(name: any){
   const ref = this.dialog.open(AddMovieToHallComponent, { 
     width: '60vw',
@@ -119,12 +120,15 @@ openAddMovieDialog(name: any){
       username: this.username
     }
   });
+  console.log(ref.componentInstance);
   const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
-    
-    this.hallService.addShowingToHall(name,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( hall => {
-      this.halls[this.halls.map( (e:any) => e.name).indexOf(name)].taken_sessions.push(hall);
+    const index = this.halls.findIndex((hall:any) => hall.name === name);
+    this.hallService.addShowingToHall(name,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( async hall => {
+      await this.halls[index].taken_sessions.push(hall);
+      this.child._results[index].table.renderRows();
     });
   });
+
   ref.afterClosed().subscribe(() => {
     sub.unsubscribe();
   });
