@@ -28,6 +28,9 @@ import { MovieService } from 'src/app/services/movie.service';
 import { DatePipe } from '@angular/common'
 import { MatDialog } from '@angular/material/dialog';
 import { AddShowingComponent } from '../add-showing/add-showing.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 const colors: any = [
   {
@@ -85,9 +88,13 @@ export class HomeComponent implements OnInit {
   @ViewChild('modalContent', { static: true })
   modalContent!: TemplateRef<any>;
 
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  dataSource!: MatTableDataSource<any>;
+  
   @Input() username: any;
-  displayedColumnsOnLog: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at', 'Remove'];
-  displayedColumns: string[] = [ 'Hall', 'Title', 'Primary', 'Secondary', 'Starts at', 'Ends at'];
+  displayedColumnsOnLog: string[] = [ 'meta.hall_name', 'title', 'Primary', 'Secondary', 'start', 'end', 'Remove'];
+  displayedColumns: string[] = [ 'meta.hall_name', 'title', 'start', 'end'];
 
   view: CalendarView = CalendarView.Month;
 
@@ -127,6 +134,7 @@ export class HomeComponent implements OnInit {
               }
             })
           })
+          this.dataSource.data = this.events;
         },
         label: 'Hall',
         placeholder: 'Choose hall',
@@ -149,41 +157,6 @@ export class HomeComponent implements OnInit {
 
         console.log(event);
 
-        // this.openDialog();
-        let start =this.datepipe.transform(event.start, 'medium');
-    let end =this.datepipe.transform(event.end, 'medium');
-
-    const description = `<div class="table-responsive">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Location</th>
-          <th>Starts at</th>
-          <th>Ends at</th>
-        </tr>
-      </thead>
-  
-      <tbody>
-      <tr>
-
-        <td>
-          ${event.title}
-        </td>
-        <td>
-          ${event.meta.hall_name}
-        </td>
-        <td>
-          ${start}
-        </td>
-        <td>
-          ${end}
-        </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-      `
         // this.handleEvent('Edited', description);
       },
     },
@@ -203,6 +176,7 @@ export class HomeComponent implements OnInit {
               }
             })
           })
+          this.dataSource.data = this.events;
           this.handleEvent('Deleted', msg.msg);
         });
       },
@@ -248,7 +222,21 @@ export class HomeComponent implements OnInit {
         })
       })
       this.events = this.AllEvents;
+      this.dataSource = new MatTableDataSource(this.events);
+
+      setTimeout(() => {
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch(property) {
+            case 'meta.hall_name': return item.meta.hall_name;
+            default: return item[property];
+          }
+        };
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
     })
+
+    
   }
   
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -345,6 +333,7 @@ export class HomeComponent implements OnInit {
         }
       })
     })
+    this.dataSource.data = this.events;
 
   }
 
@@ -406,6 +395,11 @@ export class HomeComponent implements OnInit {
           added_event
         ]
 
+        this.dataSource.data = [
+        ...this.dataSource.data,
+        added_event
+      ]
+
         let formatted_date = this.datepipe.transform(movie.start, 'medium');
 
         
@@ -435,6 +429,7 @@ export class HomeComponent implements OnInit {
           }
         })
       })
+      this.dataSource.data = this.events;
       this.handleEvent('Event deleted', msg.msg);
       })
   }

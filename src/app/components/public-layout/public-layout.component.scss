@@ -1,6 +1,5 @@
 
 $link-color: #FF4136;
-$sidenav-color: #001f3f;
 
 .navbar{
   justify-content: space-between;
@@ -39,7 +38,6 @@ mat-sidenav-container {
 }
 
 mat-sidenav{
-  background-color: $sidenav-color;
   width: 200px;
 }
 mat-slide-toggle {

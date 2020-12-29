@@ -1,3 +1,4 @@
+<div class="container">
 <div class="row text-center">
   <div class="col-md-4">
     <div class="btn-group">
@@ -58,7 +59,6 @@
     </div>
   </div>
 </div>
-<br />
 <div [ngSwitch]="view">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
@@ -91,7 +91,6 @@
   </mwl-calendar-day-view>
 </div>
 
-<br>
 <div class="row text-center select-hall">
   <div class="col-md-10 ">
 
@@ -105,15 +104,15 @@
   
 </div>
 
-<mat-table [dataSource]="events" class="mat-elevation-z8">
+<mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-  <ng-container matColumnDef="Hall">
-    <mat-header-cell *matHeaderCellDef>Hall</mat-header-cell>
+  <ng-container matColumnDef="meta.hall_name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Hall</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.meta.hall_name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Title">
-    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+  <ng-container matColumnDef="title">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.title}}</mat-cell>
   </ng-container>
 
@@ -139,12 +138,12 @@
   </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Starts at">
-    <mat-header-cell *matHeaderCellDef>Starts at</mat-header-cell>
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Starts at</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.start | date:'MMM d, y, H:mm'}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Ends at">
+  <ng-container matColumnDef="end">
     <mat-header-cell *matHeaderCellDef>Ends at</mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.end | date:'MMM d, y, H:mm'}}</mat-cell>
   </ng-container>
@@ -162,6 +161,7 @@
   <mat-row *matRowDef="let row; columns: username ? displayedColumnsOnLog : displayedColumns;"></mat-row>
 
 </mat-table>
+<mat-paginator [pageSizeOptions]="[5,10,20]" showsFirstLastButtons></mat-paginator>
 
 <ng-template #modalContent let-close="close">
   
@@ -177,3 +177,5 @@
     </button>
   </div>
 </ng-template>
+
+</div>

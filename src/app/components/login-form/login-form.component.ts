@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 
 @Component({
   selector: 'app-login-form',
@@ -13,6 +14,7 @@ export class LoginFormComponent implements OnInit {
 
   form = new FormGroup({});
   userData = { };
+  mobile!: boolean;
   msg: String = '';
   fields: FormlyFieldConfig[] = [
     {
@@ -39,7 +41,24 @@ export class LoginFormComponent implements OnInit {
   ];
   
   constructor(private authService: AuthService,
-    private _router:Router) { }
+    private _router:Router,
+    private breakpointObserver: BreakpointObserver) {
+      this.breakpointObserver.observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ]).subscribe(result => {
+        if (result.matches) {
+          result.breakpoints[Breakpoints.XSmall] ?
+            this.mobile = true :
+            this.mobile = false;
+          
+        }
+      });
+
+    }
 
   onSubmit(){
   

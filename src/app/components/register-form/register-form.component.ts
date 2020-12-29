@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,6 +14,8 @@ export class RegisterFormComponent implements OnInit {
 
   form = new FormGroup({});
   userData = { };
+
+  mobile!: boolean;
   fields: FormlyFieldConfig[] = [
     {
       key: 'email',
@@ -60,7 +63,24 @@ export class RegisterFormComponent implements OnInit {
 
 
   constructor( private authService: AuthService,
-    private _router: Router) { }
+    private _router: Router,
+    private breakpointObserver: BreakpointObserver) {
+      this.breakpointObserver.observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ]).subscribe(result => {
+        if (result.matches) {
+          result.breakpoints[Breakpoints.XSmall] ?
+            this.mobile = true :
+            this.mobile = false;
+          
+        }
+      });
+
+    }
 
   onSubmit(){
   

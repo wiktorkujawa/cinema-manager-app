@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,16 +21,48 @@ export class HallItemComponent implements OnInit {
   environment: string = environment.apiUrl;
   
 
-  displayedColumnsOnLog: string[] = [ 'Title', 'Starts at', 'Ends at', 'Move to Hall', 'Remove'];
-  displayedColumns: string[] = [ 'Title', 'Starts at', 'Ends at'];
+  displayedColumnsOnLog: string[] = [ 'movie', 'start', 'end', 'Move to Hall', 'Remove'];
+  displayedColumns: string[] = [ 'movie', 'start', 'end'];
 
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  
   @ViewChild(MatTable) table!: MatTable<any>;
+
+  
+
+  dataSource!: MatTableDataSource<any>;
   
   constructor() {}
 
+
+  form = new FormGroup({});
+
+  fields: any[] = [
+    {
+      key: 'value',
+      type: 'input',
+      templateOptions: {
+        label: 'Filter title',
+        placeholder: 'Type title',
+      }
+    }];
+
+  filter = { value:''};
   
-  ngOnInit(): void {
+  applyFilter(){
+    this.dataSource.filter = this.filter.value.trim().toLowerCase();
+    console.log(this.sort);
+    console.log(this.dataSource.sort); 
   }
+
+
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(this.hall.taken_sessions);
+    setTimeout(() => {
+      this.dataSource.sort = this.sort;
+    });
+  }
+  
   
   onDeleteFromHall(movie_id: string){
     this.deleteMovie.emit({ name: this.hall.name, movie_id: movie_id});

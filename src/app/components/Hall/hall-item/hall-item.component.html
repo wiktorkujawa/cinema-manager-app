@@ -1,21 +1,25 @@
-<mat-grid-tile-header style="display: flex; justify-content: space-between" >
+
+
+<mat-grid-tile-header>
+  <formly-form class="filter" *ngIf="hall.taken_sessions?.length!=0" [form]="form" [fields]="fields" [model]="filter" (keyup)="applyFilter()"></formly-form>
   <h1 class="title">{{hall.name}}</h1>
   <button mat-raised-button color="warn" *ngIf="username && hall.taken_sessions?.length==0" (click)="onDelete(hall.name)" class="del">X</button>
 </mat-grid-tile-header>
 
-<mat-table *ngIf="hall.taken_sessions?.length!=0" [dataSource]="hall.taken_sessions" class="mat-elevation-z8">
 
-  <ng-container matColumnDef="Title">
-    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+<mat-table *ngIf="hall.taken_sessions?.length!=0" [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <ng-container matColumnDef="movie">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
     <mat-cell *matCellDef="let session"> {{session.movie}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Starts at">
-    <mat-header-cell *matHeaderCellDef>Starts at</mat-header-cell>
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Starts at</mat-header-cell>
     <mat-cell *matCellDef="let session"> {{session.start | date:'MMM d, y, H:mm'}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="Ends at">
+  <ng-container matColumnDef="end">
     <mat-header-cell *matHeaderCellDef>Ends at</mat-header-cell>
     <mat-cell *matCellDef="let session"> {{session.end | date:'MMM d, y, H:mm'}}</mat-cell>
   </ng-container>

@@ -2,13 +2,13 @@
   <mat-sidenav [(opened)]="opened">
     <!-- Sidenav -->
     <ul style="list-style-type:none; margin-top: 2rem;">
-    <li><a class="active" routerLink="/">Home</a></li>
-    <li> <a class="active" routerLink="/halls">Halls</a></li>
-    <li> <a class="active" routerLink="/movies">Movies</a></li>
-   <li> <a class="active" routerLink="/about">About</a></li>
-   <li> <a *ngIf='!username' class="active" routerLink="/login">Login</a></li>
-   <li> <a *ngIf='!username' class="active" routerLink="/register">Register</a></li>
-   <li> <a *ngIf='username' (click)="Logout()">Logout</a></li>
+    <li><a mat-button class="active" routerLink="/">Home</a></li>
+    <li> <a mat-button class="active" routerLink="/halls">Halls</a></li>
+    <li> <a mat-button class="active" routerLink="/movies">Movies</a></li>
+   <li> <a mat-button class="active" routerLink="/about">About</a></li>
+   <li> <a mat-button *ngIf='!username' class="active" routerLink="/login">Login</a></li>
+   <li> <a mat-button *ngIf='!username' class="active" routerLink="/register">Register</a></li>
+   <li> <a mat-button *ngIf='username' (click)="Logout()">Logout</a></li>
   </ul>
   
   
@@ -19,7 +19,7 @@
   
       <mat-button-toggle *ngIf='mobile' (click)="opened=!opened"><mat-icon>menu</mat-icon></mat-button-toggle>
       <div>
-        <a routerLink="/" >Logo</a>
+        <a mat-button routerLink="/" >Logo</a>
         <mat-slide-toggle *ngIf='mobile' (change)="onSwitchTheme($event)" ></mat-slide-toggle>
       </div>
       <div *ngIf='!mobile'>
