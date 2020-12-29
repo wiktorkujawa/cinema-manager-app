@@ -6,6 +6,10 @@ $my-app-primary: mat-palette($mat-blue-grey);
 $my-app-accent:  mat-palette($mat-pink, 500, 900, A100);
 $my-app-warn:    mat-palette($mat-deep-orange);
 $my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$font: #111111;
+.cal-month-view, .cal-week-view, .cal-day-view {
+  color: #111111;
+}
 
 
 @include angular-material-theme($my-app-theme);

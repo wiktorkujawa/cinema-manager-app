@@ -19,6 +19,8 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatTableModule} from '@angular/material/table';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 const MaterialComponents = [ 
@@ -43,7 +45,9 @@ const MaterialComponents = [
   NgxMatNativeDateModule,
   MatDatepickerModule,
   MatTableModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSortModule,
+  MatPaginatorModule
   // MatSelect
  ]
 

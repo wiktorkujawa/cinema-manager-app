@@ -1,8 +1,8 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" [ngStyle]="{'width': (mobile) ? '90%' : '50%'}" >
   <h1>Login</h1>
   <hr>
   <formly-form [form]="form" [fields]="fields" [model]="userData"></formly-form>
   <p>{{msg}}</p>
   <button mat-raised-button type="submit" color="primary">Submit </button>
-  <a routerLink="/register">Not registered?</a>
+  <a [ngStyle]="{'margin-top': (mobile) ? '3rem' : '0.5rem'}" routerLink="/register">Not registered?</a>
 </form>
