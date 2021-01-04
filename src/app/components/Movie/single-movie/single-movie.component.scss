@@ -2,10 +2,6 @@ mat-card {
   min-width: 200px; 
 }
 
-mat-expansion-panel {
-  background-color: #DDDDDD;
-}
-
 mat-card-header{
   display: flex;
   justify-content: center;
@@ -13,16 +9,7 @@ mat-card-header{
   text-align: center; 
 }
 
-.content {
-  margin: 0 2rem;
-  color: #111111;
-  border-radius: 25px;
-  background-color: #DDDDDD;
-}
-
-.title{
-  background-color: #001f3f;
-  color: white;
-  border-radius: 25px;
-  margin: 0 2em;
-}
+mat-header-cell, mat-cell {
+  justify-content: space-around;
+  text-align: center;
+ }

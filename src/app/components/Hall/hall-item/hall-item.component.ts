@@ -51,8 +51,6 @@ export class HallItemComponent implements OnInit {
   
   applyFilter(){
     this.dataSource.filter = this.filter.value.trim().toLowerCase();
-    console.log(this.sort);
-    console.log(this.dataSource.sort); 
   }
 
 

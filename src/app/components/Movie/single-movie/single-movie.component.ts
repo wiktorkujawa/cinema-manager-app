@@ -1,5 +1,8 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { HallService } from 'src/app/services/hall.service';
 import { MovieService } from 'src/app/services/movie.service';
@@ -21,7 +24,11 @@ export class SingleMovieComponent implements OnInit {
 
   @Input() username!: string;
 
-  movieSchedule: any;
+  displayedColumns: string[]  = ['name', 'start', 'end'];
+  displayedColumnsOnLog: string[]  = ['name', 'start', 'end', 'Remove'];
+
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   contentMargin!: string;
 
@@ -82,10 +89,24 @@ export class SingleMovieComponent implements OnInit {
         }
       });
 
+  }
 
+  form = new FormGroup({});
 
+  fields: any[] = [
+    {
+      key: 'value',
+      type: 'input',
+      templateOptions: {
+        label: 'Filter by Hall',
+        placeholder: 'Type Hall name',
+      }
+    }];
 
-
+  filter = { value:''};
+  
+  applyFilter(){
+    this.dataSource.filter = this.filter.value.trim().toLowerCase();
   }
 
   ngOnInit(): void { 
@@ -93,13 +114,25 @@ export class SingleMovieComponent implements OnInit {
       this.movieService.getMovie(title).subscribe( movieInfo => this.movieInfo = movieInfo);
 
       this.hallService.getShowing(title).subscribe( movieSchedule =>{ 
-        this.movieSchedule = movieSchedule });
+        this.dataSource = new MatTableDataSource(movieSchedule);
+        setTimeout(() => {
+          this.dataSource.sortingDataAccessor = (item, property) => {
+            switch(property) {
+              case 'start': return item.taken_sessions.start;
+              default: return item[property];
+            }
+          };
+          this.dataSource.sort = this.sort;
+        });
+      });
+      
+      
    }
 
 
    onDeleteFromHall( name:any, id:any){
      this.hallService.removeShowing(name, id).subscribe();
-     this.movieSchedule = this.movieSchedule.filter( (t:any) => t.taken_sessions._id !== id );
+     this.dataSource.data = this.dataSource.data.filter( (t:any) => t.taken_sessions._id !== id );
    }
 
 }
