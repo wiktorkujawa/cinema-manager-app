@@ -5,15 +5,17 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
 
-  <mat-card>
-    <mat-card-header class="title">
-      <mat-card-title style="margin-top: 1rem;">
+  <mat-card [ngStyle]="{'padding': imagePadding}">
+    <hr>
+    <mat-card-header>
+      <mat-card-title>
         {{movieInfo.title}}
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image [src]="movieInfo.poster" alt="Movie Poster" [ngStyle]="{'padding': imagePadding}">
-    <mat-card-content class="content">
-      <p style="padding:2rem;">
+    <hr>
+    <img mat-card-image [src]="movieInfo.poster" alt="Movie Poster">
+    <mat-card-content [ngStyle]="{'padding': imagePadding}">
+      <p>
         {{movieInfo.description}}
       </p>
     </mat-card-content>
@@ -34,43 +36,48 @@
   <mat-card>
     <hr>
     <mat-card-header>
+      <formly-form class="filter" *ngIf="dataSource && dataSource.data?.length!=0" [form]="form" [fields]="fields" [model]="filter" (keyup)="applyFilter()"></formly-form>
       <mat-card-title>
         {{movieInfo.title}} schedule
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <hr>
-      <div class="table-responsive" *ngIf="movieSchedule?.length!=0">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Hall</th>
-              <th>Starts at</th>
-              <th>Ends at</th>
-              <th *ngIf="username">Remove</th>
-            </tr>
-          </thead>
-    
-          <tbody>
-            <tr *ngFor="let session of movieSchedule">
-              <td>
-                {{session.name}}
-              </td>
-              <td>
-                {{session.taken_sessions.start | date:'MMM d, y, h:mm'}}
-              </td>
-              <td>
-                {{session.taken_sessions.end | date:'MMM d, y, h:mm'}}
-              </td>
-              <td *ngIf="username">
-                <button mat-raised-button type="submit" color="warn" (click)="onDeleteFromHall(session.name, session.taken_sessions._id)">X</button>
-              </td>
-            </tr>
-          </tbody>
-       </table>
-      </div>
 
-      <h2 *ngIf="movieSchedule?.length==0" style="text-align: center; margin: 2rem 0;">
+
+      <mat-table *ngIf="dataSource && dataSource.data?.length!=0" [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Hall</mat-header-cell>
+          <mat-cell *matCellDef="let session"> {{session.name}}</mat-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="start">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Starts at</mat-header-cell>
+          <mat-cell *matCellDef="let session"> {{session.taken_sessions.start | date:'MMM d, y, H:mm'}}</mat-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="end">
+          <mat-header-cell *matHeaderCellDef>Ends at</mat-header-cell>
+          <mat-cell *matCellDef="let session"> {{session.taken_sessions.end | date:'MMM d, y, H:mm'}}</mat-cell>
+        </ng-container>
+      
+      
+        <ng-container *ngIf="username" matColumnDef="Remove">
+          <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+          <mat-cell *matCellDef="let session"> 
+            <button mat-raised-button color="warn" (click)="onDeleteFromHall(session.name, session.taken_sessions._id)">
+              X
+            </button>
+        </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="username ? displayedColumnsOnLog: displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: username ? displayedColumnsOnLog: displayedColumns;"></mat-row>
+      
+      </mat-table>
+
+      <h2 *ngIf="dataSource && dataSource.data?.length==0" style="text-align: center; margin: 2rem 0;">
         No sessions planned !
       </h2>
 
