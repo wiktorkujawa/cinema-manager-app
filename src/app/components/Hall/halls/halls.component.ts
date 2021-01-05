@@ -120,7 +120,6 @@ openAddMovieDialog(name: any){
       username: this.username
     }
   });
-  console.log(ref.componentInstance);
   const sub = ref.componentInstance.addMovieToHall.subscribe((showing: any) => {
     const index = this.halls.findIndex((hall:any) => hall.name === name);
     this.hallService.addShowingToHall(name,{ movie: showing.movie, start: showing.start, end: showing.end}).subscribe( async hall => {
