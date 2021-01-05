@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -29,6 +30,7 @@ export class SingleMovieComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   contentMargin!: string;
 
@@ -123,6 +125,7 @@ export class SingleMovieComponent implements OnInit {
             }
           };
           this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
         });
       });
       
