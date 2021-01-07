@@ -2,11 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
+require('../modules/auth')(passport);
 
 const register = async (req, res) => {
 
@@ -43,14 +39,6 @@ const register = async (req, res) => {
       })
     }
 
-
- 
-
-
-
-
-
-  
 }
 
 const isValidUser = (req,res,next) => {
@@ -81,7 +69,6 @@ router.get('/user',isValidUser, (req,res,next) => {
 router.get('/logout',isValidUser, (req,res,next) => {
   req.logout();
   return res.status(200).json({message:'Logout Success'});
-  // res.redirect('/auth/login');
 })
 
 
