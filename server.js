@@ -15,14 +15,18 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 
+app.use(function(req, res, next) {
+  if (!req.user)
+      res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  next();
+});
+
 app.use(
   cors({
     origin: "http://localhost:4200",
     credentials: true
   })
 );
-
-require('./modules/auth');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
