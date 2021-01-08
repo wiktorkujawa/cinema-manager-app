@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
     "dev": "concurrently \"yarn server\" \"ng serve --open\" ",
     "build": "ng build --prod --output-path dist",
     "test": "ng test",
