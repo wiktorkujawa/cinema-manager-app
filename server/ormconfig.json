@@ -1,0 +1,8 @@
+{
+  "type": "mongodb",
+  "url": "mongodb+srv://wiktorkujawa:!limaczek231407!@mongodb.z44u9.mongodb.net/cinema?retryWrites=true&w=majority",
+  "useNewUrlParser": true,
+  "synchronize": true,
+  "logging": true,
+  "entities": ["entities/*.js"]
+}
