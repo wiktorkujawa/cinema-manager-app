@@ -10,7 +10,7 @@
     "watch": "yarn --cwd server watch",
     "dev": "concurrently \"yarn server\" \"yarn client\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "yarn --cwd client build && yarn --cwd server build"
+    "build": "yarn --cwd client build"
   },
   "repository": {
     "type": "git",
