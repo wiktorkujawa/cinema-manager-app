@@ -61,10 +61,10 @@ app.use('/api/halls', halls);
 app.use('/api/movies', movies);
 app.use('/auth', auth);
 
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 app.get('*', (req, res) => { 
-    res.sendFile(path.join(__dirname, '../dist/index.html')) 
+    res.sendFile(path.join(__dirname, '../../dist/index.html')) 
 }); 
 
 const PORT = process.env.PORT || 4000; 
